@@ -106,7 +106,7 @@ desarrollo, barra inferior de 5 accesos y paleta provisional.
 | Datos | `codigo/backend/content/` | Supabase con clave pública (RLS manda) o demo (`npm run dev:demo`, prohibido en producción). Fotos por `/media/…` |
 | Mapa | `codigo/frontend/maps/PlaceMap.tsx`, `GoogleMapInteractive.tsx` | `MapFallback` sin cambios; el SDK solo se descarga al llegar a la sección y con clave |
 | Service Worker | `public/sw.js` + `prepare-sw.mjs` | Guarda sin conexión las fichas y menús de TODOS los tipos de lugar en los tres idiomas (antes solo restaurantes en español) |
-| Propuesta | `migrations/propuesta-v2/0010_direccion_indicaciones.sql` | Dirección, indicaciones por idioma e imagen de mapa estático. Probada en la BD temporal; **sin aplicar** hasta que el titular la apruebe |
+| Propuesta | `migrations/propuesta-v2/0010_direccion_indicaciones.sql` | Dirección, indicaciones por idioma e imagen de mapa estático. Aprobada por el titular y aplicada a Supabase el 29-10-2026 (columnas verificadas por la API; RLS sin cambios) |
 
 Verificado el 29-10-2026: tipos, 30 pruebas unitarias, 28 pruebas de humo SQL y ensayo de `apply.sh`, build de producción, E2E en Chromium
 (Service Worker, mapa y `pages.e2e.cjs`: 15 rutas, 8 plantillas a 375 px con lang correcto, sin scroll horizontal, targets ≥ 48 px, alt en

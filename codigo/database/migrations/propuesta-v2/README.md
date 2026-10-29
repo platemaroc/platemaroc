@@ -21,4 +21,5 @@ confirmación del titular y después de ensayarlo con `codigo/database/tests/run
 Precios: `menu_items.price_mad` (nulo = pendiente), sin columna de moneda (`docs/12`).
 Idiomas: `locale_code` = es/en/fr. Los umbrales del Quality Gate NO están en la base de datos (`codigo/base-indexing/`).
 Favoritos: fuera del MVP (decisión del 29-10-2026).
+`0010`: dirección (`places.address`), indicaciones por idioma (`translations.directions`) e imagen del mapa estático (`places.static_map_path`), aprobada y aplicada el 29-10-2026.
 Límite conocido: borrar una entidad no borra sus traducciones (el maestro no permite eliminar contenido; se archiva).

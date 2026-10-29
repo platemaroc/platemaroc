@@ -12,8 +12,7 @@
 7. Ajuste final de los umbrales internos del Quality Gate.
 
 ## Añadidos al integrar el código (29-10-2026)
-8. Aprobar la migración `0010` (dirección, indicaciones de llegada e imagen del mapa estático en las fichas), necesaria para `docs/11`.
-9. Identidad visual (logo y colores): la paleta actual es provisional.
+8. Identidad visual (logo y colores): la paleta actual es provisional.
 
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
@@ -29,6 +28,7 @@
 - Rutas: secciones traducidas por idioma y mismo slug en los tres (`codigo/shared/routes.ts`); barra de navegación inferior (29-10-2026).
 - Mapa estático de respaldo: texto y enlaces siempre + imagen opcional subida por la administración (29-10-2026).
 - Datos de demostración solo en desarrollo, con prefijo `demo-` (29-10-2026).
+- Migración 0010 aprobada y aplicada: dirección, indicaciones por idioma e imagen del mapa estático (29-10-2026).
 - Idiomas: es/en/fr.
 - Árabe retirado.
 - Sin RTL.

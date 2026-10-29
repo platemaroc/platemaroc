@@ -1,4 +1,4 @@
--- PROPUESTA del 29-10-2026, pendiente de aprobación del titular: no se aplica a Supabase hasta que la apruebe.
+-- Aprobada por el titular el 29-10-2026 (dirección, indicaciones e imagen del mapa estático en las fichas).
 -- docs/11 exige mostrar siempre la dirección postal y las indicaciones de llegada en texto bajo el mapa (también sin conexión),
 -- y el modelo v2 no tenía dónde guardarlas.
 -- La dirección es una sola (no se traduce); las indicaciones sí, por idioma, en `translations`.
