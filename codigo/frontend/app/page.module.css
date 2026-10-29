@@ -1,0 +1,52 @@
+.main {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem var(--gutter);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-title);
+  line-height: 1.2;
+}
+
+.tagline {
+  margin: 0 0 1rem;
+  color: var(--color-muted);
+}
+
+.languages {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Target táctil mínimo de 48x48 px. */
+.language {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding: 0 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.badge {
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}

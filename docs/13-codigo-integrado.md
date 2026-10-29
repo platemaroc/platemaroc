@@ -1,7 +1,7 @@
 # Código integrado (andamiaje inicial)
 
 **Fecha:** 29-10-2026 · **Estado:** propuesta técnica; requiere revisión y aprobación del titular.
-La aplicación Next.js todavía no está inicializada (Fase 1): estos archivos son piezas independientes que
+Actualización 29-10-2026: la Fase 1 ya está hecha (ver "Fase 1" al final). Lo que sigue describía el andamiaje inicial: piezas independientes que
 Claude Code debe adaptar al proyecto real, no reescribir desde cero.
 Incorpora las decisiones técnicas del paquete `platemaroc-ajustes-tecnicos-2026-10-29`, que tienen prioridad
 sobre las especificaciones anteriores (ver `docs/09-matriz-de-autoridad.md`).
@@ -55,3 +55,19 @@ sobre las especificaciones anteriores (ver `docs/09-matriz-de-autoridad.md`).
   `0110_storage_fotos_propuesta_v2.sql`): ejecutada el 29-10-2026 en PostgreSQL 16.15 portátil en Windows con `auth` simulado;
   las 22 pruebas de humo de `rls-smoke.sql` dan el resultado esperado. Las políticas de Storage no se han probado (no hay esquema
   `storage` en la BD simulada). En Windows: `PGBIN=/c/Users/pc/tools/pgsql-16/pgsql/bin bash codigo/database/tests/run.sh`.
+
+## Fase 1 (29-10-2026)
+
+Decisiones del titular: backend separado en el código (`codigo/backend/`) pero en el mismo proceso que la web; estilos con CSS Modules.
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Paquetes | `package.json` (raíz, workspaces `codigo/frontend` y `codigo/backend`) | Versiones exactas: Next.js 16.4.3, React 19.3.1, TypeScript 6.0.3, Supabase JS 2.118.0 |
+| App | `codigo/frontend/app/` | `/` selector de idioma (solo sugiere por `Accept-Language`); `/{es,en,fr}` portada provisional; otros prefijos → 404. Todo `noindex` |
+| Seguridad | `codigo/frontend/proxy.ts` + `codigo/security/headers.ts` | CSP con nonce por petición (sin `unsafe-inline` en scripts). `unsafe-eval` solo en `next dev`; sin `upgrade-insecure-requests` en localhost |
+| Service Worker | `codigo/frontend/scripts/prepare-sw.mjs` | Copia `public/sw.js` a la app en cada dev/build e inyecta `VERSION` = versión base + commit |
+| Supabase | `codigo/backend/supabase/` y `codigo/frontend/lib/supabase-browser.ts` | Sin conectar aún: falta crear el proyecto Supabase y rellenar `codigo/frontend/.env.local` |
+
+Verificado el 29-10-2026: tipos, 24 pruebas unitarias, build de producción, E2E (Service Worker y mapa) en Chromium, y en el navegador
+`/`, `/es`, `/en`, `/fr` (lang correcto, nonce en todos los scripts, sin errores de CSP en consola, enlaces de 48 px, sin scroll horizontal
+a 375 px) en modo producción y desarrollo. Pendiente: favicon e iconos (`/favicon.ico` da 404) y rutas reales (`docs/08`, punto 9).

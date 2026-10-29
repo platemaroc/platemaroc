@@ -1,0 +1,25 @@
+{
+  "name": "platemaroc",
+  "private": true,
+  "description": "Platemaroc: directorio y guía gastronómica de Marruecos (https://platemaroc.com)",
+  "engines": { "node": ">=22.18" },
+  "workspaces": ["codigo/frontend", "codigo/backend"],
+  "scripts": {
+    "dev": "npm run dev -w @platemaroc/frontend",
+    "build": "npm run build -w @platemaroc/frontend",
+    "start": "npm run start -w @platemaroc/frontend",
+    "typecheck": "tsc -p tsconfig.json && tsc -p codigo/frontend/tsconfig.json",
+    "test": "node --test codigo/testing/*.test.ts",
+    "test:db": "bash codigo/database/tests/run.sh",
+    "test:e2e": "node codigo/testing/e2e/sw.e2e.cjs && node codigo/testing/e2e/map.e2e.cjs",
+    "scan:secrets": "node codigo/security/scan-secrets.mjs --git"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "esbuild": "0.28.2",
+    "playwright": "1.64.1",
+    "typescript": "6.0.3"
+  }
+}

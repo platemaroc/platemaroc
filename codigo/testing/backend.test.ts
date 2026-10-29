@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { canTransition } from '../shared/states.ts';
 import { summarizeApproved } from '../backend/reviews/rating.ts';
+import { supabasePublicConfig, supabaseServiceRoleKey } from '../backend/supabase/env.ts';
 import { buildAuditEntry } from '../backend/admin-moderation/audit.ts';
 import { suggestLocale } from '../frontend/i18n/negotiate.ts';
 import { splitLocale } from '../frontend/i18n/config.ts';
@@ -43,4 +44,19 @@ test('cabeceras: HSTS y CSP sin unsafe-eval ni frames externos de terceros', () 
   const h = Object.fromEntries(securityHeaders({ supabaseUrl: 'https://x.supabase.co' }).map((x) => [x.key, x.value]));
   assert.ok(h['Strict-Transport-Security'].includes('max-age=31536000'));
   assert.ok(!buildCsp().includes('unsafe-eval')); assert.ok(h['Content-Security-Policy'].includes("frame-ancestors 'none'"));
+});
+
+test('CSP: unsafe-eval solo en desarrollo; upgrade-insecure-requests salvo en localhost', () => {
+  assert.ok(buildCsp({ dev: true }).includes("'unsafe-eval'"));
+  assert.ok(buildCsp().endsWith('upgrade-insecure-requests'));
+  assert.ok(!buildCsp({ allowInsecureLocal: true }).includes('upgrade-insecure-requests'));
+  assert.ok(buildCsp({ scriptNonce: 'abc' }).includes("'nonce-abc'"));
+});
+
+test('Supabase: sin variables no hay configuración; la URL debe ser https', () => {
+  assert.equal(supabasePublicConfig({}), null);
+  assert.equal(supabasePublicConfig({ NEXT_PUBLIC_SUPABASE_URL: 'https://x.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: ' ' }), null);
+  assert.deepEqual(supabasePublicConfig({ NEXT_PUBLIC_SUPABASE_URL: 'https://x.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'k' }), { url: 'https://x.supabase.co', anonKey: 'k' });
+  assert.throws(() => supabasePublicConfig({ NEXT_PUBLIC_SUPABASE_URL: 'http://x.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'k' }));
+  assert.equal(supabaseServiceRoleKey({}), null);
 });

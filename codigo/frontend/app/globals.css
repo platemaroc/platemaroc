@@ -1,0 +1,30 @@
+/* Base mobile-first. Los valores salen de codigo/components-ui/mobile-design/tokens.ts; el sistema completo llega en la Fase 3. */
+:root {
+  --touch-target: 48px; /* MIN_TOUCH_TARGET_PX */
+  --gutter: 16px;
+  --color-text: #1d1b19;
+  --color-muted: #5c5650;
+  --color-bg: #ffffff;
+  --color-accent: #9a3412;
+  --color-border: #e7e2dc;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-title: clamp(1.75rem, 1.4rem + 1.75vw, 2.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+a { color: var(--color-accent); }
+
+a:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }

@@ -2,7 +2,22 @@
 
 Directorio y guía gastronómica de Marruecos. Dominio: https://platemaroc.com
 
-Estado: **fase de planificación estructural**, con documentación consolidada (candidata a congelación, pendiente de aprobación del titular) y un andamiaje inicial de código para PWA, fallback de mapas y precios en MAD. La aplicación Next.js aún no está inicializada.
+Estado: **fase de planificación estructural**, con documentación consolidada (candidata a congelación, pendiente de aprobación del titular) y un andamiaje inicial de código para PWA, fallback de mapas y precios en MAD. Fase 1 hecha: la aplicación Next.js está inicializada en `codigo/frontend/` con páginas provisionales (`noindex`) en `/es/`, `/en/` y `/fr/`.
+
+## Uso en local
+
+Requisitos: Node.js ≥ 22.18 y Git. Las claves van en `codigo/frontend/.env.local` (copia de `config/env-templates/.env.example`, fuera de Git).
+
+| Comando | Qué hace |
+|---|---|
+| `npm install` | Instala las dependencias de todo el proyecto |
+| `npm run dev` | Servidor de desarrollo en http://localhost:3000 |
+| `npm run build` y `npm run start` | Build de producción y servidor de producción en local |
+| `npm run typecheck` | Comprueba los tipos de TypeScript |
+| `npm test` | Pruebas unitarias |
+| `npm run test:e2e` | Pruebas en Chromium real (Service Worker y mapa; antes, una vez: `npx playwright install chromium`) |
+| `npm run test:db` | Migraciones y RLS en un PostgreSQL temporal (en Windows: `PGBIN=/c/Users/pc/tools/pgsql-16/pgsql/bin npm run test:db`) |
+| `npm run scan:secrets` | Busca secretos antes de un commit |
 
 ## Visión
 
