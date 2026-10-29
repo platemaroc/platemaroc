@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Valida el BORRADOR de migraciones y RLS en un PostgreSQL temporal (no toca ninguna base real).
+# Requiere binarios de PostgreSQL (initdb, pg_ctl, psql) y ejecutarse como un usuario que no sea root.
+# Linux y Windows (Git Bash). En Windows con los binarios portátiles: PGBIN=/c/Users/pc/tools/pgsql-16/pgsql/bin
+# Conexión solo por TCP en 127.0.0.1 (los sockets Unix no funcionan con Git Bash); la BD temporal no acepta conexiones externas.
+set -euo pipefail
+PGBIN="${PGBIN:-$(dirname "$(command -v initdb || echo /usr/lib/postgresql/16/bin/initdb)")}"
+export PATH="$PGBIN:$PATH" PGCLIENTENCODING=UTF8
+HERE="$(cd "$(dirname "$0")/.." && pwd)"; D="$(mktemp -d)"; PORT="${PGPORT:-54329}"
+trap 'pg_ctl -D "$D/data" stop -m immediate >/dev/null 2>&1 || true; rm -rf "$D"' EXIT
+initdb -D "$D/data" -A trust -U postgres -E UTF8 --locale=C >/dev/null
+printf "port = %s\nlisten_addresses = '127.0.0.1'\nunix_socket_directories = ''\n" "$PORT" >> "$D/data/postgresql.conf"
+pg_ctl -D "$D/data" -l "$D/log" start -w >/dev/null
+P="psql -h 127.0.0.1 -p $PORT -U postgres -q"
+$P -d postgres -c "create database t"
+$P -v ON_ERROR_STOP=1 -d t -f "$HERE/tests/stub-supabase.sql"
+for f in "$HERE"/migrations/propuesta-v2/*.sql "$HERE"/policies-rls/*.sql; do $P -v ON_ERROR_STOP=1 -d t -f "$f"; done
+$P -d t -c "grant usage on schema public, auth to anon, authenticated" \
+  -c "grant select,insert,update,delete on all tables in schema public to anon, authenticated" \
+  -c "grant execute on all functions in schema public to anon, authenticated" \
+  -c "revoke all on audit_log from anon, authenticated" -c "grant select on audit_log to authenticated"
+echo "Migraciones y RLS aplicados en BD temporal. Resultado de las pruebas de humo (cada ERROR marcado como esperado es correcto):"
+$P -d t -f "$HERE/tests/rls-smoke.sql" 2>&1 | grep -vE "^\(|^-+$|^$|rows?\)" | cut -c1-170

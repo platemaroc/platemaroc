@@ -1,0 +1,7 @@
+# Saltos de línea LF en el repositorio aunque se edite en Windows (el servidor es Ubuntu).
+* text=auto eol=lf
+*.sh text eol=lf
+*.png binary
+*.jpg binary
+*.webp binary
+*.zip binary

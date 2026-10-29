@@ -1,0 +1,62 @@
+# Platemaroc
+
+Directorio y guía gastronómica de Marruecos. Dominio: https://platemaroc.com
+
+Estado: **fase de planificación estructural**, con documentación consolidada (candidata a congelación, pendiente de aprobación del titular) y un andamiaje inicial de código para PWA, fallback de mapas y precios en MAD. La aplicación Next.js aún no está inicializada.
+
+## Visión
+
+- Enfoque nacional: gastronomía de Marruecos (restaurantes, cafés y teterías, pastelerías y panaderías, comida callejera, mercados y zocos, platos típicos y guías).
+- Mobile-First absoluto, Core Web Vitals (LCP, INP, CLS) y HTTPS estricto.
+- Control automatizado de indexabilidad con Quality Gate (`is_indexable`).
+- Idiomas oficiales: español (`es`), inglés (`en`) y francés (`fr`), con URLs `/es/`, `/en/`, `/fr/`. El árabe y el RTL están retirados. Cada idioma se indexa solo cuando su traducción está realmente preparada.
+- Menú digital en el MVP; reservas por fases (1.5 opcional, 2 con integración real).
+- PWA y mobile-first para redes inestables, fallback de mapas con carga diferida y precios exclusivamente en MAD.
+
+## Stack y servicios
+
+- Next.js (App Router) y TypeScript.
+- PostgreSQL en Supabase (autenticación: email, Google y teléfono; seguridad con RLS).
+- Backend separado del frontend.
+- Google Maps (mapa y "Cómo llegar"). Carga de lugares manual; Google Places y Google Business en una fase posterior (las carpetas de integración quedan reservadas).
+- Reseñas al estilo Google Business: puntuación de 1 a 5 estrellas, comentario y fotos, con moderación previa.
+- Alojamiento: VPS KVM 1 de Hostinger con Ubuntu LTS limpio. Sin exportación estática.
+- Desarrollo con Claude Code desde Windows y repositorio en GitHub.
+
+## Estructura
+
+```
+platemaroc.com/
+├── codigo/
+│   ├── backend/            api, auth, reviews, admin-moderation, integrations (google-places, google-business, google-maps)
+│   ├── frontend/           app, components, maps, i18n, admin-panel
+│   ├── shared/             tipos TypeScript comunes
+│   ├── database/           migrations, policies-rls, seeders
+│   ├── components-ui/      mobile-design, mobile-experience
+│   ├── base-indexing/      robots, sitemaps, canónicas, Quality Gate
+│   ├── security/           SSL/TLS, cabeceras, secretos, seguridad del servidor
+│   ├── performance-monitoring/
+│   ├── mobile-qa-verification/
+│   └── testing/
+├── content/                es, en, fr (mismas subcarpetas en cada idioma)
+├── config/                 env-templates, server-setup, deploy, backups
+├── ordenes-claude-code/    tareas listas para pedir a Claude Code (moderación, menú, reservas, PWA, mapas, precios, SEO, backups, etc.)
+├── public/                 sw.js (Service Worker)
+├── seo/                    metadatos, hreflang y JSON-LD
+└── docs/                   documento maestro, matriz de autoridad, especificaciones 10-12, modelo de datos, decisiones y prompt inicial
+```
+
+Todas las carpetas siguen kebab-case, sin espacios. Los archivos `.gitkeep` solo sirven para que Git conserve las carpetas vacías; se pueden borrar cuando haya contenido real.
+
+## Documentos clave
+
+- `docs/01-documento-maestro-operacion.md`: fuente operativa principal.
+- `docs/09-matriz-de-autoridad.md`: qué documento manda por tema.
+- `docs/08-pendientes-decidir.md`: decisiones abiertas del titular.
+- `docs/13-codigo-integrado.md`: qué código hay, qué cubre y qué falta.
+- `docs/14-ajustes-tecnicos-2026-10-29.md`: decisiones técnicas recientes (prioridad sobre especificaciones anteriores).
+- `docs/00-LEEME-paquete-integracion.md`: contenido y checklist del paquete de congelación.
+
+- `docs/decisiones.md`: decisiones tomadas hasta ahora.
+- `docs/modelo-de-datos.md`: entidades, relaciones y reglas del Quality Gate.
+- `docs/prompt-inicial-claude-code.md`: instrucciones para empezar con Claude Code.

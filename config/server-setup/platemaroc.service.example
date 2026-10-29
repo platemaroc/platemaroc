@@ -1,0 +1,19 @@
+[Unit]
+Description=Platemaroc (Next.js)
+After=network.target
+
+[Service]
+User=deploy
+WorkingDirectory=/srv/platemaroc/current
+EnvironmentFile=/etc/platemaroc/app.env
+Environment=NODE_ENV=production PORT=3000 HOSTNAME=127.0.0.1
+# Ajustar a la salida real del build (p. ej. modo standalone de Next.js)
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
