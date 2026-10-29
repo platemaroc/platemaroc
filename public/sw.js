@@ -12,7 +12,8 @@
  * (idealmente inyectada por el build).
  * Privacidad: solo se guardan GET públicas y cacheables; nunca rutas de cuenta/admin/API, ni
  * respuestas con cookies o `Cache-Control: private/no-store`.
- * AJUSTAR las rutas cuando existan las reales (pendiente de confirmar, docs/08).
+ * Rutas: las inyecta codigo/frontend/scripts/prepare-sw.mjs desde codigo/shared/routes.ts (secciones traducidas
+ * es/en/fr, decisión del 29-10-2026). Los valores de abajo son los de reserva (solo español) para usar el archivo tal cual.
  */
 const VERSION = 'v2';
 const CACHE_PREFIX = 'platemaroc-';
@@ -22,10 +23,13 @@ const DB_STORE = 'pages';
 const MAX_PAGES = 20; // decisión 29-10-2026
 
 const LOCALES = '(es|en|fr)';
-const GUIDES_HOME = new RegExp(`^/${LOCALES}/guias-gastronomicas/?$`);
+const PLACE_SEGMENTS = '(restaurantes)'; // inyectado en el build: todos los tipos de lugar en los tres idiomas
+const GUIDES_SEGMENTS = '(guias-gastronomicas)'; // inyectado en el build
+const MENU_SEGMENT = 'menu';
+const GUIDES_HOME = new RegExp(`^/${LOCALES}/${GUIDES_SEGMENTS}/?$`);
 const NETWORK_FIRST = [
-  new RegExp(`^/${LOCALES}/restaurantes/[^/]+/?$`),
-  new RegExp(`^/${LOCALES}/restaurantes/[^/]+/menu/?$`),
+  new RegExp(`^/${LOCALES}/${PLACE_SEGMENTS}/[^/]+/?$`),
+  new RegExp(`^/${LOCALES}/${PLACE_SEGMENTS}/[^/]+/${MENU_SEGMENT}/?$`),
 ];
 const STATIC_PATHS = [/^\/icons\//, /^\/_next\/static\//, /^\/fonts\//];
 const EXCLUDED = [/^\/api\//, /^\/admin/, /^\/auth/, /^\/cuenta/, /^\/account/];

@@ -90,3 +90,9 @@ set role anon; select count(*) as publicado from guide_neighborhoods; reset role
 \echo '--- 27. editar un artículo de menú actualiza updated_at: esperado t'
 update menu_items set position=1;
 select bool_and(updated_at > created_at) from menu_items;
+\echo '--- 28. dirección del lugar e indicaciones por idioma (0010): anon ve ambas en lo publicado: esperado 1 fila con las dos'
+update places set address='Dirección demo, 1' where slug='demo-a';
+update translations set directions='Indicaciones demo' where entity_type='place' and locale='es';
+set role anon;
+select count(*) from places p join translations t on t.entity_id=p.id and t.locale='es' where p.address is not null and t.directions is not null;
+reset role;

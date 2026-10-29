@@ -8,3 +8,7 @@ export type Messages = typeof es;
 const MESSAGES: Record<Locale, Messages> = { es, en, fr };
 
 export const getMessages = (locale: Locale): Messages => MESSAGES[locale];
+
+/** "1 reseña" / "N reseñas" (solo reseñas aprobadas). */
+export const reviewLabel = (t: Messages, count: number): string =>
+  count === 1 ? t.reviewCountOne : t.reviewCount.replace('{count}', String(count));

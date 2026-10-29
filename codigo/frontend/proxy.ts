@@ -22,6 +22,7 @@ export function proxy(request: NextRequest) {
   requestHeaders.set('x-nonce', nonce);
   requestHeaders.set('Content-Security-Policy', csp);
   const { locale } = splitLocale(request.nextUrl.pathname);
+  requestHeaders.set('x-pathname', request.nextUrl.pathname);
   if (locale) requestHeaders.set('x-locale', locale);
   else requestHeaders.delete('x-locale');
 

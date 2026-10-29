@@ -1,0 +1,137 @@
+/* Plantillas de página (Fase 3). */
+
+/* Deja sitio a la barra inferior fija para que no tape el final del contenido. */
+.frame {
+  min-height: 100vh;
+  padding-bottom: calc(var(--bottom-nav) + env(safe-area-inset-bottom) + var(--space-md));
+}
+
+.main {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter) var(--space-lg);
+}
+
+.title {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-title);
+  line-height: 1.2;
+}
+
+.lead {
+  margin: 0 0 var(--space-md);
+  color: var(--color-muted);
+  font-size: var(--text-lg);
+}
+
+.section {
+  margin-top: var(--space-xl);
+}
+
+.section h2 {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-lg);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tiles a {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-xs) var(--space-md);
+  margin: 0;
+}
+
+.facts dt {
+  color: var(--color-muted);
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.prose p {
+  margin: 0 0 var(--space-md);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  text-decoration: none;
+}
+
+.menuCategory h2 {
+  margin: var(--space-lg) 0 var(--space-sm);
+}
+
+.menuItems {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-xs) var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.menuItem p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.soldOut {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
+.gallery {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0;
+}
+
+/* Enlace de texto suelto con target táctil de 48 px. */
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+}

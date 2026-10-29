@@ -91,3 +91,26 @@ Conexión: `DATABASE_URL` del Session pooler SIN contraseña y `DATABASE_PASSWOR
 Rol de administración: asignado el 29-10-2026 a la cuenta del titular (creada por él en el panel de Supabase), en `app_metadata.role`,
 con su confirmación y registrado en `audit_log`. Su perfil se creó solo al darse de alta (trigger verificado en la base real).
 Pendiente: comprobar `is_admin()` con una sesión real cuando exista el login (Fase 4).
+
+## Fase 3 (29-10-2026)
+
+Decisiones del titular: secciones traducidas (mismo slug), mapa estático = texto y enlaces + imagen opcional, datos demo solo en
+desarrollo, barra inferior de 5 accesos y paleta provisional.
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Rutas | `codigo/shared/routes.ts` | Fuente única de las secciones por idioma; la usan la app, el selector de idioma y el Service Worker |
+| Sistema de diseño | `codigo/components-ui/mobile-design/` | `tokens.css`/`tokens.ts`, estrellas (solo reseñas aprobadas), precio MAD con "Precio pendiente", foto con espacio reservado |
+| Componentes | `codigo/frontend/components/` | Cabecera con selector de idioma (no enlaza versiones sin publicar), barra inferior, migas, tarjetas, aviso demo |
+| Plantillas | `codigo/frontend/app/[locale]/` | Portada; listados por tipo, lugares, platos, guías y ciudades; fichas de lugar, plato, guía y ciudad; menú; barrio |
+| Datos | `codigo/backend/content/` | Supabase con clave pública (RLS manda) o demo (`npm run dev:demo`, prohibido en producción). Fotos por `/media/…` |
+| Mapa | `codigo/frontend/maps/PlaceMap.tsx`, `GoogleMapInteractive.tsx` | `MapFallback` sin cambios; el SDK solo se descarga al llegar a la sección y con clave |
+| Service Worker | `public/sw.js` + `prepare-sw.mjs` | Guarda sin conexión las fichas y menús de TODOS los tipos de lugar en los tres idiomas (antes solo restaurantes en español) |
+| Propuesta | `migrations/propuesta-v2/0010_direccion_indicaciones.sql` | Dirección, indicaciones por idioma e imagen de mapa estático. Probada en la BD temporal; **sin aplicar** hasta que el titular la apruebe |
+
+Verificado el 29-10-2026: tipos, 30 pruebas unitarias, 28 pruebas de humo SQL y ensayo de `apply.sh`, build de producción, E2E en Chromium
+(Service Worker, mapa y `pages.e2e.cjs`: 15 rutas, 8 plantillas a 375 px con lang correcto, sin scroll horizontal, targets ≥ 48 px, alt en
+imágenes, selector de idioma, mapa idle → fallback sin SDK y CLS 0, aviso offline), y en producción contra el Supabase real (secciones vacías,
+borradores en 404, sin errores, scripts con nonce, Service Worker activo).
+No probado: con contenido publicado real, con la clave de Google Maps, en Safari/iOS ni con red lenta real.
+Pendiente: revisión nativa de los textos en/fr y de los segmentos de URL (`revisar-traducciones`); favicon e iconos; metadatos SEO (Fase 5).

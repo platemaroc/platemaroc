@@ -11,11 +11,12 @@ Requisitos: Node.js ≥ 22.18 y Git. Las claves van en `codigo/frontend/.env.loc
 | Comando | Qué hace |
 |---|---|
 | `npm install` | Instala las dependencias de todo el proyecto |
-| `npm run dev` | Servidor de desarrollo en http://localhost:3000 |
+| `npm run dev` | Servidor de desarrollo en http://localhost:3000 (datos reales de Supabase) |
+| `npm run dev:demo` | Igual, con datos de DEMOSTRACIÓN ficticios (`demo-…`) para ver las plantillas. Prohibido en producción |
 | `npm run build` y `npm run start` | Build de producción y servidor de producción en local |
 | `npm run typecheck` | Comprueba los tipos de TypeScript |
 | `npm test` | Pruebas unitarias |
-| `npm run test:e2e` | Pruebas en Chromium real (Service Worker y mapa; antes, una vez: `npx playwright install chromium`) |
+| `npm run test:e2e` | Pruebas en Chromium real: Service Worker, mapa y plantillas (antes, una vez: `npx playwright install chromium`) |
 | `npm run test:db` | Migraciones y RLS en un PostgreSQL temporal (en Windows: `PGBIN=/c/Users/pc/tools/pgsql-16/pgsql/bin npm run test:db`) |
 | `npm run scan:secrets` | Busca secretos antes de un commit |
 

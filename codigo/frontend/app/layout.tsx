@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { DEFAULT_LOCALE, isLocale } from '../i18n/config.ts';
 import { RegisterServiceWorker } from '../components/RegisterServiceWorker.tsx';
 import { SITE_NAME, SITE_URL } from '../../../seo/types.ts';
+import '../../components-ui/mobile-design/tokens.css';
 import './globals.css';
 
 export const metadata: Metadata = {

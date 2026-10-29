@@ -1,28 +1,45 @@
-import { notFound } from 'next/navigation';
-import { isLocale, LOCALES, localePath } from '../../i18n/config.ts';
-import { getMessages } from '../../i18n/messages.ts';
+import { PLACE_SECTIONS, sectionPath } from '../../../shared/routes.ts';
 import { SITE_NAME } from '../../../../seo/types.ts';
-import styles from '../page.module.css';
+import { getMessages } from '../../i18n/messages.ts';
+import { SiteHeader } from '../../components/SiteHeader.tsx';
+import { LinkList, PlaceList } from '../../components/content.tsx';
+import { listCities, listGuides, listPlaces, resolveRoute } from '../../lib/data.ts';
+import styles from './templates.module.css';
 
-/** Portada provisional (Fase 1). Las plantillas reales llegan en la Fase 3. */
+/** Portada: tipos de lugar, últimos lugares, guías y ciudades. */
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  if (!isLocale(locale)) notFound();
+  const { locale } = await resolveRoute(params);
   const t = getMessages(locale);
+  const [places, guides, cities] = await Promise.all([listPlaces(locale, { limit: 6 }), listGuides(locale), listCities(locale)]);
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>{SITE_NAME}</h1>
-      <p className={styles.tagline}>{t.tagline}</p>
-      <p>{t.comingSoon}</p>
-      <nav aria-label={t.chooseLanguage}>
-        <ul className={styles.inline}>
-          {LOCALES.filter((l) => l !== locale).map((l) => (
-            <li key={l}>
-              <a className={styles.language} href={localePath(l, '')} hrefLang={l} lang={l}>{l.toUpperCase()}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </main>
+    <>
+      <SiteHeader locale={locale} />
+      <main id="contenido" className={styles.main}>
+        <h1 className={styles.title}>{SITE_NAME}</h1>
+        <p className={styles.lead}>{t.tagline}</p>
+
+        <section className={styles.section} aria-labelledby="tipos">
+          <h2 id="tipos">{t.explore}</h2>
+          <ul className={styles.tiles}>
+            {PLACE_SECTIONS.map((s) => <li key={s}><a href={sectionPath(locale, s)}>{t.sections[s]}</a></li>)}
+          </ul>
+        </section>
+
+        <section className={styles.section} aria-labelledby="lugares">
+          <h2 id="lugares">{t.sections.lugares}</h2>
+          <PlaceList places={places} locale={locale} />
+        </section>
+
+        <section className={styles.section} aria-labelledby="guias">
+          <h2 id="guias">{t.sections['guias-gastronomicas']}</h2>
+          <LinkList empty={t.empty} items={guides.map((g) => ({ href: sectionPath(locale, 'guias-gastronomicas', g.slug), name: g.name, summary: g.summary }))} />
+        </section>
+
+        <section className={styles.section} aria-labelledby="ciudades">
+          <h2 id="ciudades">{t.sections['ciudades-y-barrios']}</h2>
+          <LinkList empty={t.empty} items={cities.map((c) => ({ href: sectionPath(locale, 'ciudades-y-barrios', c.slug), name: c.name, summary: c.summary }))} />
+        </section>
+      </main>
+    </>
   );
 }

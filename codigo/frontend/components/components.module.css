@@ -1,0 +1,169 @@
+/* Cabecera, navegación, migas y tarjetas. Mobile-first: lo de escritorio va en min-width. */
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+.skip:focus {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  left: var(--space-sm);
+  top: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-sm) var(--gutter);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.languages {
+  display: flex;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.languages a {
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Barra inferior fija: 5 accesos al alcance del pulgar; respeta la zona segura del iPhone. */
+.bottomNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottomNav ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.bottomNav a {
+  display: grid;
+  place-items: center;
+  min-height: var(--bottom-nav);
+  padding: 0 2px;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  text-align: center;
+  text-decoration: none;
+}
+
+.bottomNav a[aria-current='page'] {
+  color: var(--color-accent);
+  font-weight: 700;
+  box-shadow: inset 0 3px 0 var(--color-accent);
+}
+
+.demo {
+  margin: 0;
+  padding: var(--space-sm) var(--gutter);
+  background: #fff3c4;
+  color: #5a4300;
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-sm);
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.breadcrumbs li + li::before {
+  content: '›';
+  margin-right: var(--space-xs);
+}
+
+.breadcrumbs a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  min-width: var(--touch-target);
+}
+
+.cards {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+.card {
+  display: grid;
+  align-content: center;
+  gap: var(--space-sm);
+  min-height: var(--touch-target);
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.cardMeta {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.cardSummary {
+  margin: 0;
+}

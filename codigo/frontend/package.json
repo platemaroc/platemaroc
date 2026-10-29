@@ -4,13 +4,15 @@
   "scripts": {
     "dev": "node scripts/prepare-sw.mjs && next dev",
     "build": "node scripts/prepare-sw.mjs && next build",
-    "start": "next start"
+    "start": "next start",
+    "dev:demo": "node scripts/prepare-sw.mjs && node scripts/dev-demo.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.118.0",
     "next": "16.4.3",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "server-only": "0.0.1"
   }
 }
