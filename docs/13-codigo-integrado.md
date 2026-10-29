@@ -88,4 +88,6 @@ Aplicado el 29-10-2026 a Supabase (proyecto en eu-central-1, Fráncfort), con co
 los tipos de lugar son públicos (5); la auditoría da "permission denied"; un visitante no puede crear regiones ni reseñas (RLS 42501);
 el bucket `fotos` existe y es privado, y un visitante no lista archivos; el registro de `apply.sh` (`platemaroc_meta`) no está expuesto en la API.
 Conexión: `DATABASE_URL` del Session pooler SIN contraseña y `DATABASE_PASSWORD` aparte (la conexión directa solo es IPv6).
-Pendiente: dar el rol de administración a la cuenta del titular (cuando exista el login o creándola desde el panel de Supabase).
+Rol de administración: asignado el 29-10-2026 a la cuenta del titular (creada por él en el panel de Supabase), en `app_metadata.role`,
+con su confirmación y registrado en `audit_log`. Su perfil se creó solo al darse de alta (trigger verificado en la base real).
+Pendiente: comprobar `is_admin()` con una sesión real cuando exista el login (Fase 4).
