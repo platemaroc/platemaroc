@@ -1,5 +1,6 @@
 import type { Locale } from '../../shared/locales.ts';
 import type { PlaceSection } from '../../shared/routes.ts';
+import { CLOSED, DAY_NAMES, isWeekHours, WEEK } from '../../shared/week.ts';
 
 /**
  * Vistas de contenido público para las plantillas. Solo contienen lo publicado en el idioma pedido:
@@ -80,8 +81,12 @@ export interface ContentSource {
   getNeighborhood(locale: Locale, citySlug: string, slug: string): Promise<NeighborhoodDetail | null>;
 }
 
-/** Horario en jsonb (formato libre hasta que el titular lo fije): objeto {día: texto} o lista de textos. */
-export function normalizeOpeningHours(raw: unknown): [string, string][] {
+/**
+ * Horario en jsonb. Formato del panel: {mon: '9:00–13:00', …} → los 7 días con su nombre en el idioma y "Cerrado" si falta.
+ * Se aceptan también formatos antiguos: objeto {texto del día: horas} o lista de textos.
+ */
+export function normalizeOpeningHours(raw: unknown, locale: Locale = 'es'): [string, string][] {
+  if (isWeekHours(raw)) return WEEK.map((d) => [DAY_NAMES[locale][d], raw[d]?.trim() || CLOSED[locale]]);
   if (Array.isArray(raw)) return raw.filter((x) => typeof x === 'string' && x.trim()).map((x) => ['', x as string]);
   if (raw && typeof raw === 'object') {
     return Object.entries(raw as Record<string, unknown>)

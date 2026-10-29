@@ -130,3 +130,21 @@ Verificado: tipos, 33 pruebas unitarias, build, `pages.e2e.cjs` y `auth.e2e.cjs`
 sin redirecciones abiertas; noindex/no-store en zonas privadas; públicas sin cookies; formulario sin revelar cuentas; campos ≥ 48 px).
 Comprobado por el titular el 29-10-2026 con su cuenta real: enlace del email → /auth/callback (307) → /admin (200), es decir, sesión e
 is_admin funcionan de punta a punta. Redirect URLs configuradas en Supabase. El correo de serie de Supabase solo vale para pruebas.
+
+## Fase 4b (30-10-2026): gestión de contenido en el panel
+
+Decisiones del titular: slug fijo al publicar; sharp para las fotos; sus fotos aprobadas si tienen origen, autor, licencia y alt en
+español; horario por días (vacío = cerrado); proyecto Supabase de pruebas para las pruebas automáticas del panel.
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Tipos | `backend/admin-moderation/entities.ts` | Lugares, ciudades, barrios, platos, guías y regiones (solo textos y estado) con sus relaciones |
+| Lógica | `content-admin.ts`, `photos-admin.ts`, `validate.ts` | Siempre con la sesión del titular (RLS); `canTransition` en cada estado; auditoría por campo; sin borrar contenido |
+| Fotos | `images.ts` (sharp 0.35.5) | Formato por contenido, orientación, 1600 px, WebP, sin EXIF/GPS. Vista previa en el panel con enlaces firmados de 10 min |
+| Pantallas | `app/admin/[entity]/…` | Lista con filtros, alta (en borrador), ficha: estado + Quality Gate, datos, textos es/en/fr, relaciones, fotos, mapa estático |
+| Quality Gate | `gate-preview.ts` | Reglas reales de `quality-gate.ts`; lo no comprobado (duplicidad) deja PENDIENTE, nunca APTO |
+| Horario | `shared/week.ts` | {mon..sun}; los días y "Cerrado" se traducen solos en la web |
+
+Verificado: tipos, 43 pruebas unitarias (incl. una foto con GPS que sale sin EXIF), build y ensayo de `apply.sh`.
+Pendiente: `admin.e2e.cjs` (alta con errores, traducción, publicación, slug fijo, foto sin GPS servida por /media, auditoría, usuario sin rol → 404)
+cuando exista el proyecto de pruebas; hasta entonces el panel no se ha probado guardando datos.

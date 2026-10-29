@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   turbopack: { root: repoRoot },
   outputFileTracingRoot: repoRoot,
+  // Fotos del panel: hasta 10 MB por imagen (images.ts) más el margen del formulario. Por defecto Next.js corta en 1 MB.
+  experimental: { serverActions: { bodySizeLimit: '11mb' } },
   async headers() {
     // Las páginas reciben todas las cabeceras (CSP con nonce) en proxy.ts. Aquí solo lo que no pasa por el proxy.
     const base = [

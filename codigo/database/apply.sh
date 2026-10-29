@@ -3,19 +3,18 @@
 # Ejecutar solo con confirmación del titular (maestro §5). Ensayar antes con tests/run.sh.
 # Cada archivo se aplica una sola vez, en su propia transacción, y queda registrado con su huella SHA-256.
 # Si un archivo ya aplicado ha cambiado, se detiene: los cambios posteriores van siempre en un archivo nuevo.
-# Uso: bash codigo/database/apply.sh [--seed] [--dry-run]
+# Uso: bash codigo/database/apply.sh [--seed] [--dry-run] [--env=codigo/frontend/.env.test.local]
 # DATABASE_URL (SECRETA) se lee del entorno o de codigo/frontend/.env.local, y nunca se muestra.
 set -euo pipefail
 PGBIN="${PGBIN:-$(dirname "$(command -v psql || echo /usr/lib/postgresql/16/bin/psql)")}"
 export PATH="$PGBIN:$PATH" PGCLIENTENCODING=UTF8
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
-SEED=0; DRY=0
+SEED=0; DRY=0; ENV_FILE="$HERE/../frontend/.env.local"
 for a in "$@"; do
-  case "$a" in --seed) SEED=1 ;; --dry-run) DRY=1 ;; *) echo "Opción desconocida: $a" >&2; exit 2 ;; esac
+  case "$a" in --seed) SEED=1 ;; --dry-run) DRY=1 ;; --env=*) ENV_FILE="${a#--env=}" ;; *) echo "Opción desconocida: $a" >&2; exit 2 ;; esac
 done
 
-ENV_FILE="$HERE/../frontend/.env.local"
 if [ -z "${DATABASE_URL:-}" ] && [ -f "$ENV_FILE" ]; then
   DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' "$ENV_FILE" | tail -1 | tr -d '\r')"
   DATABASE_PASSWORD="${DATABASE_PASSWORD:-$(sed -n 's/^DATABASE_PASSWORD=//p' "$ENV_FILE" | tail -1 | tr -d '\r')}"

@@ -13,6 +13,8 @@
 
 ## Añadidos al integrar el código (29-10-2026)
 8. Identidad visual (logo y colores): la paleta actual es provisional.
+9. Fotos para platos, guías y ciudades: el Quality Gate (maestro §4.2) las exige, pero `photos` solo admite lugares y reseñas. Sin una migración nueva, esas fichas nunca serán indexables.
+10. Proyecto Supabase de pruebas (`platemaroc-test`): aprobado; lo crea el titular y se rellena `codigo/frontend/.env.test.local`.
 
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
@@ -29,6 +31,7 @@
 - Mapa estático de respaldo: texto y enlaces siempre + imagen opcional subida por la administración (29-10-2026).
 - Datos de demostración solo en desarrollo, con prefijo `demo-` (29-10-2026).
 - Migración 0010 aprobada y aplicada: dirección, indicaciones por idioma e imagen del mapa estático (29-10-2026).
+- Panel 4b: slug fijo al publicar; fotos procesadas con sharp; fotos del titular aprobadas si tienen origen, autor, licencia y alt; horario por días (30-10-2026).
 - Idiomas: es/en/fr.
 - Árabe retirado.
 - Sin RTL.

@@ -18,7 +18,8 @@
     "test": "node --test codigo/testing/*.test.ts",
     "test:db": "bash codigo/database/tests/run.sh",
     "test:e2e": "node codigo/testing/e2e/sw.e2e.cjs && node codigo/testing/e2e/map.e2e.cjs && node codigo/testing/e2e/pages.e2e.cjs && node codigo/testing/e2e/auth.e2e.cjs",
-    "scan:secrets": "node codigo/security/scan-secrets.mjs --git"
+    "scan:secrets": "node codigo/security/scan-secrets.mjs --git",
+    "test:e2e:admin": "node codigo/testing/e2e/admin.e2e.cjs"
   },
   "devDependencies": {
     "@types/node": "26.6.6",

@@ -14,8 +14,11 @@ async function count(table: string, filter?: [string, string]) {
   return error ? null : (n ?? 0);
 }
 
+const CONTENT = [
+  ['lugares', 'Lugares'], ['ciudades', 'Ciudades'], ['barrios', 'Barrios'], ['platos', 'Platos'], ['guias', 'Guías'], ['regiones', 'Regiones'],
+] as const;
+
 const SECTIONS = [
-  { title: 'Lugares, ciudades, platos y guías', block: '4b', text: 'Altas, ediciones, traducciones es/en/fr y estados.' },
   { title: 'Reseñas y fotos', block: '4c', text: 'Moderación (aprobar o rechazar con motivo) y borradores de respuesta.' },
   { title: 'Menús e importación', block: '4d', text: 'Menú digital en MAD e importación de lugares desde CSV.' },
 ];
@@ -38,7 +41,11 @@ export default async function AdminHome() {
           <li key={label}><strong>{n ?? '—'}</strong><span>{label}</span></li>
         ))}
       </ul>
-      <h2 className={styles.subtitle}>Secciones</h2>
+      <h2 className={styles.subtitle}>Contenido</h2>
+      <ul className={styles.sections}>
+        {CONTENT.map(([key, label]) => <li key={key}><a href={`/admin/${key}`}><strong>{label}</strong><span>Altas, edición, textos es/en/fr, fotos y estados</span></a></li>)}
+      </ul>
+      <h2 className={styles.subtitle}>Próximamente</h2>
       <ul className={styles.sections}>
         {SECTIONS.map((s) => (
           <li key={s.title}><strong>{s.title}</strong><span>{s.text}</span><em>Próximamente (bloque {s.block})</em></li>

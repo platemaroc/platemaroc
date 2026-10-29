@@ -157,7 +157,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
         ...summary, content: tr.get(row.id)?.content ?? null, directions: tr.get(row.id)?.directions ?? null,
         lat: row.lat === null ? null : Number(row.lat), lng: row.lng === null ? null : Number(row.lng), address: row.address ?? null,
         staticMapSrc: row.static_map_path ? mediaSrc(row.static_map_path) : null,
-        openingHours: normalizeOpeningHours(row.opening_hours), phone: row.phone ?? null, website: row.website ?? null,
+        openingHours: normalizeOpeningHours(row.opening_hours, locale), phone: row.phone ?? null, website: row.website ?? null,
         dishes: [...dishes.values()], hasMenu: menus.length > 0, photos: pics.get(row.id) ?? [], locales,
       };
     },

@@ -52,6 +52,13 @@ test('datos demo: todo lleva el prefijo demo- y una ficha sin francés no existe
   assert.ok(menu!.categories[0].items.some((i) => i.priceMad === null), 'el menú demo incluye un precio pendiente');
 });
 
+test('horario: formato por días del panel, con nombres traducidos y Cerrado si falta', () => {
+  const week = normalizeOpeningHours({ mon: '9:00–13:00', sat: '' }, 'fr');
+  assert.equal(week.length, 7);
+  assert.deepEqual(week[0], ['Lundi', '9:00–13:00']);
+  assert.deepEqual(week[5], ['Samedi', 'Fermé']);
+});
+
 test('horario: acepta objeto {día: texto} o lista, e ignora valores vacíos', () => {
   assert.deepEqual(normalizeOpeningHours({ lunes: '9-13', martes: '' }), [['lunes', '9-13']]);
   assert.deepEqual(normalizeOpeningHours(['Todos los días 9-20', 3]), [['', 'Todos los días 9-20']]);
