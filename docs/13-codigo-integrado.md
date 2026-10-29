@@ -83,5 +83,9 @@ El titular aprueba el modelo de datos v2 (favoritos fuera del MVP; relación gu�
 | Aplicación | `codigo/database/apply.sh` | Cada archivo una vez, en su transacción, registrado con SHA-256 en `platemaroc_meta.applied_files`; se detiene si un archivo aplicado cambia; `--dry-run` y `--seed`. `DATABASE_URL` en `.env.local` |
 | Pruebas | `codigo/database/tests/` | 27 pruebas de humo y ensayo completo de `apply.sh` (A1-A5) en PostgreSQL 16.15 con `auth` simulado |
 
-Pendiente (necesita al titular): crear el proyecto Supabase, rellenar claves y `DATABASE_URL`, aplicar con su confirmación, probar
-allí Storage y RLS reales, y dar el rol de administración a su cuenta.
+Aplicado el 29-10-2026 a Supabase (proyecto en eu-central-1, Fráncfort), con confirmación del titular: 12 archivos (9 migraciones,
+2 de RLS y 1 de datos de referencia). Verificado por la API real: un visitante no ve las regiones en borrador (0) y el servidor sí (12);
+los tipos de lugar son públicos (5); la auditoría da "permission denied"; un visitante no puede crear regiones ni reseñas (RLS 42501);
+el bucket `fotos` existe y es privado, y un visitante no lista archivos; el registro de `apply.sh` (`platemaroc_meta`) no está expuesto en la API.
+Conexión: `DATABASE_URL` del Session pooler SIN contraseña y `DATABASE_PASSWORD` aparte (la conexión directa solo es IPv6).
+Pendiente: dar el rol de administración a la cuenta del titular (cuando exista el login o creándola desde el panel de Supabase).

@@ -15,10 +15,15 @@ for a in "$@"; do
   case "$a" in --seed) SEED=1 ;; --dry-run) DRY=1 ;; *) echo "Opción desconocida: $a" >&2; exit 2 ;; esac
 done
 
-if [ -z "${DATABASE_URL:-}" ] && [ -f "$HERE/../frontend/.env.local" ]; then
-  DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' "$HERE/../frontend/.env.local" | tail -1 | tr -d '\r')"
+ENV_FILE="$HERE/../frontend/.env.local"
+if [ -z "${DATABASE_URL:-}" ] && [ -f "$ENV_FILE" ]; then
+  DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' "$ENV_FILE" | tail -1 | tr -d '\r')"
+  DATABASE_PASSWORD="${DATABASE_PASSWORD:-$(sed -n 's/^DATABASE_PASSWORD=//p' "$ENV_FILE" | tail -1 | tr -d '\r')}"
 fi
 [ -n "${DATABASE_URL:-}" ] || { echo "Falta DATABASE_URL (ver config/env-templates/.env.example)" >&2; exit 2; }
+case "$DATABASE_URL" in *YOUR-PASSWORD*) echo "DATABASE_URL aún contiene [YOUR-PASSWORD]: quítalo y pon la contraseña en DATABASE_PASSWORD" >&2; exit 2 ;; esac
+# La contraseña va aparte (PGPASSWORD): así no hay que codificar símbolos como @ o # dentro de la URL.
+[ -n "${DATABASE_PASSWORD:-}" ] && export PGPASSWORD="$DATABASE_PASSWORD"
 P=(psql -X -q -v ON_ERROR_STOP=1 -d "$DATABASE_URL")
 
 FILES=("$HERE"/migrations/propuesta-v2/*.sql "$HERE"/policies-rls/*.sql)
