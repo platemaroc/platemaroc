@@ -128,4 +128,5 @@ Decisiones del titular: acceso por enlace o código al email (sin contraseña); 
 
 Verificado: tipos, 33 pruebas unitarias, build, `pages.e2e.cjs` y `auth.e2e.cjs` (sin sesión no se entra; cookie falsa rechazada; callback
 sin redirecciones abiertas; noindex/no-store en zonas privadas; públicas sin cookies; formulario sin revelar cuentas; campos ≥ 48 px).
-Pendiente de comprobar por el titular: entrar con su email de verdad y ver el panel (necesita las Redirect URLs en Supabase).
+Comprobado por el titular el 29-10-2026 con su cuenta real: enlace del email → /auth/callback (307) → /admin (200), es decir, sesión e
+is_admin funcionan de punta a punta. Redirect URLs configuradas en Supabase. El correo de serie de Supabase solo vale para pruebas.
