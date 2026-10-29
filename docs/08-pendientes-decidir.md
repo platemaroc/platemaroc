@@ -16,13 +16,16 @@
 9. Rutas reales de fichas, menús y guías para el Service Worker.
 
 ## Añadidos al revisar RLS (29-10-2026)
-10. Si un usuario puede borrar su propia reseña (el borrador RLS lo permite mientras no se decida).
-11. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
+10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
+
+(Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
 ## Ya decidido
 - Precios exclusivamente en MAD, sin conversiones (29-10-2026).
 - Mapa con carga diferida; IndexedDB máx. 20 con LRU; cachés versionadas (29-10-2026).
 - Enlace `https` de respaldo para iOS además de `geo:` (29-10-2026).
+- Modelo de datos v2 aprobado; favoritos fuera del MVP; relación guía–barrio; datos de referencia en borrador (29-10-2026).
+- Backend separado en el código, mismo proceso que la web; estilos con CSS Modules (29-10-2026).
 - Idiomas: es/en/fr.
 - Árabe retirado.
 - Sin RTL.

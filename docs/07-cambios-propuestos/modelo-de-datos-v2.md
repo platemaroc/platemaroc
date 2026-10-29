@@ -1,6 +1,6 @@
-# Modelo de datos v2 — propuesta
+# Modelo de datos v2
 
-**Estado:** propuesta; no sustituye el modelo aprobado hasta decisión del titular.
+**Estado:** APROBADO por el titular el 29-10-2026. Añadidos en la aprobación: relación guía–barrio, perfil automático al registrarse, integridad de traducciones y fechas en el menú. Favoritos: fuera del MVP.
 
 ## Idiomas
 `es`, `en`, `fr` exclusivamente.

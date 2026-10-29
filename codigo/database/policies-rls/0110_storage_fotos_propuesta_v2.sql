@@ -1,4 +1,4 @@
--- BORRADOR (propuesta v2, 29-10-2026). NO APLICAR hasta aprobar el modelo y validar contra el esquema real.
+-- Modelo v2 APROBADO por el titular el 29-10-2026. Se aplica con apply.sh y solo con su confirmación.
 -- Storage de Supabase para las fotos. Nombre del bucket ('fotos') propuesto: lo confirma el titular.
 -- Bucket PRIVADO: una foto pendiente o rechazada no tiene URL pública. Solo se lee si su fila en photos es visible
 -- (las políticas de 0100 se aplican también aquí, porque la consulta a photos se hace con los permisos de quien lee).

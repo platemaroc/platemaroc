@@ -71,3 +71,17 @@ Decisiones del titular: backend separado en el código (`codigo/backend/`) pero 
 Verificado el 29-10-2026: tipos, 24 pruebas unitarias, build de producción, E2E (Service Worker y mapa) en Chromium, y en el navegador
 `/`, `/es`, `/en`, `/fr` (lang correcto, nonce en todos los scripts, sin errores de CSP en consola, enlaces de 48 px, sin scroll horizontal
 a 375 px) en modo producción y desarrollo. Pendiente: favicon e iconos (`/favicon.ico` da 404) y rutas reales (`docs/08`, punto 9).
+
+## Fase 2 (29-10-2026)
+
+El titular aprueba el modelo de datos v2 (favoritos fuera del MVP; relación guía–barrio; datos de referencia en borrador).
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Huecos cubiertos | `0003`, `0006`, `0009`, `0100` | `guide_neighborhoods` (+ RLS en cascada); perfil automático al registrarse (`on_auth_user_created`); las traducciones y traducciones de menú comprueban que su destino existe; fechas en categorías, artículos y traducciones del menú |
+| Datos de referencia | `codigo/database/seeders/0001_referencia.sql` | 5 tipos de lugar, 12 regiones (decreto 2-15-40 de 2015) y Tánger, todo en borrador y sin coordenadas |
+| Aplicación | `codigo/database/apply.sh` | Cada archivo una vez, en su transacción, registrado con SHA-256 en `platemaroc_meta.applied_files`; se detiene si un archivo aplicado cambia; `--dry-run` y `--seed`. `DATABASE_URL` en `.env.local` |
+| Pruebas | `codigo/database/tests/` | 27 pruebas de humo y ensayo completo de `apply.sh` (A1-A5) en PostgreSQL 16.15 con `auth` simulado |
+
+Pendiente (necesita al titular): crear el proyecto Supabase, rellenar claves y `DATABASE_URL`, aplicar con su confirmación, probar
+allí Storage y RLS reales, y dar el rol de administración a su cuenta.

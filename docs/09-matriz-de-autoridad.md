@@ -12,7 +12,7 @@
 | Notificaciones | Maestro | MVP email + panel |
 | Backups | Maestro + `copias-de-seguridad.md` | Sin secretos |
 | Producto/fases | Maestro + `decisiones-v2.md` | El titular decide cambios |
-| Modelo BD | `modelo-de-datos-v2.md` | Propuesta hasta aprobación |
+| Modelo BD | `modelo-de-datos-v2.md` | Aprobado el 29-10-2026; cambios con aprobación del titular |
 | Reseñas | `moderar-resenas.md` + órdenes originales disponibles | Aplicar reglas de moderación vigentes |
 | Fotos | `moderar-fotos.md` | Derechos y alt localizado |
 | Menú | `gestionar-menu-digital.md` + `moderar-menu.md` | No inventar precios/disponibilidad |

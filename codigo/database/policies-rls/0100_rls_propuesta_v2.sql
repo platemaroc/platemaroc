@@ -1,4 +1,4 @@
--- BORRADOR (propuesta v2, 29-10-2026). NO APLICAR hasta aprobar el modelo y validar contra el esquema real.
+-- Modelo v2 APROBADO por el titular el 29-10-2026. Se aplica con apply.sh y solo con su confirmación.
 -- Supone Supabase: roles anon/authenticated/service_role, auth.uid() y auth.jwt().
 -- El rol de administración se lee de app_metadata (NO de user_metadata, que edita el propio usuario).
 -- service_role se salta RLS y solo se usa en backend/scripts seguros, nunca en el navegador.
@@ -22,11 +22,14 @@ $$;
 create function city_is_public(p_id uuid) returns boolean language sql stable set search_path = '' as $$
   select exists (select 1 from public.cities where id = p_id and status = 'publicado')
 $$;
+create function neighborhood_is_public(p_id uuid) returns boolean language sql stable set search_path = '' as $$
+  select exists (select 1 from public.neighborhoods where id = p_id and status = 'publicado')
+$$;
 create function entity_is_public(p_type public.translatable_entity, p_id uuid) returns boolean language sql stable set search_path = '' as $$
   select case p_type
     when 'region'       then exists (select 1 from public.regions where id = p_id and status = 'publicado')
     when 'city'         then public.city_is_public(p_id)
-    when 'neighborhood' then exists (select 1 from public.neighborhoods where id = p_id and status = 'publicado')
+    when 'neighborhood' then public.neighborhood_is_public(p_id)
     when 'place'        then public.place_is_public(p_id)
     when 'dish'         then public.dish_is_public(p_id)
     when 'guide'        then public.guide_is_public(p_id)
@@ -54,7 +57,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['regions','cities','neighborhoods','place_types','specialties','places','dishes','guides',
-    'place_specialties','place_dishes','guide_places','guide_dishes','guide_cities','translations','profiles','reviews',
+    'place_specialties','place_dishes','guide_places','guide_dishes','guide_cities','guide_neighborhoods','translations','profiles','reviews',
     'review_replies','photos','photo_translations','menus','menu_categories','menu_items','menu_translations',
     'reservations','reservation_slots','business_claims','audit_log','redirects','consents'] loop
     execute format('alter table %I enable row level security', t);
@@ -75,6 +78,7 @@ create policy public_read on place_dishes  for select using (place_is_public(pla
 create policy public_read on guide_places  for select using (guide_is_public(guide_id) and place_is_public(place_id));
 create policy public_read on guide_dishes  for select using (guide_is_public(guide_id) and dish_is_public(dish_id));
 create policy public_read on guide_cities  for select using (guide_is_public(guide_id) and city_is_public(city_id));
+create policy public_read on guide_neighborhoods for select using (guide_is_public(guide_id) and neighborhood_is_public(neighborhood_id));
 create policy public_read on translations for select using (status = 'publicada' and entity_is_public(entity_type, entity_id));
 create policy public_read on reviews       for select using (status = 'aprobada' and place_is_public(place_id));
 create policy public_read on review_replies for select using (status = 'publicada' and review_is_public(review_id));
@@ -98,7 +102,7 @@ create policy own_read   on reviews for select to authenticated using (user_id =
 create policy own_insert on reviews for insert to authenticated with check (user_id = auth.uid() and status = 'pendiente' and place_is_public(place_id));
 -- Editar una reseña la devuelve a moderación.
 create policy own_update on reviews for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid() and status = 'pendiente' and place_is_public(place_id));
--- PENDIENTE DEL TITULAR: ¿puede el usuario borrar su propia reseña? Se mantiene mientras no decida.
+-- El usuario puede borrar su propia reseña (docs/modelo-de-datos.md).
 create policy own_delete on reviews for delete to authenticated using (user_id = auth.uid());
 
 create policy own_read   on photos for select to authenticated using (user_id = auth.uid());
@@ -121,7 +125,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['regions','cities','neighborhoods','place_types','specialties','places','dishes','guides',
-    'place_specialties','place_dishes','guide_places','guide_dishes','guide_cities','translations','profiles','reviews',
+    'place_specialties','place_dishes','guide_places','guide_dishes','guide_cities','guide_neighborhoods','translations','profiles','reviews',
     'review_replies','photos','photo_translations','menus','menu_categories','menu_items','menu_translations',
     'reservations','reservation_slots','business_claims','redirects','consents'] loop
     execute format('create policy admin_all on %I for all to authenticated using (is_admin()) with check (is_admin())', t);

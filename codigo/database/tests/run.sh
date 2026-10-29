@@ -21,3 +21,19 @@ $P -d t -c "grant usage on schema public, auth to anon, authenticated" \
   -c "revoke all on audit_log from anon, authenticated" -c "grant select on audit_log to authenticated"
 echo "Migraciones y RLS aplicados en BD temporal. Resultado de las pruebas de humo (cada ERROR marcado como esperado es correcto):"
 $P -d t -f "$HERE/tests/rls-smoke.sql" 2>&1 | grep -vE "^\(|^-+$|^$|rows?\)" | cut -c1-170
+
+echo "Ensayo de apply.sh en otra BD temporal (como se aplicará a Supabase):"
+$P -d postgres -c "create database a"
+$P -v ON_ERROR_STOP=1 -d a -f "$HERE/tests/stub-supabase.sql"
+export DATABASE_URL="postgresql://postgres@127.0.0.1:$PORT/a"
+echo "--- A1. primera vez: 12 aplicado(s) (9 migraciones, 2 de RLS y 1 de datos de referencia)"; bash "$HERE/apply.sh" --seed | tail -1
+echo "--- A2. segunda vez: Nada pendiente"; bash "$HERE/apply.sh" --seed | tail -1
+echo "--- A3. datos de referencia: esperado 5 tipos, 12 regiones, 1 ciudad, todo en borrador"
+$P -d a -At -c "select (select count(*) from place_types) || ' tipos, ' || (select count(*) from regions) || ' regiones, ' || (select count(*) from cities) || ' ciudad, publicados: ' || (select count(*) from regions where status <> 'borrador') + (select count(*) from cities where status <> 'borrador')"
+echo "--- A4. un archivo ya aplicado que cambia: ERROR esperado"
+$P -d a -c "update platemaroc_meta.applied_files set sha256 = 'x' where file like '%0001_tipos.sql'"
+bash "$HERE/apply.sh" --seed 2>&1 | tail -1 || true
+echo "--- A5. simulación en BD vacía: lista pendientes y no aplica nada"
+$P -d postgres -c "create database b"
+DATABASE_URL="postgresql://postgres@127.0.0.1:$PORT/b" bash "$HERE/apply.sh" --dry-run | tail -1
+$P -d b -At -c "select 'tablas creadas en b: ' || count(*) from information_schema.tables where table_schema = 'public'"

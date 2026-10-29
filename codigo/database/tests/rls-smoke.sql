@@ -7,7 +7,7 @@ insert into place_types(slug) values('restaurante');
 insert into places(slug,city_id,place_type_id,status) select 'demo-a',c.id,t.id,'publicado' from cities c, place_types t;
 insert into places(slug,city_id,place_type_id,status) select 'demo-borrador',c.id,t.id,'borrador' from cities c, place_types t;
 insert into auth.users(id) values ('11111111-1111-1111-1111-111111111111'),('22222222-2222-2222-2222-222222222222');
-insert into profiles(id,display_name) select id,'u' from auth.users;
+update profiles set display_name='u';   -- los perfiles los crea el trigger on_auth_user_created
 insert into reviews(user_id,place_id,rating,status) select '11111111-1111-1111-1111-111111111111',id,5,'aprobada' from places where slug='demo-a';
 insert into menus(place_id,status) select id,'publicado' from places where slug='demo-a';
 insert into menu_categories(menu_id,status) select id,'publicado' from menus;
@@ -33,7 +33,7 @@ update reviews set status='rechazada' where status='pendiente';
 insert into menu_items(category_id,price_status) select id,'verificado' from menu_categories;
 insert into menu_items(category_id) select id from menu_categories;
 \echo '--- 10. indexable sin publicar: ERROR esperado'
-insert into translations(entity_type,entity_id,locale,is_indexable) values('place',gen_random_uuid(),'es',true);
+insert into translations(entity_type,entity_id,locale,is_indexable) select 'place',id,'es',true from places where slug='demo-a';
 \echo '--- 11. idioma ar: ERROR esperado'
 insert into translations(entity_type,entity_id,locale) values('place',gen_random_uuid(),'ar');
 \echo '--- 12. audit_log inmutable: ERROR esperado en update'
@@ -71,3 +71,22 @@ where n.nspname='public' and p.prokind='f' and not coalesce(p.proconfig @> array
 set role authenticated; set request.jwt.claim.sub='22222222-2222-2222-2222-222222222222'; set request.jwt.claims='';
 select count(*) as usuario from audit_log;
 set request.jwt.claims='{"app_metadata":{"role":"admin"}}'; select count(*) as admin from audit_log; reset role;
+-- ---- Huecos del modelo cubiertos el 29-10-2026 (perfil automático, integridad de traducciones, guía-barrio, fechas del menú)
+reset role; set request.jwt.claims = ''; set request.jwt.claim.sub = '';
+\echo '--- 23. alta en auth.users crea su perfil: esperado 1'
+insert into auth.users(id) values ('33333333-3333-3333-3333-333333333333');
+select count(*) from profiles where id='33333333-3333-3333-3333-333333333333';
+\echo '--- 24. traducción de una entidad que no existe: ERROR esperado'
+insert into translations(entity_type,entity_id,locale) values('place',gen_random_uuid(),'fr');
+\echo '--- 25. traducción de menú con destino inexistente: ERROR esperado'
+insert into menu_translations(target_type,target_id,locale) values('item',gen_random_uuid(),'es');
+insert into neighborhoods(city_id,slug,status) select id,'demo-medina','borrador' from cities where slug='tanger';
+insert into guides(slug,status) values('demo-guia','publicado');
+insert into guide_neighborhoods select g.id,n.id from guides g, neighborhoods n where g.slug='demo-guia' and n.slug='demo-medina';
+\echo '--- 26. anon: guía publicada con barrio en borrador no expone la relación: esperado 0; tras publicar el barrio: 1'
+set role anon; select count(*) as borrador from guide_neighborhoods; reset role;
+update neighborhoods set status='publicado' where slug='demo-medina';
+set role anon; select count(*) as publicado from guide_neighborhoods; reset role;
+\echo '--- 27. editar un artículo de menú actualiza updated_at: esperado t'
+update menu_items set position=1;
+select bool_and(updated_at > created_at) from menu_items;
