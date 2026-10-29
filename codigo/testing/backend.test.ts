@@ -4,7 +4,8 @@ import assert from 'node:assert/strict';
 import { canTransition } from '../shared/states.ts';
 import { summarizeApproved } from '../backend/reviews/rating.ts';
 import { supabasePublicConfig, supabaseServiceRoleKey } from '../backend/supabase/env.ts';
-import { buildAuditEntry } from '../backend/admin-moderation/audit.ts';
+import { safeNextPath, toSessionUser } from '../backend/auth/session.ts';
+import { buildAuditEntry, panelAudit } from '../backend/admin-moderation/audit.ts';
 import { suggestLocale } from '../frontend/i18n/negotiate.ts';
 import { splitLocale } from '../frontend/i18n/config.ts';
 import { securityHeaders, buildCsp } from '../security/headers.ts';
@@ -59,4 +60,26 @@ test('Supabase: sin variables no hay configuración; la URL debe ser https', () 
   assert.deepEqual(supabasePublicConfig({ NEXT_PUBLIC_SUPABASE_URL: 'https://x.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'k' }), { url: 'https://x.supabase.co', anonKey: 'k' });
   assert.throws(() => supabasePublicConfig({ NEXT_PUBLIC_SUPABASE_URL: 'http://x.supabase.co', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'k' }));
   assert.equal(supabaseServiceRoleKey({}), null);
+});
+
+test('sesión: el rol de administración solo sale de app_metadata, nunca de user_metadata', () => {
+  assert.equal(toSessionUser({ id: 'u', app_metadata: { role: 'admin' } })?.isAdmin, true);
+  assert.equal(toSessionUser({ id: 'u', app_metadata: {}, user_metadata: { role: 'admin' } } as never)?.isAdmin, false);
+  assert.equal(toSessionUser(null), null);
+});
+
+test('destino tras entrar: solo rutas internas (sin redirecciones abiertas)', () => {
+  assert.equal(safeNextPath('/admin?x=1'), '/admin?x=1');
+  for (const bad of ['//evil.com', 'https://evil.com', '/\evil.com', 'admin', '', null, '/%5Cevil.com']) {
+    const out = safeNextPath(bad);
+    assert.ok(out.startsWith('/') && !out.startsWith('//') && !out.includes('evil.com/'), `${String(bad)} → ${out}`);
+  }
+  assert.equal(safeNextPath('//evil.com'), '/');
+});
+
+test('auditoría del panel: actor, origen panel y aprobación con fecha', () => {
+  const e = buildAuditEntry(panelAudit('titular@example.com', { entidad_tipo: 'place', entidad_id: 'p1', accion: 'publicar' }), 'id1');
+  assert.equal(e.origen, 'panel');
+  assert.equal(e.actor, 'titular@example.com');
+  assert.ok(e.aprobado_por && e.fecha_aprobacion);
 });

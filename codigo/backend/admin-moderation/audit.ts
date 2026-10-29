@@ -26,3 +26,8 @@ export function buildAuditEntry(i: AuditInput, id: string, now = new Date()): Au
     motivo: i.motivo ?? null, aprobado_por: i.aprobado_por ?? null, fecha_aprobacion: i.fecha_aprobacion ?? null,
   };
 }
+
+/** Entrada típica del panel: actor = email del administrador, origen = panel, aprobado por él mismo en ese momento. */
+export function panelAudit(adminEmail: string, input: Omit<AuditInput, 'actor' | 'origen'>): AuditInput {
+  return { actor: adminEmail, origen: 'panel', aprobado_por: input.aprobado_por ?? adminEmail, fecha_aprobacion: input.fecha_aprobacion ?? new Date().toISOString(), ...input };
+}

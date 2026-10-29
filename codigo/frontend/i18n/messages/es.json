@@ -55,5 +55,19 @@
   "demoNotice": "Datos de demostración: no son lugares reales.",
   "location": "Ubicación",
   "explore": "Explora por tipo de lugar",
-  "breadcrumb": "Ruta de navegación"
+  "breadcrumb": "Ruta de navegación",
+  "auth": {
+    "title": "Entrar",
+    "emailLabel": "Tu email",
+    "send": "Enviarme el enlace",
+    "sent": "Si ese email tiene cuenta, te hemos enviado un enlace para entrar. Mira también en spam.",
+    "codeLabel": "Si el email trae un código, escríbelo aquí",
+    "verify": "Entrar con el código",
+    "invalidEmail": "Escribe un email válido.",
+    "invalidCode": "El código no es válido o ha caducado.",
+    "linkError": "El enlace no es válido o ha caducado. Pide uno nuevo.",
+    "rateLimited": "Has pedido demasiados enlaces. Espera unos minutos.",
+    "signOut": "Salir",
+    "notConfigured": "El acceso todavía no está configurado."
+  }
 }

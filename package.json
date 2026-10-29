@@ -17,7 +17,7 @@
     "typecheck": "tsc -p tsconfig.json && tsc -p codigo/frontend/tsconfig.json",
     "test": "node --test codigo/testing/*.test.ts",
     "test:db": "bash codigo/database/tests/run.sh",
-    "test:e2e": "node codigo/testing/e2e/sw.e2e.cjs && node codigo/testing/e2e/map.e2e.cjs && node codigo/testing/e2e/pages.e2e.cjs",
+    "test:e2e": "node codigo/testing/e2e/sw.e2e.cjs && node codigo/testing/e2e/map.e2e.cjs && node codigo/testing/e2e/pages.e2e.cjs && node codigo/testing/e2e/auth.e2e.cjs",
     "scan:secrets": "node codigo/security/scan-secrets.mjs --git"
   },
   "devDependencies": {

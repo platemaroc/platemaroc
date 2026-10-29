@@ -114,3 +114,18 @@ imágenes, selector de idioma, mapa idle → fallback sin SDK y CLS 0, aviso off
 borradores en 404, sin errores, scripts con nonce, Service Worker activo).
 No probado: con contenido publicado real, con la clave de Google Maps, en Safari/iOS ni con red lenta real.
 Pendiente: revisión nativa de los textos en/fr y de los segmentos de URL (`revisar-traducciones`); favicon e iconos; metadatos SEO (Fase 5).
+
+## Fase 4a (29-10-2026): acceso y armazón del panel
+
+Decisiones del titular: acceso por enlace o código al email (sin contraseña); Google más tarde; CSV UTF-8 para importar; fotos de reseñas limpiadas (máx. 3).
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Sesión | `codigo/frontend/proxy.ts`, `lib/supabase-server.ts` | Renovada solo en `/admin` y `/auth` (las páginas públicas no consultan la sesión ni crean cookies); allí `no-store` y `X-Robots-Tag: noindex` |
+| Acceso | `app/auth/` | `/auth/entrar` (es/en/fr), `/auth/callback` (PKCE o token_hash), salir. Mismo mensaje exista o no la cuenta; solo rutas internas tras entrar |
+| Panel | `app/admin/`, `lib/admin.ts` | `requireAdmin()` en el layout y en cada acción: sin sesión → entrar; sin rol → 404. Inicio con lo pendiente de decisión, con la sesión del titular (RLS) |
+| Auditoría | `backend/admin-moderation/audit-writer.ts` | `recordAudit` (service_role solo para audit_log) y `panelAudit`; se usará en cada acción desde 4b |
+
+Verificado: tipos, 33 pruebas unitarias, build, `pages.e2e.cjs` y `auth.e2e.cjs` (sin sesión no se entra; cookie falsa rechazada; callback
+sin redirecciones abiertas; noindex/no-store en zonas privadas; públicas sin cookies; formulario sin revelar cuentas; campos ≥ 48 px).
+Pendiente de comprobar por el titular: entrar con su email de verdad y ver el panel (necesita las Redirect URLs en Supabase).
