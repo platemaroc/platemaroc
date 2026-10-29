@@ -40,7 +40,7 @@ const get = (p, init = {}) => fetch(BASE + p, { redirect: 'manual', ...init });
     assert.equal(new URL(r.headers.get('location'), BASE).pathname + new URL(r.headers.get('location'), BASE).search, '/auth/entrar?next=%2Fadmin');
     console.log('sin sesión: /admin → /auth/entrar?next=/admin');
 
-    r = await get('/admin', { headers: { cookie: 'sb-wcfltbfraxyvduulxjxg-auth-token=base64-eyJmYWxzbyI6dHJ1ZX0' } });
+    r = await get('/admin', { headers: { cookie: 'sb-wcfltbfraxyvduulxjxg-auth-token=base64-eyJmYWxzbyI6dHJ1ZX0' } }); // scan-secrets-ignore: cookie inventada para la prueba (base64 de {"falso":true})
     assert.equal(r.status, 307, 'una cookie inventada no abre el panel');
     console.log('cookie falsa: rechazada');
 
