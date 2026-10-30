@@ -10,6 +10,7 @@ import { publishMenu, saveCategory, saveItem, setItemHidden, unpublishMenu } fro
 import { MAX_BYTES, type ImportReport } from '../../../backend/admin-moderation/csv-import.ts';
 import { previewImport, runImport } from '../../../backend/admin-moderation/import-admin.ts';
 import { recomputeIndexable } from '../../../backend/admin-moderation/indexing.ts';
+import { clearContentCache } from '../../../backend/content/cache.ts';
 import { requireAdmin } from '../../lib/admin.ts';
 import { supabaseForRequest } from '../../lib/supabase-server.ts';
 
@@ -21,6 +22,7 @@ const UUID = /^[0-9a-f-]{36}$/;
 /** Tras un cambio guardado. Si falla no deshace el cambio: se avisa en el registro y se puede repetir en /admin/indexacion. */
 async function refreshIndexable(email: string) {
   try { await recomputeIndexable(await supabaseForRequest(), email); } catch (e) { console.error('[indexable]', e); }
+  clearContentCache();
 }
 
 /**
@@ -202,6 +204,7 @@ export async function confirmImport(_prev: ImportState, form: FormData): Promise
   try {
     const { created, report } = await runImport(await supabaseForRequest(), csv, user.email ?? user.id);
     if (report.fatal) return { error: report.fatal };
+    clearContentCache();
     revalidatePath('/admin/lugares');
     return { created, report };
   } catch (e) {
@@ -216,6 +219,7 @@ export async function recalculate(_prev: FormState, _form: FormData): Promise<Fo
   const user = await requireAdmin('/admin/indexacion');
   try {
     const r = await recomputeIndexable(await supabaseForRequest(), user.email ?? user.id);
+    clearContentCache();
     revalidatePath('/admin/indexacion');
     return { ok: true, message: `${r.evaluated} textos evaluados, ${r.indexable} indexables, ${r.changed} cambios, ${r.duplicates} con texto muy parecido a otro.` };
   } catch (e) {

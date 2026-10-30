@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { securityHeaders } from '../security/headers.ts';
-import { supabasePublicConfig } from '../backend/supabase/env.ts';
+import { SESSION_COOKIE, supabasePublicConfig } from '../backend/supabase/env.ts';
 import { splitLocale } from './i18n/config.ts';
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
@@ -18,6 +18,7 @@ async function refreshSession(request: NextRequest) {
   const cacheHeaders: Record<string, string> = {};
   if (!config) return { user: null, pending, cacheHeaders };
   const supabase = createServerClient(config.url, config.anonKey, {
+    cookieOptions: SESSION_COOKIE,
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (list, headers) => {

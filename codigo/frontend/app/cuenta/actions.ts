@@ -2,6 +2,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { allow, LIMITS } from '../../../backend/auth/rate-limit.ts';
+import { clearContentCache } from '../../../backend/content/cache.ts';
 import { isPlaceSection, sectionPath, type PlaceSection } from '../../../shared/routes.ts';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '../../i18n/config.ts';
 import { getMessages } from '../../i18n/messages.ts';
@@ -50,6 +51,7 @@ export async function sendReview(_prev: UserFormState, form: FormData): Promise<
     console.error('[reseña]', e);
     return { error: t.err.generic };
   }
+  clearContentCache();
   revalidatePath('/cuenta');
   revalidatePath(sectionPath(l, section as PlaceSection, slug));
   return { ok: true, message: t.sent };
@@ -59,6 +61,7 @@ export async function removeReview(form: FormData): Promise<void> {
   const user = await requireUser('/cuenta');
   const id = String(form.get('id') ?? '');
   if (/^[0-9a-f-]{36}$/.test(id)) await deleteOwnReview(await supabaseForRequest(), user.id, id);
+  clearContentCache();
   revalidatePath('/cuenta');
 }
 
@@ -71,5 +74,6 @@ export async function removeAccount(_prev: UserFormState, form: FormData): Promi
   const db = await supabaseForRequest();
   if (!(await deleteAccount(db, user))) return { error: getMessages(locale(form)).form.err.generic };
   await db.auth.signOut();
+  clearContentCache();
   redirect(`/${locale(form)}`);
 }

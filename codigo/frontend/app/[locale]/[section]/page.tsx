@@ -27,19 +27,19 @@ export default async function Listing({ params }: { params: Params }) {
 
   let body;
   if (isPlaceSection(section)) {
-    body = <PlaceList places={await listPlaces(locale, { section })} locale={locale} />;
+    body = <PlaceList heading="h2" places={await listPlaces(locale, { section })} locale={locale} />;
   } else if (section === 'lugares') {
     body = (
       <>
         <ul className={styles.tiles}>
           {PLACE_SECTIONS.map((p) => <li key={p}><a href={sectionPath(locale, p)}>{t.sections[p]}</a></li>)}
         </ul>
-        <div className={styles.section}><PlaceList places={await listPlaces(locale)} locale={locale} /></div>
+        <div className={styles.section}><PlaceList heading="h2" places={await listPlaces(locale)} locale={locale} /></div>
       </>
     );
   } else {
     const items = section === 'platos-tipicos' ? await listDishes(locale) : section === 'guias-gastronomicas' ? await listGuides(locale) : await listCities(locale);
-    body = <LinkList empty={t.empty} items={items.map((x) => ({ href: sectionPath(locale, section, x.slug), name: x.name, summary: x.summary }))} />;
+    body = <LinkList heading="h2" empty={t.empty} items={items.map((x) => ({ href: sectionPath(locale, section, x.slug), name: x.name, summary: x.summary }))} />;
   }
 
   return (

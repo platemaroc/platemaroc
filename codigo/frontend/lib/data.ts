@@ -1,26 +1,31 @@
 import 'server-only';
-import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import { contentSource } from '../../backend/content/index.ts';
+import { cached } from '../../backend/content/cache.ts';
 import { isLocale, type Locale } from '../i18n/config.ts';
 import { LOCALES } from '../../shared/locales.ts';
 import { isPlaceSection, sectionFromSegment, type Section } from '../../shared/routes.ts';
 
-/** Datos públicos, una sola consulta por petición aunque los pidan generateMetadata y la página (React cache). */
-const source = cache(() => contentSource());
+/** Datos públicos con caché de 60 s (backend/content/cache.ts). Solo contenido público: nunca datos de un usuario. */
+type Source = ReturnType<typeof contentSource>;
+const source = () => contentSource();
+const mem = <K extends keyof Source>(name: K) => ((...args: unknown[]) => (
+  source().isDemo ? (source()[name] as any)(...args) : cached(`${String(name)}:${JSON.stringify(args)}`, () => (source()[name] as any)(...args))
+)) as Source[K];
+
 export const isDemo = () => source().isDemo;
-export const listPlaces = cache((...a: Parameters<ReturnType<typeof contentSource>['listPlaces']>) => source().listPlaces(...a));
-export const getPlace = cache((...a: Parameters<ReturnType<typeof contentSource>['getPlace']>) => source().getPlace(...a));
-export const getMenu = cache((...a: Parameters<ReturnType<typeof contentSource>['getMenu']>) => source().getMenu(...a));
-export const listDishes = cache((l: Locale) => source().listDishes(l));
-export const getDish = cache((l: Locale, slug: string) => source().getDish(l, slug));
-export const listGuides = cache((l: Locale) => source().listGuides(l));
-export const getGuide = cache((l: Locale, slug: string) => source().getGuide(l, slug));
-export const listCities = cache((l: Locale) => source().listCities(l));
-export const getCity = cache((l: Locale, slug: string) => source().getCity(l, slug));
-export const seoInfo = cache((...a: Parameters<ReturnType<typeof contentSource>['seoInfo']>) => source().seoInfo(...a));
-export const listIndexable = cache(() => source().listIndexable());
-export const getNeighborhood = cache((l: Locale, city: string, slug: string) => source().getNeighborhood(l, city, slug));
+export const listPlaces = mem('listPlaces');
+export const getPlace = mem('getPlace');
+export const getMenu = mem('getMenu');
+export const listDishes = mem('listDishes');
+export const getDish = mem('getDish');
+export const listGuides = mem('listGuides');
+export const getGuide = mem('getGuide');
+export const listCities = mem('listCities');
+export const getCity = mem('getCity');
+export const seoInfo = mem('seoInfo');
+export const listIndexable = mem('listIndexable');
+export const getNeighborhood = mem('getNeighborhood');
 
 /** Idioma y sección de la URL; cualquier otra cosa (p. ej. /ar o un segmento de otro idioma) es 404. */
 export async function resolveRoute(params: Promise<{ locale: string; section?: string }>): Promise<{ locale: Locale; section: Section | null }> {

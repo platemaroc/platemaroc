@@ -2,16 +2,16 @@
 // Lighthouse en móvil (4G y CPU lenta simulados) contra una web ya arrancada. Uso: node codigo/performance-monitoring/run-lighthouse.mjs <base> <ruta> [<ruta>…]
 // Mide en laboratorio: LCP, CLS y TBT (aproximación de INP). Sale con error si una página supera los umbrales de budgets.ts.
 import lighthouse from 'lighthouse';
-import { launch } from 'chrome-launcher';
 import { chromium } from 'playwright';
 import { CWV_GOOD } from './budgets.ts';
 
 const [base, ...paths] = process.argv.slice(2);
-const chrome = await launch({ chromePath: chromium.executablePath(), chromeFlags: ['--headless=new', '--no-sandbox'] });
+const PORT = 9333;
+const browser = await chromium.launch({ args: [`--remote-debugging-port=${PORT}`] });
 const rows = [];
 try {
   for (const p of paths) {
-    const { lhr } = await lighthouse(base + p, { port: chrome.port, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices'], formFactor: 'mobile' });
+    const { lhr } = await lighthouse(base + p, { port: PORT, output: 'json', logLevel: 'error', onlyCategories: ['performance', 'accessibility', 'best-practices'], formFactor: 'mobile' });
     const a = lhr.audits;
     rows.push({
       path: p, perf: Math.round(lhr.categories.performance.score * 100), a11y: Math.round(lhr.categories.accessibility.score * 100), bp: Math.round(lhr.categories['best-practices'].score * 100),
@@ -20,7 +20,7 @@ try {
     });
   }
 } finally {
-  await chrome.kill();
+  await browser.close();
 }
 console.log('| Página | Rend. | Acces. | Buenas pr. | LCP (ms) | CLS | TBT (ms) | Servidor (ms) | Peso (KB) | Peticiones |');
 console.log('|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|');

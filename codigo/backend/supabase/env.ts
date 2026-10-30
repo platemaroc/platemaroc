@@ -12,6 +12,12 @@ export function supabasePublicConfig(env: Record<string, string | undefined> = p
   return { url, anonKey };
 }
 
+/**
+ * Cookies de sesión: HttpOnly, porque toda la autenticación pasa por el servidor (un script en la página no puede leerlas).
+ * Secure en producción; SameSite Lax para que funcione el enlace que llega por email.
+ */
+export const SESSION_COOKIE = { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax' as const, path: '/' };
+
 /** Clave secreta: solo para server-admin.ts. Nunca con prefijo NEXT_PUBLIC_. */
 export function supabaseServiceRoleKey(env: Record<string, string | undefined> = process.env): string | null {
   return env.SUPABASE_SERVICE_ROLE_KEY?.trim() || null;

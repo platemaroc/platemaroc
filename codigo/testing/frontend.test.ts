@@ -7,6 +7,7 @@ import { languageLinks, translatePath } from '../frontend/i18n/alternates.ts';
 import { contentSource } from '../backend/content/index.ts';
 import { demoSource } from '../backend/content/demo-source.ts';
 import { normalizeOpeningHours } from '../backend/content/types.ts';
+import { cached, clearContentCache } from '../backend/content/cache.ts';
 
 test('rutas: sección traducida por idioma; un segmento de otro idioma no vale', () => {
   assert.equal(sectionPath('en', 'restaurantes', 'x', 'menu'), '/en/restaurants/x/menu');
@@ -63,4 +64,18 @@ test('horario: acepta objeto {día: texto} o lista, e ignora valores vacíos', (
   assert.deepEqual(normalizeOpeningHours({ lunes: '9-13', martes: '' }), [['lunes', '9-13']]);
   assert.deepEqual(normalizeOpeningHours(['Todos los días 9-20', 3]), [['', 'Todos los días 9-20']]);
   assert.deepEqual(normalizeOpeningHours(null), []);
+});
+
+test('caché pública: reutiliza 60 s, se vacía al guardar y no guarda errores', async () => {
+  clearContentCache();
+  let calls = 0;
+  const load = async () => ++calls;
+  assert.equal(await cached('k', load, 0), 1);
+  assert.equal(await cached('k', load, 59_999), 1);
+  assert.equal(await cached('k', load, 60_000), 2);
+  clearContentCache();
+  assert.equal(await cached('k', load, 60_001), 3);
+  await assert.rejects(cached('e', async () => { throw new Error('x'); }, 0));
+  await new Promise((r) => setImmediate(r));
+  assert.equal(await cached('e', async () => 'bien', 1), 'bien');
 });

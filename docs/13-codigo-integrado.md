@@ -192,3 +192,18 @@ Normas de Google consultadas el 30-10-2026: review-snippet y local-business (act
 Verificado: tipos, 54 pruebas unitarias, build, `seo.e2e.cjs` (HTML sin JavaScript contra el proyecto de pruebas) y resto de E2E.
 Interpretación, no dicho expresamente por Google: un directorio que recoge sus propias reseñas de negocios ajenos puede marcar la valoración.
 Límites: las páginas de menú siguen en noindex y fuera del sitemap; sin fotos, ninguna ficha de lugar sale APTA; platos, guías y ciudades no pueden salir APTOS hasta la migración de fotos aplazada; no validado con la herramienta de resultados enriquecidos de Google ni con Search Console (necesitan la web publicada).
+
+## Fase 6 (30-10-2026): rendimiento, seguridad y QA móvil
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Dos pasos | `app/auth/mfa`, `lib/admin.ts`, `policies-rls/0130` | TOTP obligatorio en el panel; `is_admin()` exige aal2: una sesión sin segundo paso no consigue nada por la API |
+| Límite de intentos | `backend/auth/rate-limit.ts` | Enlaces 5/15 min, códigos 10/15 min, formularios 10/min. En memoria, para un solo proceso; falta la capa de Nginx |
+| Derechos del usuario | `backend/reviews/account.ts`, `/cuenta/exportar` | Exportar en JSON y eliminar la cuenta con confirmación por email. La auditoría no guarda el email. Una cuenta administradora no se elimina desde aquí |
+| Caché pública | `backend/content/cache.ts` | 60 s, solo datos públicos, se vacía al guardar |
+| Menús indexables | `indexing.ts` | Fila `target_type = 'menu'` en `menu_translations`; en el sitemap si su ficha es indexable |
+| Cookies | `SESSION_COOKIE` | HttpOnly y SameSite=Lax; retirado el cliente de navegador, que no se usaba |
+| Pruebas | `security.e2e.cjs`, `qa.e2e.cjs`, `run-lighthouse.mjs` | Informes en `ordenes-claude-code/testeo-rendimiento/resultados/` y `seguridad-servidor/resultados/` |
+
+Verificado: tipos, 56 pruebas unitarias, 33 de humo SQL, build y todas las E2E. `0130` está aplicada solo al proyecto de pruebas.
+No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y la cuenta real del titular con dos pasos.

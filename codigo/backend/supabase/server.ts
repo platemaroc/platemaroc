@@ -1,6 +1,6 @@
 import 'server-only';
 import { createServerClient, type CookieMethodsServer } from '@supabase/ssr';
-import { supabasePublicConfig } from './env.ts';
+import { SESSION_COOKIE, supabasePublicConfig } from './env.ts';
 
 /**
  * Cliente de Supabase con la sesión del usuario (cookies) y la clave pública: las políticas RLS deciden qué ve.
@@ -9,5 +9,5 @@ import { supabasePublicConfig } from './env.ts';
 export function createUserClient(cookies: CookieMethodsServer) {
   const config = supabasePublicConfig();
   if (!config) throw new Error('Supabase no está configurado (faltan NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY)');
-  return createServerClient(config.url, config.anonKey, { cookies });
+  return createServerClient(config.url, config.anonKey, { cookies, cookieOptions: SESSION_COOKIE });
 }

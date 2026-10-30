@@ -100,6 +100,9 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
     await second.click('button:has-text("Verificar")');
     await second.waitForSelector('h1:has-text("Lugares")', { timeout: 20_000 }).catch(async (e) => { throw new Error(`En ${second.url()}: ${(await second.innerText('body')).replace(/s+/g, ' ').slice(0, 300)}`, { cause: e }); });
     console.log('dos pasos: en cada entrada pide el código y no vuelve a enseñar la clave');
+    const session = (await second.context().cookies()).filter((c) => c.name.includes('auth-token'));
+    assert.ok(session.length > 0 && session.every((c) => c.httpOnly && c.sameSite === 'Lax'), 'cookie de sesión HttpOnly');
+    console.log('cookies de sesión: HttpOnly y SameSite=Lax');
 
     // Límite de intentos: dirección de un dominio reservado, sin cuenta (no se envía ningún email).
     const login = await (await browser.newContext()).newPage();

@@ -23,6 +23,10 @@
 
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
+## Añadidos en la Fase 6 (30-10-2026)
+12. Aprobar aplicar `policies-rls/0130_admin_dos_pasos.sql` al proyecto real y activar el segundo factor del titular.
+13. Reloj del equipo del titular: va una hora atrasado y el servicio de hora de Windows está parado.
+
 ## Ya decidido
 - Precios exclusivamente en MAD, sin conversiones (29-10-2026).
 - Mapa con carga diferida; IndexedDB máx. 20 con LRU; cachés versionadas (29-10-2026).
@@ -33,6 +37,7 @@
 - Mapa estático de respaldo: texto y enlaces siempre + imagen opcional subida por la administración (29-10-2026).
 - Datos de demostración solo en desarrollo, con prefijo `demo-` (29-10-2026).
 - Migración 0010 aprobada y aplicada: dirección, indicaciones por idioma e imagen del mapa estático (29-10-2026).
+- Fase 6: eliminar cuenta borra cuenta, perfil, reseñas, fotos y consentimientos; dos pasos obligatorios en el panel; límites de intentos en la aplicación; páginas de menú indexables (30-10-2026).
 - SEO: interruptor SITE_INDEXING_ENABLED apagado hasta el lanzamiento; duplicidad interna automática; verificación máxima de 365 días; portada indexable, listados con 3 fichas indexables o más, `/` con noindex; favicon provisional (30-10-2026).
 - Menú 4d: uno por lugar; publicar el menú completo con artículos ocultables; QR en el panel; avisos por email aplazados hasta tener SMTP; importación CSV en borrador con vista previa (30-10-2026).
 - Reseñas 4c: nombre visible obligatorio; casilla de derechos en fotos de usuarios; alt obligatorio en el idioma de la reseña; reseñas en idioma original; máximo 5 reseñas en 24 h y 3 fotos por reseña (30-10-2026).
