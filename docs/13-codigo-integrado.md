@@ -245,6 +245,11 @@ Verificado: pruebas SQL 32 a 34, ensayo de `apply.sh` y `admin.e2e.cjs` contra e
 
 `app/manifest.ts`, iconos en `public/icons/` y `app/apple-icon.png`. Al abrirse instalada empieza en el selector de idioma. Instalar de verdad exige HTTPS: se comprueba tras publicar.
 
+## Pulido de diseño y menú digital (30-10-2026)
+
+Iconos propios en `components/icons.tsx`, sin descargas. Portada con fila de ciudades; tarjetas compactas en móvil; desde 960 px, menú superior en `SiteHeader` y sin barra inferior; `--page-max` para portada y listados, `--content-max` para texto; pie verde.
+Menú digital: `components/RestaurantMenu.tsx`, una sola plantilla para todos los restaurantes, con categorías como enlaces y sin JavaScript. Solo aparece si el restaurante tiene un menú publicado: no se genera ninguno sin datos.
+
 ## Páginas de ciudad por tipo y plantillas (30-10-2026)
 
 `/es/ciudades/{ciudad}/{tipo}` (`cityTypePath`): el tipo se traduce y un segmento de otro idioma da 404. Se indexa con 3 o más fichas indexables en ese idioma, como los listados, y entra en el sitemap. Un barrio no puede llamarse igual que un tipo de lugar: ganaría el tipo.

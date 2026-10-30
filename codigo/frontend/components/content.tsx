@@ -22,14 +22,16 @@ export function PlaceCard({ place, locale, heading: H = 'h3' }: { place: PlaceSu
   const t = getMessages(locale);
   const where = [place.neighborhood?.name, place.city?.name].filter(Boolean).join(', ');
   return (
-    <a className={styles.card} href={sectionPath(locale, place.section, place.slug)}>
+    <a className={`${styles.card} ${styles.placeCard}`} href={sectionPath(locale, place.section, place.slug)}>
       <Photo src={place.photo?.src} alt={place.photo?.alt} emptyLabel={t.noPhoto} />
-      <H className={styles.cardTitle}>{place.name}</H>
-      <p className={styles.cardMeta}>
-        {t.sections[place.section]}{where && ` · ${where}`}{place.priceRange ? ` · ${t.priceRange} ${'●'.repeat(place.priceRange)}${'○'.repeat(4 - place.priceRange)}` : ''}
-      </p>
-      <Stars locale={locale} average={place.rating.average} count={place.rating.count} label={reviewLabel(t, place.rating.count)} emptyLabel={t.noReviews} />
-      {place.summary && <p className={styles.cardSummary}>{place.summary}</p>}
+      <div className={styles.cardBody}>
+        <H className={styles.cardTitle}>{place.name}</H>
+        <p className={styles.cardMeta}>
+          {t.sections[place.section]}{where && ` · ${where}`}{place.priceRange ? ` · ${t.priceRange} ${'●'.repeat(place.priceRange)}${'○'.repeat(4 - place.priceRange)}` : ''}
+        </p>
+        <Stars locale={locale} average={place.rating.average} count={place.rating.count} label={reviewLabel(t, place.rating.count)} emptyLabel={t.noReviews} />
+        {place.summary && <p className={styles.cardSummary}>{place.summary}</p>}
+      </div>
     </a>
   );
 }

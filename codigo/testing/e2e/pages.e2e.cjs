@@ -94,7 +94,7 @@ const PAGES = [
 
     // Selector de idioma: el puesto demo solo está en es/en → el enlace FR lleva a la portada francesa, no a un 404.
     await page.goto(`${BASE}/es/comida-callejera/demo-puesto`);
-    const langs = await page.$$eval('header nav a', (as) => as.map((a) => a.getAttribute('href')));
+    const langs = await page.$$eval('header nav[data-nav=idiomas] a', (as) => as.map((a) => a.getAttribute('href')));
     assert.deepEqual(langs, ['/en/street-food/demo-puesto', '/fr']);
     console.log('selector de idioma OK:', langs.join(' , '));
 
@@ -179,6 +179,19 @@ const PAGES = [
     await page.goto(`${BASE}/es/cafes-y-teterias/demo-cafe`, { waitUntil: 'networkidle' });
     assert.equal(await page.locator('[data-template]').count(), 0, 'café: plantilla general');
     console.log('plantillas OK');
+
+    // Escritorio: menú arriba y sin barra inferior; en móvil, al revés.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(`${BASE}/es`, { waitUntil: 'networkidle' });
+    assert.ok(await page.isVisible('header a[href="/es/lugares"]'), 'menú superior en escritorio');
+    assert.equal(await page.isVisible('body > div nav[aria-label] ul li a[aria-current]'), false, 'sin barra inferior en escritorio');
+    assert.ok(await page.locator('main ul a[href^="/es/ciudades/"]').count(), 'ciudades en la portada');
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(`${BASE}/es`, { waitUntil: 'networkidle' });
+    assert.equal(await page.isVisible('header a[href="/es/lugares"]'), false, 'sin menú superior en móvil');
+    assert.ok(await page.isVisible('nav a[aria-current=page]'), 'barra inferior en móvil');
+    await page.goto(`${BASE}/es/restaurantes`, { waitUntil: 'networkidle' });
+    console.log('navegación por tamaño OK');
     await page.goto(`${BASE}/es/restaurantes`, { waitUntil: 'networkidle' });
 
     // Aviso offline.

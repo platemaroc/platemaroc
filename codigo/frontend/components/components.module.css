@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
-  max-width: var(--content-max);
+  max-width: var(--page-max);
   margin: 0 auto;
   padding: var(--space-sm) var(--gutter);
 }
@@ -72,13 +72,20 @@
   text-decoration: none;
 }
 
+.footerBar {
+  margin-top: var(--space-xl);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.footerBar a { color: inherit; }
+.footerBar a:focus-visible { outline-color: var(--color-gold); }
+
 .footer {
-  max-width: var(--content-max);
-  margin: var(--space-xl) auto 0;
+  max-width: var(--page-max);
+  margin: 0 auto;
   padding: var(--space-md) var(--gutter);
-  border-top: 1px solid var(--color-border);
   font-size: var(--text-sm);
-  color: var(--color-muted);
 }
 
 .footer ul {
@@ -98,6 +105,33 @@
 }
 
 .footer p { margin: var(--space-xs) 0 0; }
+
+/* Menú de escritorio: sustituye a la barra inferior, que en pantalla grande parece de móvil. */
+.desktopNav { display: none; margin-left: auto; }
+
+.desktopNav ul {
+  display: flex;
+  gap: var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desktopNav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  color: var(--color-accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.desktopNav a:hover { text-decoration: underline; }
+
+@media (min-width: 960px) {
+  .desktopNav { display: block; }
+  .bottomNav { display: none; }
+}
 
 /* Barra inferior fija: 5 accesos al alcance del pulgar; respeta la zona segura del iPhone. */
 .bottomNav {
@@ -123,6 +157,8 @@
 .bottomNav a {
   display: grid;
   place-items: center;
+  align-content: center;
+  gap: 2px;
   min-height: var(--bottom-nav);
   padding: 0 2px;
   font-size: 0.8rem;
@@ -268,7 +304,7 @@
 }
 
 @media (min-width: 640px) {
-  .cards { grid-template-columns: repeat(2, 1fr); }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }
 }
 
 .card {
@@ -284,6 +320,23 @@
   text-decoration: none;
 }
 
+/* Lugar en móvil: foto pequeña al lado, caben más por pantalla. Desde 640 px, foto arriba. */
+.placeCard {
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  align-content: start;
+  height: 100%;
+}
+
+.cardBody {
+  display: grid;
+  align-content: start;
+  gap: var(--space-xs);
+}
+
+@media (min-width: 640px) {
+  .placeCard { grid-template-columns: minmax(0, 1fr); }
+}
+
 .cardTitle {
   margin: 0;
   font-size: var(--text-lg);
@@ -297,5 +350,9 @@
 }
 
 .cardSummary {
+  display: -webkit-box;
   margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }

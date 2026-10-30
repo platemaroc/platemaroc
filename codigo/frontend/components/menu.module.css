@@ -1,0 +1,132 @@
+/* Menú digital: pensado para leerse en la mesa con el móvil, una sola columna y precios alineados. */
+.page {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-bottom: var(--space-lg);
+}
+
+.crumbs { padding: 0 var(--gutter); }
+
+.cover {
+  margin: 0 var(--gutter) var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-accent);
+  text-align: center;
+}
+
+.cover h1 {
+  margin: 0;
+  font-size: var(--text-title);
+  line-height: 1.2;
+  color: var(--color-accent-text);
+}
+
+.cover small {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-gold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Categorías siempre a mano: fila que se desplaza con el dedo. */
+.categories {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.categories ul {
+  display: flex;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: var(--space-xs) var(--gutter);
+  overflow-x: auto;
+  list-style: none;
+}
+
+.categories li { flex: none; }
+
+.categories a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-md);
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.categories a:hover { background: var(--color-photo); }
+
+.category {
+  margin-top: var(--space-lg);
+  padding: 0 var(--gutter);
+  scroll-margin-top: calc(var(--touch-target) + var(--space-lg));
+}
+
+.category h2 {
+  margin: 0 0 var(--space-sm);
+  padding-bottom: var(--space-xs);
+  border-bottom: 2px solid var(--color-gold);
+  font-size: var(--text-lg);
+}
+
+.category ul { margin: 0; padding: 0; list-style: none; }
+
+.category li {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.category li:last-child { border-bottom: 0; }
+
+.category p {
+  margin: var(--space-xs) 0 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+/* Nombre y precio en la misma línea, unidos por puntos, como en una carta impresa. */
+.line {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.line h3 {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.leader {
+  flex: 1;
+  min-width: var(--space-md);
+  border-bottom: 1px dotted var(--color-muted);
+}
+
+.allergens { font-style: italic; }
+
+.soldOut h3 { color: var(--color-muted); text-decoration: line-through; }
+
+.badge {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+  background: var(--color-photo);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+}
+
+.back { margin: var(--space-lg) 0 0; padding: 0 var(--gutter); }
+
+.back a { display: inline-flex; align-items: center; min-height: var(--touch-target); }

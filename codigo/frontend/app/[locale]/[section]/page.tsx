@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { isPlaceSection, PLACE_SECTIONS, sectionPath } from '../../../../shared/routes.ts';
 import { getMessages } from '../../../i18n/messages.ts';
 import { SiteHeader } from '../../../components/SiteHeader.tsx';
+import { Icon, PLACE_ICON } from '../../../components/icons.tsx';
 import { SearchForm } from '../../../components/SearchForm.tsx';
 import { Breadcrumbs, LinkList, PlaceList } from '../../../components/content.tsx';
 import { LOCALES } from '../../../../shared/locales.ts';
@@ -60,7 +61,7 @@ export default async function Listing({ params, searchParams }: { params: Params
         <SearchForm locale={locale} section={section} q={q} city={city} cities={cities} neighborhoods={neighborhoods} filters={section === 'lugares' ? filters : { ...filters, section: undefined }} />
         {filtered ? <p role="status" className={styles.lead}>{total ? t.searchForm.results.replace('{count}', String(total)) : t.searchForm.none}</p> : section === 'lugares' && (
           <ul className={styles.tiles}>
-            {PLACE_SECTIONS.map((p) => <li key={p}><a href={sectionPath(locale, p)}>{t.sections[p]}</a></li>)}
+            {PLACE_SECTIONS.map((p) => <li key={p}><a href={sectionPath(locale, p)}><Icon name={PLACE_ICON[p]} />{t.sections[p]}</a></li>)}
           </ul>
         )}
         {(!filtered || found.places.length > 0) && <div className={styles.section}><PlaceList heading="h2" places={found.places} locale={locale} /></div>}
@@ -77,7 +78,7 @@ export default async function Listing({ params, searchParams }: { params: Params
   return (
     <>
       <SiteHeader locale={locale} />
-      <main id="contenido" className={styles.main}>
+      <main id="contenido" className={styles.mainWide}>
         <Breadcrumbs label={t.breadcrumb} items={[{ name: t.nav.home, href: `/${locale}` }, { name: t.sections[section] }]} />
         <h1 className={styles.title}>{t.sections[section]}</h1>
         {body}

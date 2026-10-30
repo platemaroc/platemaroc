@@ -1,5 +1,6 @@
 import { headers } from 'next/headers';
 import type { Locale } from '../../shared/locales.ts';
+import { sectionPath } from '../../shared/routes.ts';
 import { languageLinks } from '../i18n/alternates.ts';
 import { getMessages } from '../i18n/messages.ts';
 import { Brand } from './Brand.tsx';
@@ -18,7 +19,15 @@ export async function SiteHeader({ locale, available }: { locale: Locale; availa
       <header className={styles.headerBar}>
         <div className={styles.header}>
           <Brand href={`/${locale}`} />
-          <nav aria-label={t.languageLabel}>
+          <nav className={styles.desktopNav} aria-label={t.primaryNav}>
+            <ul>
+              <li><a href={sectionPath(locale, 'lugares')}>{t.nav.places}</a></li>
+              <li><a href={sectionPath(locale, 'platos-tipicos')}>{t.nav.dishes}</a></li>
+              <li><a href={sectionPath(locale, 'guias-gastronomicas')}>{t.nav.guides}</a></li>
+              <li><a href={sectionPath(locale, 'ciudades-y-barrios')}>{t.nav.cities}</a></li>
+            </ul>
+          </nav>
+          <nav aria-label={t.languageLabel} data-nav="idiomas">
             <ul className={styles.languages}>
               {languageLinks(pathname, locale, available).map(({ locale: l, href }) => (
                 <li key={l}><a href={href} hrefLang={l} lang={l}>{l.toUpperCase()}</a></li>

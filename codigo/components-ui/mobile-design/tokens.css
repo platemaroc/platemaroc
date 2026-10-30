@@ -24,7 +24,8 @@
 
   --touch-target: 48px; /* MIN_TOUCH_TARGET_PX */
   --bottom-nav: 64px;   /* BOTTOM_NAV_PX */
-  --content-max: 46rem;
+  --content-max: 46rem; /* Texto: fichas y formularios */
+  --page-max: 70rem;    /* Portada, listados, cabecera y pie */
 
   /* Texto con la tipografía del sistema (mejor LCP). Solo los títulos descargan fuente: Fraunces, servida por la propia web (app/layout.tsx). */
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

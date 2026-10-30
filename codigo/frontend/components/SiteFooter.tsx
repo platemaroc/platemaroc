@@ -7,14 +7,16 @@ import styles from './components.module.css';
 export function SiteFooter({ locale }: { locale: Locale }) {
   const t = getMessages(locale);
   return (
-    <footer className={styles.footer}>
-      <nav aria-label={t.footerNav}>
-        <ul>
-          <li><a href={`/privacidad?lang=${locale}`}>{t.privacy.title}</a></li>
-          <li><a href={`/cuenta?lang=${locale}`}>{t.auth.title}</a></li>
-        </ul>
-      </nav>
-      <p>© {new Date().getFullYear()} {SITE_NAME}</p>
+    <footer className={styles.footerBar}>
+      <div className={styles.footer}>
+        <nav aria-label={t.footerNav}>
+          <ul>
+            <li><a href={`/privacidad?lang=${locale}`}>{t.privacy.title}</a></li>
+            <li><a href={`/cuenta?lang=${locale}`}>{t.auth.title}</a></li>
+          </ul>
+        </nav>
+        <p>© {new Date().getFullYear()} {SITE_NAME}</p>
+      </div>
     </footer>
   );
 }

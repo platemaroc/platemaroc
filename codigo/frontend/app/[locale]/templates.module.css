@@ -2,15 +2,28 @@
 
 /* Deja sitio a la barra inferior fija para que no tape el final del contenido. */
 .frame {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  padding-bottom: calc(var(--bottom-nav) + env(safe-area-inset-bottom) + var(--space-md));
+  padding-bottom: calc(var(--bottom-nav) + env(safe-area-inset-bottom));
+}
+
+/* El pie queda abajo aunque la página sea corta. */
+.frame > footer { margin-top: auto; }
+
+@media (min-width: 960px) {
+  .frame { padding-bottom: 0; }
 }
 
 .main {
+  width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
   padding: 0 var(--gutter) var(--space-lg);
 }
+
+/* Portada y listados: más ancho que el texto de una ficha. */
+.mainWide { composes: main; max-width: var(--page-max); }
 
 /* Portada: el verde de la cabecera continúa detrás del título. */
 .hero {
@@ -19,7 +32,7 @@
 }
 
 .heroInner {
-  max-width: var(--content-max);
+  max-width: var(--page-max);
   margin: 0 auto;
   padding: var(--space-md) var(--gutter) var(--space-xl);
 }
@@ -66,6 +79,7 @@
 .tiles a {
   display: flex;
   align-items: center;
+  gap: var(--space-sm);
   min-height: 64px;
   padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--color-border);
@@ -74,6 +88,41 @@
   font-weight: 600;
   text-decoration: none;
 }
+
+.tiles svg { flex: none; color: var(--color-star); }
+
+@media (min-width: 640px) {
+  .tiles { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Ciudades en la portada: fila que se desplaza con el dedo. */
+.cityStrip {
+  display: flex;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0 0 var(--space-xs);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  list-style: none;
+}
+
+.cityStrip li { flex: none; scroll-snap-align: start; }
+
+.cityStrip a {
+  display: flex;
+  align-items: center;
+  min-width: 8.5rem;
+  min-height: 72px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cityStrip a:focus-visible { outline-color: var(--color-gold); outline-offset: -3px; }
 
 /* Ficha de restaurante: menú y datos prácticos, antes del texto. */
 .keyFacts {
@@ -123,36 +172,6 @@
   border-radius: 999px;
   background: var(--color-surface);
   text-decoration: none;
-}
-
-.menuCategory h2 {
-  margin: var(--space-lg) 0 var(--space-sm);
-}
-
-.menuItems {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.menuItem {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--space-xs) var(--space-md);
-  padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.menuItem p {
-  grid-column: 1 / -1;
-  margin: 0;
-  color: var(--color-muted);
-  font-size: var(--text-sm);
-}
-
-.soldOut {
-  color: var(--color-muted);
-  text-decoration: line-through;
 }
 
 .gallery {
