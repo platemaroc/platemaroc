@@ -7,5 +7,5 @@ Metadatos y JSON-LD (andamiaje inicial, sin dependencias; adaptar al Next.js rea
 - `json-ld.ts`: `Restaurant`, `BreadcrumbList`, `WebSite`. Solo emite datos existentes; la valoración, solo con reseñas aprobadas.
 - Pruebas: `node --test codigo/testing/seo.test.ts`.
 
-Pendiente: el cálculo del Quality Gate (`codigo/base-indexing/`), `robots.txt` y generación del sitemap completo.
+Integrado en la Fase 5: `codigo/frontend/lib/seo.ts` (metadatos e interruptor), `backend/admin-moderation/indexing.ts` (cálculo de `is_indexable`) y las rutas `sitemap.xml` y `robots.txt`.
 Reglas: `docs/01-documento-maestro-operacion.md` §4 y §13. Verificar la documentación oficial vigente de Google antes de cambiar criterios.

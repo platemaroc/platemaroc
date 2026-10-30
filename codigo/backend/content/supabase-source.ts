@@ -1,19 +1,19 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { LOCALES, type Locale } from '../../shared/locales.ts';
-import { isPlaceSection, type PlaceSection } from '../../shared/routes.ts';
+import { isPlaceSection, sectionPath, type PlaceSection, type Section } from '../../shared/routes.ts';
 import { summarizeApproved } from '../reviews/rating.ts';
 import type { SupabasePublicConfig } from '../supabase/env.ts';
 import {
   normalizeOpeningHours, type CityDetail, type CitySummary, type ContentSource, type DishDetail, type DishSummary, type GuideDetail,
   type GuideSummary, type MenuView, type NeighborhoodDetail, type PhotoView, type PlaceDetail, type PlaceFilter, type PlaceSummary,
-  type RatingView, type Ref, type ReviewView,
+  type IndexEntry, type RatingView, type Ref, type ReviewView, type SeoEntity, type SeoInfo,
 } from './types.ts';
 
 const mediaSrc = (path: string) => `/media/${path.split('/').map(encodeURIComponent).join('/')}`;
 
 type Entity = 'region' | 'city' | 'neighborhood' | 'place' | 'dish' | 'guide';
 type Row = Record<string, any>;
-interface Tr { title: string; description: string | null; content: string | null; directions: string | null }
+interface Tr { title: string; description: string | null; content: string | null; directions: string | null; indexable: boolean }
 
 /**
  * Contenido público desde Supabase con la clave PÚBLICA: las políticas RLS ya filtran lo publicado (y en cascada).
@@ -32,7 +32,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
     if (!ids.length) return new Map();
     const data = await rows(db.from('translations').select('*').eq('entity_type', type).eq('locale', locale).eq('status', 'publicada').in('entity_id', ids));
     return new Map(data.filter((t) => t.title?.trim()).map((t) => [t.entity_id, {
-      title: t.title, description: t.description ?? null, content: t.content ?? null, directions: t.directions ?? null,
+      title: t.title, description: t.description ?? null, content: t.content ?? null, directions: t.directions ?? null, indexable: !!t.is_indexable,
     }]));
   }
 
@@ -106,7 +106,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       return [{
         slug: p.slug, section: section as PlaceSection, name: t.title, summary: t.description,
         city: cities.get(p.city_id) ?? null, neighborhood: hoods.get(p.neighborhood_id) ?? null,
-        priceRange: p.price_range ?? null, rating: rate.get(p.id) ?? { count: 0, average: null }, photo: pics.get(p.id)?.[0] ?? null,
+        priceRange: p.price_range ?? null, rating: rate.get(p.id) ?? { count: 0, average: null }, photo: pics.get(p.id)?.[0] ?? null, indexable: t.indexable,
       }];
     });
   }
@@ -151,12 +151,50 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
   async function listSimple(table: string, type: Entity, locale: Locale): Promise<{ slug: string; name: string; summary: string | null }[]> {
     const data = await rows(db.from(table).select('id,slug').order('slug'));
     const tr = await translations(type, data.map((r) => r.id), locale);
-    return data.filter((r) => tr.has(r.id)).map((r) => ({ slug: r.slug, name: tr.get(r.id)!.title, summary: tr.get(r.id)!.description }));
+    return data.filter((r) => tr.has(r.id)).map((r) => ({ slug: r.slug, name: tr.get(r.id)!.title, summary: tr.get(r.id)!.description, indexable: tr.get(r.id)!.indexable }));
+  }
+
+  const SEO_TABLE: Record<SeoEntity, string> = { place: 'places', dish: 'dishes', guide: 'guides', city: 'cities', neighborhood: 'neighborhoods' };
+
+  async function seoInfo(entity: SeoEntity, slug: string, locale: Locale, citySlug?: string): Promise<SeoInfo> {
+    let q = db.from(SEO_TABLE[entity]).select('id').eq('slug', slug);
+    if (entity === 'neighborhood' && citySlug) {
+      const cityId = await idBySlug('cities', citySlug);
+      if (!cityId) return { indexableLocales: [], title: null, description: null };
+      q = q.eq('city_id', cityId);
+    }
+    const [row] = await rows(q.limit(1));
+    if (!row) return { indexableLocales: [], title: null, description: null };
+    const trs = await rows(db.from('translations').select('locale,is_indexable,seo_title,seo_description').eq('entity_type', entity).eq('entity_id', row.id).eq('status', 'publicada'));
+    const own = trs.find((t) => t.locale === locale);
+    return { indexableLocales: LOCALES.filter((l) => trs.some((t) => t.locale === l && t.is_indexable)), title: own?.seo_title ?? null, description: own?.seo_description ?? null };
+  }
+
+  /** Solo lo que pasa el Quality Gate (maestro §4): lo demás queda fuera del sitemap. */
+  async function listIndexable(): Promise<IndexEntry[]> {
+    const trs = await rows(db.from('translations').select('entity_type,entity_id,locale').eq('is_indexable', true).eq('status', 'publicada'));
+    const ids = (type: string) => [...new Set(trs.filter((t) => t.entity_type === type).map((t) => t.entity_id))];
+    const fetch = (table: string, list: string[], cols = '*') => (list.length ? rows(db.from(table).select(cols).in('id', list)) : Promise.resolve([] as Row[]));
+    const [places, dishes, guides, cities, hoods, types] = await Promise.all([
+      fetch('places', ids('place')), fetch('dishes', ids('dish')), fetch('guides', ids('guide')), fetch('cities', ids('city')), fetch('neighborhoods', ids('neighborhood')), placeTypes(),
+    ]);
+    const hoodCities = await fetch('cities', [...new Set(hoods.map((h) => h.city_id))], 'id,slug');
+    const entry = (type: string, row: Row, path: (l: Locale) => string): IndexEntry => ({
+      paths: Object.fromEntries(trs.filter((t) => t.entity_type === type && t.entity_id === row.id).map((t) => [t.locale, path(t.locale)])), lastmod: row.updated_at ?? null,
+    });
+    const simple = (type: string, list: Row[], section: Section) => list.map((r) => entry(type, r, (l) => sectionPath(l, section, r.slug)));
+    return [
+      ...places.flatMap((p) => { const s = types.get(p.place_type_id) as PlaceSection | undefined; return s && isPlaceSection(s) ? [entry('place', p, (l) => sectionPath(l, s, p.slug))] : []; }),
+      ...simple('dish', dishes, 'platos-tipicos'), ...simple('guide', guides, 'guias-gastronomicas'), ...simple('city', cities, 'ciudades-y-barrios'),
+      ...hoods.flatMap((h) => { const c = hoodCities.find((x) => x.id === h.city_id); return c ? [entry('neighborhood', h, (l) => sectionPath(l, 'ciudades-y-barrios', c.slug, h.slug))] : []; }),
+    ];
   }
 
   return {
     isDemo: false,
     listPlaces,
+    seoInfo,
+    listIndexable,
 
     async getPlace(locale, section, slug): Promise<PlaceDetail | null> {
       const row = await placeRow(section, slug);
@@ -173,7 +211,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
         ...summary, content: tr.get(row.id)?.content ?? null, directions: tr.get(row.id)?.directions ?? null,
         lat: row.lat === null ? null : Number(row.lat), lng: row.lng === null ? null : Number(row.lng), address: row.address ?? null,
         staticMapSrc: row.static_map_path ? mediaSrc(row.static_map_path) : null,
-        openingHours: normalizeOpeningHours(row.opening_hours, locale), phone: row.phone ?? null, website: row.website ?? null,
+        openingHours: normalizeOpeningHours(row.opening_hours, locale), hoursRaw: row.opening_hours, phone: row.phone ?? null, website: row.website ?? null,
         reviews: await approvedReviews(row.id), dishes: [...dishes.values()], hasMenu: menus.length > 0, photos: pics.get(row.id) ?? [], locales,
       };
     },

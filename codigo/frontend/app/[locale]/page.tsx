@@ -1,10 +1,21 @@
 import { PLACE_SECTIONS, sectionPath } from '../../../shared/routes.ts';
+import type { Metadata } from 'next';
 import { SITE_NAME } from '../../../../seo/types.ts';
+import { websiteJsonLd } from '../../../../seo/json-ld.ts';
+import { LOCALES } from '../../../shared/locales.ts';
+import { JsonLd } from '../../components/JsonLd.tsx';
+import { indexingEnabled, pageMetadata } from '../../lib/seo.ts';
 import { getMessages } from '../../i18n/messages.ts';
 import { SiteHeader } from '../../components/SiteHeader.tsx';
 import { LinkList, PlaceList } from '../../components/content.tsx';
 import { listCities, listGuides, listPlaces, resolveRoute } from '../../lib/data.ts';
 import styles from './templates.module.css';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await resolveRoute(params);
+  const t = getMessages(locale);
+  return pageMetadata({ locale, title: `${SITE_NAME}: ${t.tagline}`, description: t.tagline, absoluteTitle: true, indexable: LOCALES, paths: { es: '/es', en: '/en', fr: '/fr' } });
+}
 
 /** Portada: tipos de lugar, últimos lugares, guías y ciudades. */
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -13,6 +24,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const [places, guides, cities] = await Promise.all([listPlaces(locale, { limit: 6 }), listGuides(locale), listCities(locale)]);
   return (
     <>
+      {indexingEnabled() && <JsonLd data={websiteJsonLd()} />}
       <SiteHeader locale={locale} />
       <main id="contenido" className={styles.main}>
         <h1 className={styles.title}>{SITE_NAME}</h1>

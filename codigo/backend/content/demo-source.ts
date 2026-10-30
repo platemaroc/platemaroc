@@ -105,6 +105,10 @@ export const demoSource: ContentSource = {
     if (slug !== CITY.slug) return null;
     return { slug, name: CITY.name[l], summary: CITY.summary[l], content: null, neighborhoods: [ref(HOOD, l)], places: published(l).map((p) => summary(p, l)), locales: ['es', 'en', 'fr'] };
   },
+  // Los datos demo nunca se indexan.
+  async seoInfo() { return { indexableLocales: [], title: null, description: null }; },
+  async listIndexable() { return []; },
+
   async getNeighborhood(l, citySlug, slug) {
     if (citySlug !== CITY.slug || slug !== HOOD.slug) return null;
     return { slug, name: HOOD.name[l], summary: null, content: null, city: ref(CITY, l), places: published(l).filter((p) => p.neighborhood).map((p) => summary(p, l)), locales: ['es', 'en', 'fr'] };

@@ -17,3 +17,13 @@ export const CLOSED: Record<Locale, string> = { es: 'Cerrado', en: 'Closed', fr:
 
 export const isWeekHours = (raw: unknown): raw is WeekHours =>
   !!raw && typeof raw === 'object' && !Array.isArray(raw) && Object.keys(raw).length > 0 && Object.keys(raw).every((k) => (WEEK as readonly string[]).includes(k));
+
+const SCHEMA_DAY: Record<Weekday, string> = { mon: 'Monday', tue: 'Tuesday', wed: 'Wednesday', thu: 'Thursday', fri: 'Friday', sat: 'Saturday', sun: 'Sunday' };
+
+/** Horario por días en formato schema.org (JSON-LD). Un tramo por entrada; un día cerrado no se declara. */
+export function weekToSpecification(raw: unknown): { dayOfWeek: string; opens: string; closes: string }[] {
+  if (!isWeekHours(raw)) return [];
+  const pad = (t: string) => t.padStart(5, '0');
+  return WEEK.flatMap((d) => (raw[d] ?? '').split(',').map((r) => r.trim().split('–')).filter((p) => p.length === 2)
+    .map(([opens, closes]) => ({ dayOfWeek: SCHEMA_DAY[d], opens: pad(opens), closes: pad(closes) })));
+}

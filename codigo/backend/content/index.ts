@@ -10,6 +10,7 @@ const emptySource: ContentSource = {
   listPlaces: async () => [], getPlace: async () => null, getMenu: async () => null,
   listDishes: async () => [], getDish: async () => null, listGuides: async () => [], getGuide: async () => null,
   listCities: async () => [], getCity: async () => null, getNeighborhood: async () => null,
+  seoInfo: async () => ({ indexableLocales: [], title: null, description: null }), listIndexable: async () => [],
 };
 
 /**

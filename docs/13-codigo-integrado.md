@@ -175,3 +175,20 @@ aprobarse la reseña o la foto, crear una foto aprobada, subir al bucket, editar
 | Importación | `admin/importar`, `csv-import.ts`, `import-admin.ts` | Plantilla, vista previa sin guardar, errores por fila, duplicados omitidos, todo en borrador; se revalida al confirmar; auditoría con origen importacion |
 
 Verificado: tipos, pruebas unitarias, build y `menu.e2e.cjs` en el proyecto de pruebas. Avisos por email aplazados hasta tener SMTP; fotos de artículos del menú fuera de este bloque.
+
+## Fase 5 (30-10-2026): SEO e indexación
+
+Normas de Google consultadas el 30-10-2026: review-snippet y local-business (act. 08-09-2026), localized-versions (act. 21-09-2026), consolidate-duplicate-urls (act. 10-07-2026).
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| `is_indexable` | `admin-moderation/indexing.ts` | Quality Gate real por ficha e idioma; se recalcula al guardar y en `/admin/indexacion` (las verificaciones caducan a los 365 días) |
+| Duplicidad | `base-indexing/similarity.ts` | Grupos de 5 palabras entre textos publicados del mismo idioma; umbral 0,6. No revisa otras webs |
+| Metadatos | `frontend/lib/seo.ts` | Por defecto noindex; solo se abre lo aprobado. Canónica sin barra final; hreflang recíproco solo entre versiones indexables; sin x-default |
+| Interruptor | `SITE_INDEXING_ENABLED` | Apagado: noindex en todo, robots.txt bloquea y sitemap vacío |
+| Sitemap y robots | `app/sitemap.xml`, `app/robots.txt` | Sitemap solo con portada, listados con 3+ fichas indexables y fichas aptas |
+| JSON-LD | `JsonLd.tsx`, `seo/json-ld.ts` | Solo en páginas indexables; negocio solo con dirección (obligatoria para Google); subtipo por sección; sin priceRange (solo MAD); valoración solo con reseñas aprobadas y visibles |
+
+Verificado: tipos, 54 pruebas unitarias, build, `seo.e2e.cjs` (HTML sin JavaScript contra el proyecto de pruebas) y resto de E2E.
+Interpretación, no dicho expresamente por Google: un directorio que recoge sus propias reseñas de negocios ajenos puede marcar la valoración.
+Límites: las páginas de menú siguen en noindex y fuera del sitemap; sin fotos, ninguna ficha de lugar sale APTA; platos, guías y ciudades no pueden salir APTOS hasta la migración de fotos aplazada; no validado con la herramienta de resultados enriquecidos de Google ni con Search Console (necesitan la web publicada).

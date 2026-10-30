@@ -1,6 +1,8 @@
 // node --test codigo/testing/base-indexing.test.ts
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { findDuplicates, jaccard } from '../base-indexing/similarity.ts';
+import { weekToSpecification } from '../shared/week.ts';
 import { evaluateQualityGate, type GateInput } from '../base-indexing/quality-gate.ts';
 import { buildSitemaps, buildSitemapXml } from '../base-indexing/sitemap.ts';
 import { buildRobotsTxt } from '../base-indexing/robots.ts';
@@ -51,4 +53,20 @@ test('sitemap: escapa XML, incluye hreflang y divide en índice', () => {
 test('robots.txt: bloquea admin/api y declara el sitemap', () => {
   const t = buildRobotsTxt();
   assert.ok(t.includes('Disallow: /admin') && t.includes('Sitemap: https://platemaroc.com/sitemap.xml'));
+});
+
+test('duplicidad interna: detecta textos casi iguales e ignora los muy cortos', () => {
+  const base = Array.from({ length: 60 }, (_, i) => `palabra${i}`).join(' ');
+  const other = Array.from({ length: 60 }, (_, i) => `distinta${i}`).join(' ');
+  const dup = findDuplicates([{ id: 'a', text: base }, { id: 'b', text: `${base} final` }, { id: 'c', text: other }]);
+  assert.deepEqual([...dup].sort(), ['a', 'b']);
+  assert.equal(findDuplicates([{ id: 'a', text: 'tres palabras solo' }, { id: 'b', text: 'tres palabras solo' }]).size, 0);
+  assert.equal(jaccard(new Set(), new Set()), 0);
+});
+
+test('horario para datos estructurados: un tramo por entrada y días cerrados fuera', () => {
+  assert.deepEqual(weekToSpecification({ mon: '9:00–13:00, 16:00–20:00', tue: '' }), [
+    { dayOfWeek: 'Monday', opens: '09:00', closes: '13:00' }, { dayOfWeek: 'Monday', opens: '16:00', closes: '20:00' },
+  ]);
+  assert.deepEqual(weekToSpecification(null), []);
 });

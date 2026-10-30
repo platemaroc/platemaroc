@@ -3,14 +3,20 @@ import { isPlaceSection, PLACE_SECTIONS, sectionPath } from '../../../../shared/
 import { getMessages } from '../../../i18n/messages.ts';
 import { SiteHeader } from '../../../components/SiteHeader.tsx';
 import { Breadcrumbs, LinkList, PlaceList } from '../../../components/content.tsx';
-import { listCities, listDishes, listGuides, listPlaces, resolveRoute } from '../../../lib/data.ts';
+import { LOCALES } from '../../../../shared/locales.ts';
+import { listCities, listDishes, listGuides, listingIndexableLocales, listPlaces, resolveRoute } from '../../../lib/data.ts';
+import { pageMetadata } from '../../../lib/seo.ts';
 import styles from '../templates.module.css';
 
 type Params = Promise<{ locale: string; section: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { locale, section } = await resolveRoute(params);
-  return { title: getMessages(locale).sections[section!] };
+  const t = getMessages(locale);
+  return pageMetadata({
+    locale, title: t.sections[section!], description: t.tagline, indexable: await listingIndexableLocales(section!),
+    paths: Object.fromEntries(LOCALES.map((l) => [l, sectionPath(l, section!)])),
+  });
 }
 
 /** Listados: un tipo de lugar, todos los lugares, platos típicos, guías o ciudades. */

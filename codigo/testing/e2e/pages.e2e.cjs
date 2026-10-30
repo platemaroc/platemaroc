@@ -59,6 +59,12 @@ const PAGES = [
     }
     console.log(`rutas OK (${Object.keys(STATUS).length})`);
 
+    // Interruptor de indexación apagado (lo normal fuera de producción).
+    assert.match(await (await fetch(`${BASE}/robots.txt`)).text(), /Disallow: \/\n/);
+    assert.ok(!(await (await fetch(`${BASE}/sitemap.xml`)).text()).includes('<url>'), 'sitemap vacío');
+    assert.match(await (await fetch(`${BASE}/es`)).text(), /<meta name="robots" content="noindex/);
+    console.log('interruptor apagado: robots bloquea, sitemap vacío y noindex');
+
     browser = await chromium.launch();
     const context = await browser.newContext({ viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true });
     const page = await context.newPage();

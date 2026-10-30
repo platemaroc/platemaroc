@@ -5,7 +5,8 @@ import { EmptyState, Price } from '../../../../../../components-ui/mobile-design
 import { getMessages } from '../../../../../i18n/messages.ts';
 import { SiteHeader } from '../../../../../components/SiteHeader.tsx';
 import { Breadcrumbs, PlaceList } from '../../../../../components/content.tsx';
-import { getMenu, getNeighborhood, resolveRoute } from '../../../../../lib/data.ts';
+import { getMenu, getNeighborhood, resolveRoute, seoInfo } from '../../../../../lib/data.ts';
+import { pageMetadata } from '../../../../../lib/seo.ts';
 import styles from '../../../templates.module.css';
 
 type Params = Promise<{ locale: string; section: string; slug: string; sub: string }>;
@@ -23,7 +24,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const page = await load(params);
   if (!page.data) return {};
   const t = getMessages(page.locale);
-  return { title: page.kind === 'menu' ? `${t.menu} · ${page.data.place.name}` : page.data.name };
+  if (page.kind === 'menu') return { title: `${t.menu} · ${page.data.place.name}` };
+  const n = page.data;
+  const seo = await seoInfo('neighborhood', n.slug, page.locale, n.city.slug);
+  return pageMetadata({
+    locale: page.locale, title: seo.title ?? n.name, description: seo.description ?? n.summary, indexable: seo.indexableLocales,
+    paths: Object.fromEntries(n.locales.map((l) => [l, sectionPath(l, 'ciudades-y-barrios', n.city.slug, n.slug)])),
+  });
 }
 
 export default async function SubPage({ params }: { params: Params }) {

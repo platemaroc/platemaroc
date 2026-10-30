@@ -11,7 +11,8 @@ const clean = (p: string) => p.replace(/^\/+|\/+$/g, '');
 
 export function pageUrl(locale: Locale, path: string): string {
   const p = clean(path);
-  return `${SITE_URL}/${locale}${p ? `/${p}` : ''}/`;
+  // Sin barra final: es la URL que sirve la web (con barra, Next.js redirige).
+  return `${SITE_URL}/${locale}${p ? `/${p}` : ''}`;
 }
 
 export interface PageMetadata {

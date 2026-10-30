@@ -5,6 +5,7 @@ import { canTransition } from '../../shared/states.ts';
 import { recordAudit } from './audit-writer.ts';
 import { panelAudit } from './audit.ts';
 import { ENTITIES, VERIFICATION_STATUSES, type AdminEntity, type EntityDef } from './entities.ts';
+import { duplicateLocales } from './indexing.ts';
 import {
   checkCoords, checkLines, checkPhone, checkPriceRange, checkSlug, checkTranslation, checkUrl, checkWeekHours, emptyToNull,
   type Errors, type TranslationInput,
@@ -245,21 +246,22 @@ export async function saveRelations(db: SupabaseClient, key: AdminEntity, id: st
 /* ---------- Datos para la vista previa del Quality Gate ---------- */
 
 /** Lugares publicados (ciudad/barrio) y páginas publicadas que enlazan a un lugar (su ciudad, barrio, guías y platos). */
-export async function gateExtras(db: SupabaseClient, key: AdminEntity, row: Row): Promise<{ publishedPlaces?: number; inboundLinks?: number }> {
+export async function gateExtras(db: SupabaseClient, key: AdminEntity, row: Row): Promise<{ publishedPlaces?: number; inboundLinks?: number; duplicateLocales?: string[] }> {
+  const duplicates = key === 'regiones' ? [] : await duplicateLocales(db, ENTITIES[key].type, row.id);
   const count = async (table: string, col: string, ids: string[]) => {
     if (!ids.length) return 0;
     return ((await must(db.from(table).select('id').in(col, ids).eq('status', 'publicado'))) as Row[]).length;
   };
   if (key === 'ciudades' || key === 'barrios') {
     const col = key === 'ciudades' ? 'city_id' : 'neighborhood_id';
-    return { publishedPlaces: ((await must(db.from('places').select('id').eq(col, row.id).eq('status', 'publicado'))) as Row[]).length };
+    return { duplicateLocales: duplicates, publishedPlaces: ((await must(db.from('places').select('id').eq(col, row.id).eq('status', 'publicado'))) as Row[]).length };
   }
   if (key === 'lugares') {
     const guides = ((await must(db.from('guide_places').select('guide_id').eq('place_id', row.id))) as Row[]).map((x) => x.guide_id);
     const dishes = ((await must(db.from('place_dishes').select('dish_id').eq('place_id', row.id))) as Row[]).map((x) => x.dish_id);
     const inbound = (await count('cities', 'id', row.city_id ? [row.city_id] : [])) + (await count('neighborhoods', 'id', row.neighborhood_id ? [row.neighborhood_id] : []))
       + (await count('guides', 'id', guides)) + (await count('dishes', 'id', dishes));
-    return { inboundLinks: inbound };
+    return { duplicateLocales: duplicates, inboundLinks: inbound };
   }
-  return {};
+  return { duplicateLocales: duplicates };
 }

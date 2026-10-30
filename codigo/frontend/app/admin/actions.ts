@@ -9,6 +9,7 @@ import { moderateReview, saveReply } from '../../../backend/admin-moderation/mod
 import { publishMenu, saveCategory, saveItem, setItemHidden, unpublishMenu } from '../../../backend/admin-moderation/menu-admin.ts';
 import { MAX_BYTES, type ImportReport } from '../../../backend/admin-moderation/csv-import.ts';
 import { previewImport, runImport } from '../../../backend/admin-moderation/import-admin.ts';
+import { recomputeIndexable } from '../../../backend/admin-moderation/indexing.ts';
 import { requireAdmin } from '../../lib/admin.ts';
 import { supabaseForRequest } from '../../lib/supabase-server.ts';
 
@@ -16,6 +17,11 @@ import { supabaseForRequest } from '../../lib/supabase-server.ts';
 export interface FormState { ok?: boolean; message?: string; errors?: Record<string, string> }
 
 const UUID = /^[0-9a-f-]{36}$/;
+
+/** Tras un cambio guardado. Si falla no deshace el cambio: se avisa en el registro y se puede repetir en /admin/indexacion. */
+async function refreshIndexable(email: string) {
+  try { await recomputeIndexable(await supabaseForRequest(), email); } catch (e) { console.error('[indexable]', e); }
+}
 
 /**
  * Común a todas las acciones: comprueba el rol (una Server Action se puede invocar sin pasar por la página),
@@ -29,6 +35,7 @@ async function run(form: FormData, op: (ctx: { key: AdminEntity; id: string; ema
   try {
     const result = await op({ key, id, email: user.email ?? user.id, get: (k) => form.get(k) });
     if (!result.ok) return { errors: result.errors };
+    await refreshIndexable(user.email ?? user.id);
     revalidatePath(`/admin/${key}/${id}`);
     return { ok: true, message: okMessage };
   } catch (e) {
@@ -110,6 +117,7 @@ async function moderation(form: FormData, op: (ctx: { id: string; email: string 
   try {
     const result = await op({ id, email: user.email ?? user.id });
     if (!result.ok) return { errors: result.errors };
+    await refreshIndexable(user.email ?? user.id);
     revalidatePath(back);
     revalidatePath('/admin');
     return { ok: true, message: okMessage };
@@ -199,5 +207,19 @@ export async function confirmImport(_prev: ImportState, form: FormData): Promise
   } catch (e) {
     console.error('[importar]', e);
     return { error: 'No se ha podido importar. No se ha dado por terminada: revisa la lista de lugares antes de repetir.' };
+  }
+}
+
+/* ---------- Indexación (Fase 5) ---------- */
+
+export async function recalculate(_prev: FormState, _form: FormData): Promise<FormState> {
+  const user = await requireAdmin('/admin/indexacion');
+  try {
+    const r = await recomputeIndexable(await supabaseForRequest(), user.email ?? user.id);
+    revalidatePath('/admin/indexacion');
+    return { ok: true, message: `${r.evaluated} textos evaluados, ${r.indexable} indexables, ${r.changed} cambios, ${r.duplicates} con texto muy parecido a otro.` };
+  } catch (e) {
+    console.error('[indexable]', e);
+    return { errors: { _: 'No se ha podido recalcular.' } };
   }
 }

@@ -10,7 +10,7 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
-  // Fase 1: páginas provisionales sin contenido real. Nada se indexa hasta pasar el Quality Gate (maestro §4).
+  // Por defecto, noindex: solo se abre lo que aprueba lib/seo.ts (interruptor encendido y Quality Gate superado, maestro §4).
   robots: { index: false, follow: false },
 };
 

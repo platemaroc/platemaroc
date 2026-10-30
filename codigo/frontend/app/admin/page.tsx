@@ -47,6 +47,7 @@ export default async function AdminHome() {
       </ul>
       <h2 className={styles.subtitle}>Herramientas</h2>
       <ul className={styles.sections}>
+        <li><a href="/admin/indexacion"><strong>Indexación</strong><span>Qué textos pasan el Quality Gate y estado del interruptor de indexación</span></a></li>
         <li><a href="/admin/importar"><strong>Importar lugares</strong><span>Desde una hoja de cálculo CSV, en borrador. El menú se edita dentro de cada lugar</span></a></li>
       </ul>
     </>

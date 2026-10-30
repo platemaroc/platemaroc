@@ -21,6 +21,8 @@ export interface PlaceSummary {
   priceRange: number | null;
   rating: RatingView;
   photo: PhotoView | null;
+  /** Pasa el Quality Gate en este idioma. */
+  indexable?: boolean;
 }
 
 export interface ReviewView { author: string; rating: number; comment: string | null; locale: Locale | null; visitedOn: string | null; date: string; photos: PhotoView[] }
@@ -38,6 +40,8 @@ export interface PlaceDetail extends PlaceSummary {
   /** Indicaciones de llegada en texto, en el idioma de la página (docs/11). */
   directions: string | null;
   openingHours: [string, string][];
+  /** Horario tal como está guardado, para los datos estructurados. */
+  hoursRaw?: unknown;
   phone: string | null;
   website: string | null;
   dishes: Ref[];
@@ -50,10 +54,10 @@ export interface PlaceDetail extends PlaceSummary {
 export interface MenuItemView { name: string; description: string | null; priceMad: number | null; soldOut: boolean; allergens: string[] }
 export interface MenuView { place: Ref & { section: PlaceSection }; categories: { name: string; items: MenuItemView[] }[]; locales: Locale[] }
 
-export interface DishSummary { slug: string; name: string; summary: string | null }
+export interface DishSummary { slug: string; name: string; summary: string | null; indexable?: boolean }
 export interface DishDetail extends DishSummary { content: string | null; ingredients: string[]; region: Ref | null; places: PlaceSummary[]; locales: Locale[] }
 
-export interface GuideSummary { slug: string; name: string; summary: string | null }
+export interface GuideSummary { slug: string; name: string; summary: string | null; indexable?: boolean }
 export interface GuideDetail extends GuideSummary {
   content: string | null;
   author: string | null;
@@ -64,9 +68,15 @@ export interface GuideDetail extends GuideSummary {
   locales: Locale[];
 }
 
-export interface CitySummary { slug: string; name: string; summary: string | null }
+export interface CitySummary { slug: string; name: string; summary: string | null; indexable?: boolean }
 export interface CityDetail extends CitySummary { content: string | null; neighborhoods: Ref[]; places: PlaceSummary[]; locales: Locale[] }
 export interface NeighborhoodDetail { slug: string; name: string; summary: string | null; content: string | null; city: Ref; places: PlaceSummary[]; locales: Locale[] }
+
+export type SeoEntity = 'place' | 'dish' | 'guide' | 'city' | 'neighborhood';
+/** Idiomas indexables de una ficha y sus textos para buscadores en el idioma pedido. */
+export interface SeoInfo { indexableLocales: Locale[]; title: string | null; description: string | null }
+/** Una página para el sitemap: su ruta en cada idioma indexable. */
+export interface IndexEntry { paths: Partial<Record<Locale, string>>; lastmod: string | null }
 
 export interface PlaceFilter { section?: PlaceSection; citySlug?: string; neighborhoodSlug?: string; limit?: number }
 
@@ -83,6 +93,8 @@ export interface ContentSource {
   listCities(locale: Locale): Promise<CitySummary[]>;
   getCity(locale: Locale, slug: string): Promise<CityDetail | null>;
   getNeighborhood(locale: Locale, citySlug: string, slug: string): Promise<NeighborhoodDetail | null>;
+  seoInfo(entity: SeoEntity, slug: string, locale: Locale, citySlug?: string): Promise<SeoInfo>;
+  listIndexable(): Promise<IndexEntry[]>;
 }
 
 /**

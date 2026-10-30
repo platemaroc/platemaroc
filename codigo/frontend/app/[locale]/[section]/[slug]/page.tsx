@@ -2,13 +2,17 @@ import { Fragment } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { Locale } from '../../../../../shared/locales.ts';
-import { isPlaceSection, MENU_SEGMENT, sectionPath, type Section } from '../../../../../shared/routes.ts';
+import { isPlaceSection, MENU_SEGMENT, sectionPath, type PlaceSection, type Section } from '../../../../../shared/routes.ts';
 import { ButtonLink, Photo, Stars } from '../../../../../components-ui/mobile-design/ui.tsx';
 import { getMessages, reviewLabel, type Messages } from '../../../../i18n/messages.ts';
 import { SiteHeader } from '../../../../components/SiteHeader.tsx';
 import { Breadcrumbs, LinkList, PlaceList } from '../../../../components/content.tsx';
 import { PlaceMap } from '../../../../maps/PlaceMap.tsx';
-import { getCity, getDish, getGuide, getPlace, resolveRoute } from '../../../../lib/data.ts';
+import { getCity, getDish, getGuide, getPlace, resolveRoute, seoInfo } from '../../../../lib/data.ts';
+import { absoluteUrl, indexingEnabled, pageMetadata } from '../../../../lib/seo.ts';
+import { JsonLd } from '../../../../components/JsonLd.tsx';
+import { breadcrumbJsonLd, restaurantJsonLd } from '../../../../../../seo/json-ld.ts';
+import { weekToSpecification } from '../../../../../shared/week.ts';
 import styles from '../../templates.module.css';
 
 type Params = Promise<{ locale: string; section: string; slug: string }>;
@@ -24,8 +28,13 @@ async function load(params: Params) {
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { data } = await load(params);
-  return data ? { title: data.name, description: data.summary ?? undefined } : {};
+  const { data, kind, section, locale } = await load(params);
+  if (!data) return {};
+  const seo = await seoInfo(kind, data.slug, locale);
+  return pageMetadata({
+    locale, title: seo.title ?? data.name, description: seo.description ?? data.summary, indexable: seo.indexableLocales,
+    paths: Object.fromEntries(data.locales.map((l) => [l, sectionPath(l, section as Section, data.slug)])),
+  });
 }
 
 const paragraphs = (text: string | null) => (text ?? '').split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
@@ -38,6 +47,11 @@ function Prose({ text }: { text: string | null }) {
 function crumbs(t: Messages, locale: Locale, section: Section, name: string) {
   return [{ name: t.nav.home, href: `/${locale}` }, { name: t.sections[section], href: sectionPath(locale, section) }, { name }];
 }
+
+/** Subtipo de schema.org más específico para cada tipo de lugar (norma vigente de Google). */
+const SCHEMA_TYPE: Record<PlaceSection, string> = {
+  restaurantes: 'Restaurant', 'cafes-y-teterias': 'CafeOrCoffeeShop', 'pastelerias-y-panaderias': 'Bakery', 'comida-callejera': 'FoodEstablishment', 'mercados-y-zocos': 'LocalBusiness',
+};
 
 /** Ficha de lugar, plato, guía o ciudad. */
 export default async function Detail({ params }: { params: Params }) {
@@ -52,7 +66,9 @@ export default async function Detail({ params }: { params: Params }) {
     body = (
       <>
         <p className={styles.lead}>
-          {t.sections[p.section]}{p.neighborhood || p.city ? ` · ${[p.neighborhood?.name, p.city?.name].filter(Boolean).join(', ')}` : ''}
+          {t.sections[p.section]}
+          {p.neighborhood && p.city && <> · <a href={sectionPath(locale, 'ciudades-y-barrios', p.city.slug, p.neighborhood.slug)}>{p.neighborhood.name}</a></>}
+          {p.city && <> · <a href={sectionPath(locale, 'ciudades-y-barrios', p.city.slug)}>{p.city.name}</a></>}
         </p>
         <Stars locale={locale} average={p.rating.average} count={p.rating.count} label={reviewLabel(t, p.rating.count)} emptyLabel={t.noReviews} />
         <div className={styles.gallery}>
@@ -161,11 +177,28 @@ export default async function Detail({ params }: { params: Params }) {
     );
   }
 
+  const seo = await seoInfo(page.kind, page.data.slug, locale);
+  const crumbItems = crumbs(t, locale, section as Section, page.data.name);
+  const indexable = indexingEnabled() && seo.indexableLocales.includes(locale);
+  const selfUrl = absoluteUrl(sectionPath(locale, section as Section, page.data.slug));
+  // Google exige dirección en los datos de un negocio: sin ella, no se emiten. La valoración solo con reseñas aprobadas y visibles aquí.
+  const place = page.kind === 'place' ? page.data : null;
+  const business = indexable && place?.address ? restaurantJsonLd({
+    type: SCHEMA_TYPE[place.section], name: place.name, url: selfUrl, description: place.summary ?? undefined,
+    images: place.photos.map((ph) => absoluteUrl(ph.src)), address: { street: place.address, city: place.city?.name }, lat: place.lat, lng: place.lng,
+    telephone: place.phone ?? undefined, openingHoursSpecification: weekToSpecification(place.hoursRaw),
+    approvedReviews: place.rating.average === null ? undefined : { count: place.rating.count, average: place.rating.average },
+    menuUrl: place.hasMenu ? absoluteUrl(sectionPath(locale, place.section, place.slug, MENU_SEGMENT)) : undefined,
+  }) : null;
+  const breadcrumb = indexable ? breadcrumbJsonLd(crumbItems.map((c) => ({ name: c.name, url: c.href ? absoluteUrl(c.href) : selfUrl }))) : null;
+
   return (
     <>
+      <JsonLd data={business} />
+      <JsonLd data={breadcrumb} />
       <SiteHeader locale={locale} available={page.data.locales} />
       <main id="contenido" className={styles.main}>
-        <Breadcrumbs label={t.breadcrumb} items={crumbs(t, locale, section as Section, page.data.name)} />
+        <Breadcrumbs label={t.breadcrumb} items={crumbItems} />
         <h1 className={styles.title}>{page.data.name}</h1>
         {body}
       </main>

@@ -8,6 +8,8 @@ import { SITE_NAME, SITE_URL } from './types.ts';
 type Json = Record<string, unknown>;
 
 export interface RestaurantInput {
+  /** Subtipo más específico de schema.org. */
+  type?: string;
   name: string;
   url: string;
   description?: string;
@@ -19,6 +21,8 @@ export interface RestaurantInput {
   telephone?: string;
   /** Ej.: ["Mo-Su 09:00-23:00"] solo si el horario está verificado. */
   openingHours?: string[];
+  /** Horario por días (formato recomendado por Google). */
+  openingHoursSpecification?: { dayOfWeek: string; opens: string; closes: string }[];
   /** "$"..."$$$$" o texto; solo si está verificado. */
   priceRange?: string;
   /** Solo reseñas APROBADAS. */
@@ -38,13 +42,14 @@ export function restaurantJsonLd(i: RestaurantInput): Json {
   const rating = i.approvedReviews;
   return compact({
     '@context': 'https://schema.org',
-    '@type': 'Restaurant',
+    '@type': i.type ?? 'Restaurant',
     name: i.name,
     url: i.url,
     description: i.description,
     image: i.images,
     telephone: i.telephone,
     openingHours: i.openingHours,
+    openingHoursSpecification: i.openingHoursSpecification?.map((s) => ({ '@type': 'OpeningHoursSpecification', ...s })),
     priceRange: i.priceRange,
     hasMenu: i.menuUrl,
     address: a && (a.street || a.city || a.country)
