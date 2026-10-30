@@ -164,3 +164,14 @@ No probado aún: Google Maps real, Safari/iOS, y el panel con el rol del titular
 Verificado: tipos, 44 pruebas unitarias, 31 de humo SQL, build, y en el proyecto de pruebas `reviews.e2e.cjs` (recorrido completo y ataques directos a la API:
 aprobarse la reseña o la foto, crear una foto aprobada, subir al bucket, editar/borrar/leer lo ajeno, sexta reseña en 24 h; todos rechazados) más `admin.e2e.cjs`.
 `0120` aprobada por el titular y aplicada a pruebas y a real el 30-10-2026. No probado: alta de una cuenta nueva con email real, Safari/iOS.
+
+## Fase 4d (30-10-2026): menú e importación
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Menú | `admin/[entity]/[id]/menu`, `menu-admin.ts` | Uno por lugar; categorías y artículos es/en/fr; precio solo en MAD, verificado o pendiente; publicar completo, ocultar artículos, retirar sin borrar |
+| Web pública | `supabase-source.ts` | Un precio sin verificar sale como "Precio pendiente" aunque tenga importe (docs/12) |
+| QR | `menu/qr/route.ts` (qrcode 1.5.4) | PNG por idioma, solo administración, con la URL definitiva de platemaroc.com |
+| Importación | `admin/importar`, `csv-import.ts`, `import-admin.ts` | Plantilla, vista previa sin guardar, errores por fila, duplicados omitidos, todo en borrador; se revalida al confirmar; auditoría con origen importacion |
+
+Verificado: tipos, pruebas unitarias, build y `menu.e2e.cjs` en el proyecto de pruebas. Avisos por email aplazados hasta tener SMTP; fotos de artículos del menú fuera de este bloque.

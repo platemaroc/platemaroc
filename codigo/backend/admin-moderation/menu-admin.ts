@@ -6,7 +6,7 @@ import { evaluateQualityGate, type GateReport } from '../../base-indexing/qualit
 import { recordAudit } from './audit-writer.ts';
 import { panelAudit } from './audit.ts';
 import type { SaveResult } from './content-admin.ts';
-import { checkLines, emptyToNull, type Errors } from './validate.ts';
+import { checkLines, checkPriceMad, emptyToNull, type Errors } from './validate.ts';
 
 /**
  * Menú digital de un lugar (uno por lugar, decisión del titular). Todo con la sesión del administrador (RLS) y auditoría.
@@ -22,14 +22,6 @@ async function must<T>(q: PromiseLike<{ data: T; error: { message: string } | nu
   const { data, error } = await q;
   if (error) throw new Error(error.message);
   return data;
-}
-
-/** Importe en MAD: acepta coma o punto; vacío = pendiente; nunca negativo ni con más de 2 decimales. */
-export function checkPriceMad(raw: unknown, errors: Errors): number | null {
-  const s = String(raw ?? '').trim().replace(',', '.');
-  if (!s) return null;
-  if (!/^\d{1,8}(\.\d{1,2})?$/.test(s)) { errors.price_mad = 'Importe en MAD, sin moneda: por ejemplo 120 o 12,50.'; return null; }
-  return Number(s);
 }
 
 export interface MenuData { menu: Row | null; categories: Row[]; items: Row[]; names: Record<string, Record<string, Row>> }

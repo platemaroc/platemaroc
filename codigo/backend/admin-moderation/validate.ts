@@ -107,3 +107,11 @@ export function photoRightsComplete(p: { source?: string | null; author?: string
 export function checkLines(v: unknown, max = 20): string[] {
   return String(v ?? '').split(/[\n,]/).map((x) => x.trim()).filter(Boolean).slice(0, max);
 }
+
+/** Importe en MAD: acepta coma o punto; vacío = pendiente; nunca negativo ni con más de 2 decimales. */
+export function checkPriceMad(raw: unknown, errors: Errors): number | null {
+  const s = String(raw ?? '').trim().replace(',', '.');
+  if (!s) return null;
+  if (!/^\d{1,8}(\.\d{1,2})?$/.test(s)) { errors.price_mad = 'Importe en MAD, sin moneda: por ejemplo 120 o 12,50.'; return null; }
+  return Number(s);
+}
