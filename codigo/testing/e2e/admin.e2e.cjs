@@ -168,6 +168,24 @@ async function waitFor(url, ms = 120_000) {
     assert.equal(meta.exif, undefined, 'la foto publicada no lleva EXIF/GPS');
     console.log('foto: aprobada con derechos y alt; /media la sirve en WebP 1600 px sin GPS');
 
+    // Foto de plato: mismo formulario; no se sirve mientras el plato sea borrador.
+    const [dish] = await api('/rest/v1/dishes', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ slug: `e2e-plato-${stamp}` }) });
+    await page.goto(`${BASE}/admin/platos/${dish.id}`);
+    const upDish = page.locator('form:has(button:has-text("Subir foto"))');
+    await upDish.locator('input[type=file]').setInputFiles(tmp);
+    await upDish.locator('input[name=source]').fill('Foto de prueba');
+    await upDish.locator('input[name=author]').fill('E2E');
+    await upDish.locator('input[name=license]').fill('Solo pruebas');
+    await upDish.locator('input[name=alt_es]').fill('Plato de prueba');
+    await upDish.locator('button:has-text("Subir foto")').click();
+    await upDish.locator('[role=status]').waitFor({ timeout: 30_000 });
+    const [dishPhoto] = await api(`/rest/v1/photos?dish_id=eq.${dish.id}&select=storage_path,status`);
+    assert.equal(dishPhoto.status, 'aprobada');
+    assert.equal((await fetch(`${BASE}/media/${dishPhoto.storage_path}`)).status, 404, 'plato en borrador: su foto no es pública');
+    await api(`/rest/v1/dishes?id=eq.${dish.id}`, { method: 'PATCH', body: JSON.stringify({ status: 'publicado' }) });
+    assert.equal((await fetch(`${BASE}/media/${dishPhoto.storage_path}`)).status, 200, 'plato publicado: su foto se sirve');
+    console.log('foto de plato: privada en borrador y pública al publicar');
+
     // Auditoría de todo lo anterior.
     const audit = await api(`/rest/v1/audit_log?entidad_id=eq.${placeId}&select=accion,campo,origen,actor`);
     const actions = audit.map((a) => a.accion);

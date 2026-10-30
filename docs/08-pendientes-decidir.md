@@ -12,7 +12,7 @@
 7. Ajuste final de los umbrales internos del Quality Gate.
 
 ## Añadidos al integrar el código (29-10-2026)
-9. Fotos para platos, guías y ciudades: APLAZADO por el titular (30-10-2026; aún no tiene fotos). El Quality Gate (maestro §4.2) las exige y `photos` solo admite lugares y reseñas: sin la migración propuesta (columnas `dish_id`, `guide_id`, `city_id`), esas fichas no serán indexables.
+9. Fotos para platos, guías y ciudades: la función está hecha y aplicada al proyecto real (migración 0011 y políticas 0140, 30-10-2026). Falta que el titular suba las fotos cuando las tenga.
 
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).

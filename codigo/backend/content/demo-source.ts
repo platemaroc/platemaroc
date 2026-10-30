@@ -89,21 +89,21 @@ export const demoSource: ContentSource = {
   async listDishes(l) { return [{ slug: DISH.slug, name: DISH.name[l], summary: DISH.summary[l] }]; },
   async getDish(l, slug) {
     if (slug !== DISH.slug) return null;
-    return { slug, name: DISH.name[l], summary: DISH.summary[l], content: null, ingredients: [all('ingrediente de prueba', 'test ingredient', 'ingrédient de test')[l]],
+    return { slug, name: DISH.name[l], summary: DISH.summary[l], content: null, photos: [], ingredients: [all('ingrediente de prueba', 'test ingredient', 'ingrédient de test')[l]],
       region: null, places: published(l).filter((p) => p.section === 'restaurantes').map((p) => summary(p, l)), locales: ['es', 'en', 'fr'] };
   },
 
   async listGuides(l) { return [{ slug: GUIDE.slug, name: GUIDE.name[l], summary: GUIDE.summary[l] }]; },
   async getGuide(l, slug) {
     if (slug !== GUIDE.slug) return null;
-    return { slug, name: GUIDE.name[l], summary: GUIDE.summary[l], content: null, author: 'Demo',
+    return { slug, name: GUIDE.name[l], summary: GUIDE.summary[l], content: null, photos: [], author: 'Demo',
       places: published(l).map((p) => summary(p, l)), dishes: [ref(DISH, l)], cities: [ref(CITY, l)], neighborhoods: [{ ...ref(HOOD, l), city: CITY.slug }], locales: ['es', 'en', 'fr'] };
   },
 
   async listCities(l) { return [{ slug: CITY.slug, name: CITY.name[l], summary: CITY.summary[l] }]; },
   async getCity(l, slug) {
     if (slug !== CITY.slug) return null;
-    return { slug, name: CITY.name[l], summary: CITY.summary[l], content: null, neighborhoods: [ref(HOOD, l)], places: published(l).map((p) => summary(p, l)), locales: ['es', 'en', 'fr'] };
+    return { slug, name: CITY.name[l], summary: CITY.summary[l], content: null, photos: [], neighborhoods: [ref(HOOD, l)], places: published(l).map((p) => summary(p, l)), locales: ['es', 'en', 'fr'] };
   },
   // Los datos demo nunca se indexan.
   async seoInfo() { return { indexableLocales: [], title: null, description: null }; },

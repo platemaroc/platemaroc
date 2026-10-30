@@ -4,6 +4,7 @@ import { LOCALES } from '../../shared/locales.ts';
 import { canTransition } from '../../shared/states.ts';
 import { recordAudit } from './audit-writer.ts';
 import { panelAudit } from './audit.ts';
+import type { EntityDef } from './entities.ts';
 import { processImage } from './images.ts';
 import { emptyToNull, photoRightsComplete, type Errors } from './validate.ts';
 import type { SaveResult } from './content-admin.ts';
@@ -42,18 +43,20 @@ async function saveAlts(db: SupabaseClient, photoId: string, form: Form): Promis
 }
 
 /**
- * Foto del titular para una ficha. Con origen, autor y licencia queda aprobada; si falta alguno, pendiente de moderación
- * (decisión del 29-10-2026, orden moderar-fotos). Aprobar exige además el alt en español.
+ * Foto del titular para una ficha de lugar, plato, guía o ciudad. Con origen, autor y licencia queda aprobada; si falta alguno,
+ * pendiente de moderación (decisión del 29-10-2026, orden moderar-fotos). Aprobar exige además el alt en español.
  */
-export async function uploadPlacePhoto(db: SupabaseClient, placeId: string, form: Form, adminEmail: string): Promise<SaveResult> {
+export async function uploadEntityPhoto(db: SupabaseClient, def: EntityDef, id: string, form: Form, adminEmail: string): Promise<SaveResult> {
+  if (!def.photoColumn) return { ok: false, errors: { _: 'Esta ficha no tiene fotos.' } };
   const rights = { source: emptyToNull(form('source')), author: emptyToNull(form('author')), license: emptyToNull(form('license')) };
   const altEs = emptyToNull(form('alt_es'));
-  const up = await upload(db, form('file'), `admin/places/${placeId}`, 1600);
+  const up = await upload(db, form('file'), `admin/${def.table}/${id}`, 1600);
   if (!up.ok) return { ok: false, errors: { file: up.error } };
   const status = photoRightsComplete(rights) && altEs ? 'aprobada' : 'pendiente';
-  const [photo] = (await must(db.from('photos').insert({ place_id: placeId, storage_path: up.path, ...rights, status }).select('id'))) as Row[];
+  const target = { [def.photoColumn]: id };
+  const [photo] = (await must(db.from('photos').insert({ ...target, storage_path: up.path, ...rights, status }).select('id'))) as Row[];
   const alts = await saveAlts(db, photo.id, form);
-  await recordAudit(panelAudit(adminEmail, { entidad_tipo: 'photo', entidad_id: photo.id, accion: 'subir', valor_nuevo: { place_id: placeId, ...rights, status, alts } }));
+  await recordAudit(panelAudit(adminEmail, { entidad_tipo: 'photo', entidad_id: photo.id, accion: 'subir', valor_nuevo: { ...target, ...rights, status, alts } }));
   return { ok: true, id: photo.id };
 }
 

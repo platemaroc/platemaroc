@@ -59,16 +59,16 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
     return new Map(placeIds.map((id) => [id, summarizeApproved(data.filter((r) => r.place_id === id).map((r) => ({ status: r.status, rating: r.rating })))]));
   }
 
-  async function photos(placeIds: string[], locale: Locale, fallbackAlt: Map<string, string>): Promise<Map<string, PhotoView[]>> {
-    if (!placeIds.length) return new Map();
-    const list = await rows(db.from('photos').select('id,place_id,storage_path,created_at').in('place_id', placeIds).order('created_at'));
+  async function photos(ownerIds: string[], locale: Locale, fallbackAlt: Map<string, string>, column: 'place_id' | 'dish_id' | 'guide_id' | 'city_id' = 'place_id'): Promise<Map<string, PhotoView[]>> {
+    if (!ownerIds.length) return new Map();
+    const list = await rows(db.from('photos').select(`id,${column},storage_path,created_at`).in(column, ownerIds).order('created_at'));
     const alts = list.length
       ? new Map((await rows(db.from('photo_translations').select('photo_id,alt').eq('locale', locale).in('photo_id', list.map((p) => p.id)))).map((a) => [a.photo_id, a.alt]))
       : new Map();
     const out = new Map<string, PhotoView[]>();
     for (const p of list) {
-      const view = { src: mediaSrc(p.storage_path), alt: alts.get(p.id) ?? fallbackAlt.get(p.place_id) ?? '' };
-      out.set(p.place_id, [...(out.get(p.place_id) ?? []), view]);
+      const view = { src: mediaSrc(p.storage_path), alt: alts.get(p.id) ?? fallbackAlt.get(p[column]) ?? '' };
+      out.set(p[column], [...(out.get(p[column]) ?? []), view]);
     }
     return out;
   }
@@ -266,6 +266,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       return {
         slug, name: tr.title, summary: tr.description, content: tr.content, ingredients: row.main_ingredients ?? [],
         region: region.get(row.origin_region_id) ?? null, places: await placesByIds(links.map((l) => l.place_id), locale), locales,
+        photos: (await photos([row.id], locale, new Map([[row.id, tr.title]]), 'dish_id')).get(row.id) ?? [],
       };
     },
 
@@ -288,6 +289,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       ]);
       return {
         slug, name: tr.title, summary: tr.description, content: tr.content, author: row.author_name ?? null,
+        photos: (await photos([row.id], locale, new Map([[row.id, tr.title]]), 'guide_id')).get(row.id) ?? [],
         places: await placesByIds(gp.map((x) => x.place_id), locale), dishes: [...dishes.values()], cities: [...cities.values()],
         neighborhoods: hoodRows.flatMap((h) => (hoods.has(h.id) && hoodCities.has(h.city_id) ? [{ ...hoods.get(h.id)!, city: hoodCities.get(h.city_id)!.slug }] : [])),
         locales,
@@ -305,6 +307,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       const hoods = await refs('neighborhoods', 'neighborhood', hoodRows.map((h) => h.id), locale);
       return {
         slug, name: tr.title, summary: tr.description, content: tr.content, neighborhoods: [...hoods.values()],
+        photos: (await photos([row.id], locale, new Map([[row.id, tr.title]]), 'city_id')).get(row.id) ?? [],
         places: await listPlaces(locale, { citySlug: slug }), locales: await publishedLocales('city', row.id),
       };
     },

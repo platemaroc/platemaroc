@@ -157,7 +157,7 @@ export default async function EditEntity({ params, searchParams }: { params: Par
 
       {def.place && <p><a className={styles.secondaryLink} href={`/admin/lugares/${id}/menu`}>Editar menú digital</a></p>}
 
-      {def.place && (
+      {def.photoColumn && (
         <section className={styles.card} aria-labelledby="fotos">
           <h2 id="fotos">Fotos</h2>
           <p className={styles.muted}>Con origen, autor, licencia y texto alternativo en español la foto queda aprobada; si falta algo, queda pendiente de moderación. Se reduce, se pasa a WebP y se le quitan los datos ocultos (GPS, cámara).</p>

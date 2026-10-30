@@ -26,21 +26,23 @@ export interface EntityDef {
   plural: string;
   /** Campos propios editables (las regiones no: solo traducciones y estado). */
   editable: boolean;
-  /** Indicaciones de llegada en las traducciones y fotos/mapa estático: solo lugares. */
+  /** Indicaciones de llegada en las traducciones, mapa estático y menú: solo lugares. */
   place: boolean;
+  /** Columna de `photos` que apunta a esta ficha. Sin ella, la ficha no tiene fotos (el Quality Gate no se las pide). */
+  photoColumn?: 'place_id' | 'dish_id' | 'guide_id' | 'city_id';
   relations: RelationDef[];
 }
 
 const rel = (key: string, label: string, table: string, ownKey: string, otherKey: string, other: AdminEntity): RelationDef => ({ key, label, table, ownKey, otherKey, other });
 
 export const ENTITIES: Record<AdminEntity, EntityDef> = {
-  lugares: { key: 'lugares', table: 'places', type: 'place', audit: 'place', singular: 'lugar', plural: 'Lugares', editable: true, place: true,
+  lugares: { key: 'lugares', table: 'places', type: 'place', audit: 'place', singular: 'lugar', plural: 'Lugares', editable: true, place: true, photoColumn: 'place_id',
     relations: [rel('platos', 'Platos que destacan aquí', 'place_dishes', 'place_id', 'dish_id', 'platos')] },
-  ciudades: { key: 'ciudades', table: 'cities', type: 'city', audit: 'city', singular: 'ciudad', plural: 'Ciudades', editable: true, place: false, relations: [] },
+  ciudades: { key: 'ciudades', table: 'cities', type: 'city', audit: 'city', singular: 'ciudad', plural: 'Ciudades', editable: true, place: false, photoColumn: 'city_id', relations: [] },
   barrios: { key: 'barrios', table: 'neighborhoods', type: 'neighborhood', audit: 'neighborhood', singular: 'barrio', plural: 'Barrios', editable: true, place: false, relations: [] },
-  platos: { key: 'platos', table: 'dishes', type: 'dish', audit: 'dish', singular: 'plato', plural: 'Platos', editable: true, place: false,
+  platos: { key: 'platos', table: 'dishes', type: 'dish', audit: 'dish', singular: 'plato', plural: 'Platos', editable: true, place: false, photoColumn: 'dish_id',
     relations: [rel('lugares', 'Lugares donde probarlo', 'place_dishes', 'dish_id', 'place_id', 'lugares')] },
-  guias: { key: 'guias', table: 'guides', type: 'guide', audit: 'guide', singular: 'guía', plural: 'Guías', editable: true, place: false,
+  guias: { key: 'guias', table: 'guides', type: 'guide', audit: 'guide', singular: 'guía', plural: 'Guías', editable: true, place: false, photoColumn: 'guide_id',
     relations: [
       rel('lugares', 'Lugares de la guía', 'guide_places', 'guide_id', 'place_id', 'lugares'),
       rel('platos', 'Platos de la guía', 'guide_dishes', 'guide_id', 'dish_id', 'platos'),

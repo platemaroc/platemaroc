@@ -223,6 +223,11 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Fotos de platos, guías y ciudades (30-10-2026)
+
+Migración `0011` (columnas `dish_id`, `guide_id`, `city_id` y un solo destino por foto) y políticas `0140` (pública solo si está aprobada y su ficha publicada; un usuario no puede añadirlas). `photoColumn` en `entities.ts` decide qué fichas tienen fotos: los barrios no, porque el Quality Gate no se las pide. Mismo formulario y misma moderación que los lugares. En la web, hasta 3 fotos; sin fotos no se pinta hueco.
+Verificado: pruebas SQL 32 a 34, ensayo de `apply.sh` y `admin.e2e.cjs` contra el proyecto de pruebas. Solo se probó de extremo a extremo la foto de plato; guías y ciudades usan el mismo código, y las fichas públicas con foto no se han visto en navegador.
+
 ## Instalación en el móvil (30-10-2026)
 
 `app/manifest.ts`, iconos en `public/icons/` y `app/apple-icon.png`. Al abrirse instalada empieza en el selector de idioma. Instalar de verdad exige HTTPS: se comprueba tras publicar.

@@ -77,7 +77,7 @@ export async function getEntity(db: SupabaseClient, key: AdminEntity, id: string
   const trs = (await must(db.from('translations').select('*').eq('entity_type', def.type).eq('entity_id', id))) as Row[];
   const relations: Record<string, string[]> = {};
   for (const r of def.relations) relations[r.key] = ((await must(db.from(r.table).select(r.otherKey).eq(r.ownKey, id))) as Row[]).map((x) => x[r.otherKey]);
-  const photos = def.place ? (await must(db.from('photos').select('*').eq('place_id', id).is('review_id', null).order('created_at'))) as Row[] : [];
+  const photos = def.photoColumn ? (await must(db.from('photos').select('*').eq(def.photoColumn, id).is('review_id', null).order('created_at'))) as Row[] : [];
   if (photos.length) {
     const alts = (await must(db.from('photo_translations').select('*').in('photo_id', photos.map((p) => p.id)))) as Row[];
     for (const p of photos) p.alts = Object.fromEntries(alts.filter((a) => a.photo_id === p.id).map((a) => [a.locale, a.alt]));

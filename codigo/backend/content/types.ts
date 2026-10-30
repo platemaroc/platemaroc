@@ -55,10 +55,11 @@ export interface MenuItemView { name: string; description: string | null; priceM
 export interface MenuView { place: Ref & { section: PlaceSection }; categories: { name: string; items: MenuItemView[] }[]; locales: Locale[]; indexableLocales: Locale[] }
 
 export interface DishSummary { slug: string; name: string; summary: string | null; indexable?: boolean }
-export interface DishDetail extends DishSummary { content: string | null; ingredients: string[]; region: Ref | null; places: PlaceSummary[]; locales: Locale[] }
+export interface DishDetail extends DishSummary { content: string | null; photos: PhotoView[]; ingredients: string[]; region: Ref | null; places: PlaceSummary[]; locales: Locale[] }
 
 export interface GuideSummary { slug: string; name: string; summary: string | null; indexable?: boolean }
 export interface GuideDetail extends GuideSummary {
+  photos: PhotoView[];
   content: string | null;
   author: string | null;
   places: PlaceSummary[];
@@ -69,7 +70,7 @@ export interface GuideDetail extends GuideSummary {
 }
 
 export interface CitySummary { slug: string; name: string; summary: string | null; indexable?: boolean }
-export interface CityDetail extends CitySummary { content: string | null; neighborhoods: Ref[]; places: PlaceSummary[]; locales: Locale[] }
+export interface CityDetail extends CitySummary { content: string | null; photos: PhotoView[]; neighborhoods: Ref[]; places: PlaceSummary[]; locales: Locale[] }
 export interface NeighborhoodDetail { slug: string; name: string; summary: string | null; content: string | null; city: Ref; places: PlaceSummary[]; locales: Locale[] }
 
 export type SeoEntity = 'place' | 'dish' | 'guide' | 'city' | 'neighborhood';

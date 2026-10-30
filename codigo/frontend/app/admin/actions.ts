@@ -2,9 +2,9 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { isLocale } from '../../i18n/config.ts';
-import { isAdminEntity, type AdminEntity } from '../../../backend/admin-moderation/entities.ts';
+import { ENTITIES, isAdminEntity, type AdminEntity } from '../../../backend/admin-moderation/entities.ts';
 import { changeStatus, changeTranslationStatus, saveFields, saveRelations, saveTranslation, type SaveResult } from '../../../backend/admin-moderation/content-admin.ts';
-import { setStaticMap, updatePhoto, uploadPlacePhoto } from '../../../backend/admin-moderation/photos-admin.ts';
+import { setStaticMap, updatePhoto, uploadEntityPhoto } from '../../../backend/admin-moderation/photos-admin.ts';
 import { moderateReview, saveReply } from '../../../backend/admin-moderation/moderation-admin.ts';
 import { publishMenu, saveCategory, saveItem, setItemHidden, unpublishMenu } from '../../../backend/admin-moderation/menu-admin.ts';
 import { MAX_BYTES, type ImportReport } from '../../../backend/admin-moderation/csv-import.ts';
@@ -92,9 +92,7 @@ export async function updateRelations(_prev: FormState, form: FormData): Promise
 }
 
 export async function addPhoto(_prev: FormState, form: FormData): Promise<FormState> {
-  return run(form, async ({ key, id, email, get }) => (key === 'lugares'
-    ? uploadPlacePhoto(await supabaseForRequest(), id, get, email)
-    : { ok: false, errors: { _: 'Solo los lugares tienen fotos por ahora.' } }), 'Foto subida.');
+  return run(form, async ({ key, id, email, get }) => uploadEntityPhoto(await supabaseForRequest(), ENTITIES[key], id, get, email), 'Foto subida.');
 }
 
 export async function editPhoto(_prev: FormState, form: FormData): Promise<FormState> {

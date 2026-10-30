@@ -111,3 +111,18 @@ update reviews set comment=repeat('x',2001),status='pendiente' where user_id=aut
 insert into photos(user_id,review_id,storage_path) select auth.uid(),r.id,auth.uid()||'/f'||g||'.webp' from reviews r, generate_series(1,3) g where r.user_id=auth.uid() and r.place_id=(select id from places where slug='demo-l1');
 insert into photos(user_id,review_id,storage_path) select auth.uid(),r.id,auth.uid()||'/f4.webp' from reviews r where r.user_id=auth.uid() and r.place_id=(select id from places where slug='demo-l1');
 reset role;
+insert into dishes(slug,status) values ('demo-foto','publicado');
+\echo '--- 32. usuario: no puede poner una foto en un plato: ERROR esperado (RLS)'
+set role authenticated; set request.jwt.claim.sub='33333333-3333-3333-3333-333333333333';
+insert into photos(user_id,dish_id,storage_path) select auth.uid(),id,auth.uid()||'/plato.webp' from dishes limit 1;
+reset role; set request.jwt.claims = '';
+\echo '--- 33. una foto no puede tener dos destinos ni ninguno: dos ERROR esperados (photos_target)'
+insert into photos(dish_id,place_id,storage_path) select d.id,p.id,'admin/x.webp' from dishes d, places p limit 1;
+insert into photos(storage_path) values ('admin/y.webp');
+\echo '--- 34. foto aprobada de plato: anon no la ve con el plato en borrador (0) y sí publicado (1)'
+update dishes set status='borrador' where slug='demo-foto';
+insert into photos(dish_id,storage_path,status,source,author,license) select id,'admin/dishes/f.webp','aprobada','propia','demo','demo' from dishes where slug='demo-foto';
+insert into photo_translations(photo_id,locale,alt) select id,'es','alt demo' from photos where storage_path='admin/dishes/f.webp';
+set role anon; select count(*) as borrador from photos where storage_path='admin/dishes/f.webp'; reset role;
+update dishes set status='publicado' where slug='demo-foto';
+set role anon; select count(*) as publicado from photos where storage_path='admin/dishes/f.webp'; select count(*) as alt from photo_translations t join photos p on p.id=t.photo_id where p.storage_path='admin/dishes/f.webp'; reset role;

@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { Locale } from '../../../../../shared/locales.ts';
+import type { PhotoView } from '../../../../../backend/content/index.ts';
 import { isPlaceSection, MENU_SEGMENT, sectionPath, type PlaceSection, type Section } from '../../../../../shared/routes.ts';
 import { ButtonLink, Photo, Stars } from '../../../../../components-ui/mobile-design/ui.tsx';
 import { getMessages, reviewLabel, type Messages } from '../../../../i18n/messages.ts';
@@ -42,6 +43,16 @@ const paragraphs = (text: string | null) => (text ?? '').split(/\n{2,}/).map((p)
 function Prose({ text }: { text: string | null }) {
   const ps = paragraphs(text);
   return ps.length ? <div className={styles.prose}>{ps.map((p, i) => <p key={i}>{p}</p>)}</div> : null;
+}
+
+/** Fotos de plato, guía o ciudad: sin ninguna no se pinta nada (un plato sin foto no es un hueco a rellenar, como en un lugar). */
+function Gallery({ photos, empty }: { photos: PhotoView[]; empty: string }) {
+  if (!photos.length) return null;
+  return (
+    <div className={styles.gallery}>
+      {photos.slice(0, 3).map((ph, i) => <Photo key={ph.src} src={ph.src} alt={ph.alt} emptyLabel={empty} priority={i === 0} />)}
+    </div>
+  );
 }
 
 function crumbs(t: Messages, locale: Locale, section: Section, name: string) {
@@ -126,6 +137,7 @@ export default async function Detail({ params }: { params: Params }) {
     body = (
       <>
         {d.summary && <p className={styles.lead}>{d.summary}</p>}
+        <Gallery photos={d.photos} empty={t.noPhoto} />
         <Prose text={d.content} />
         {d.ingredients.length > 0 && (
           <dl className={styles.facts}>
@@ -141,6 +153,7 @@ export default async function Detail({ params }: { params: Params }) {
       <>
         {g.summary && <p className={styles.lead}>{g.summary}</p>}
         {g.author && <p><strong>{t.author}:</strong> {g.author}</p>}
+        <Gallery photos={g.photos} empty={t.noPhoto} />
         <Prose text={g.content} />
         <section className={styles.section}><h2>{t.relatedPlaces}</h2><PlaceList places={g.places} locale={locale} /></section>
         {g.dishes.length > 0 && (
@@ -165,6 +178,7 @@ export default async function Detail({ params }: { params: Params }) {
     body = (
       <>
         {c.summary && <p className={styles.lead}>{c.summary}</p>}
+        <Gallery photos={c.photos} empty={t.noPhoto} />
         <Prose text={c.content} />
         {c.neighborhoods.length > 0 && (
           <section className={styles.section}>

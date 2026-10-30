@@ -27,7 +27,7 @@ export interface IndexSummary { evaluated: number; indexable: number; changed: n
 
 export async function recomputeIndexable(db: SupabaseClient, email: string): Promise<IndexSummary> {
   const [translations, photos, alts, placeDishes, guidePlaces, guideDishes, guideCities, guideHoods] = await Promise.all([
-    all(db, 'translations'), all(db, 'photos', 'id,place_id,status'), all(db, 'photo_translations', 'photo_id,locale,alt'),
+    all(db, 'translations'), all(db, 'photos', 'id,place_id,dish_id,guide_id,city_id,status'), all(db, 'photo_translations', 'photo_id,locale,alt'),
     all(db, 'place_dishes'), all(db, 'guide_places'), all(db, 'guide_dishes'), all(db, 'guide_cities'), all(db, 'guide_neighborhoods'),
   ]);
   const rows = Object.fromEntries(await Promise.all(KEYS.map(async (k) => [k, await all(db, ENTITIES[k].table)]))) as Record<(typeof KEYS)[number], Row[]>;
@@ -53,11 +53,12 @@ export async function recomputeIndexable(db: SupabaseClient, email: string): Pro
           lugares: guidePlaces.filter((x) => x.guide_id === row.id).map((x) => x.place_id), platos: guideDishes.filter((x) => x.guide_id === row.id).map((x) => x.dish_id),
           ciudades: guideCities.filter((x) => x.guide_id === row.id).map((x) => x.city_id), barrios: guideHoods.filter((x) => x.guide_id === row.id).map((x) => x.neighborhood_id),
         } : {};
-      const placePhotos = key === 'lugares' ? photos.filter((p) => p.place_id === row.id).map((p) => ({
+      const column = def.photoColumn;
+      const entityPhotos = column ? photos.filter((p) => p[column] === row.id).map((p) => ({
         ...p, alts: Object.fromEntries(alts.filter((a) => a.photo_id === p.id).map((a) => [a.locale, a.alt])),
       })) : [];
       const reports = previewGate(key, {
-        row, relations, photos: placePhotos,
+        row, relations, photos: entityPhotos,
         translations: Object.fromEntries(trs.map((t) => [t.locale, t])),
         duplicateLocales: LOCALES.filter((l) => { const t = trs.find((x) => x.locale === l); return t && duplicates.has(t.id); }),
         publishedPlaces: key === 'ciudades' ? rows.lugares.filter((p) => p.city_id === row.id && p.status === 'publicado').length
