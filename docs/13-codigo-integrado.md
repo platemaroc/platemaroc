@@ -223,6 +223,11 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Acceso con Google (30-10-2026)
+
+`app/auth/google/route.ts` empieza el acceso (ruta y no formulario, por la CSP) y `app/auth/callback` lo termina. Con `PUBLIC_SIGNUP_ENABLED` apagado, `isClosedSignup` retira la cuenta de Google recién creada; las cuentas anteriores y la de administración no se tocan. Este control es de la aplicación: quien llame directamente a la API de Supabase podría crear una cuenta sin rol antes de llegar al callback. El panel no se ve afectado, pero antes de lanzar hay que desactivar el proveedor Email en Supabase y revisar este punto.
+Retirados el formulario de email y sus límites. Probado por el titular con su cuenta real: Google quedó enlazado a la cuenta existente y el segundo paso activo. `?token_hash=` solo queda para las pruebas E2E.
+
 ## Fotos de platos, guías y ciudades (30-10-2026)
 
 Migración `0011` (columnas `dish_id`, `guide_id`, `city_id` y un solo destino por foto) y políticas `0140` (pública solo si está aprobada y su ficha publicada; un usuario no puede añadirlas). `photoColumn` en `entities.ts` decide qué fichas tienen fotos: los barrios no, porque el Quality Gate no se las pide. Mismo formulario y misma moderación que los lugares. En la web, hasta 3 fotos; sin fotos no se pinta hueco.

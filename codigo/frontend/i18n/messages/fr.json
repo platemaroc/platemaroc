@@ -67,18 +67,11 @@
   "explore": "Explorer par type de lieu",
   "breadcrumb": "Fil d’Ariane",
   "auth": {
+    "google": "Se connecter avec Google",
+    "signupClosed": "Les nouveaux comptes ne sont pas encore ouverts.",
     "title": "Se connecter",
-    "emailLabel": "Votre e-mail",
-    "send": "Recevoir un lien de connexion",
-    "sent": "Si cet e-mail a un compte, nous vous avons envoyé un lien de connexion. Vérifiez aussi vos spams.",
-    "codeLabel": "Si l’e-mail contient un code, saisissez-le ici",
-    "verify": "Se connecter avec le code",
-    "invalidEmail": "Saisissez un e-mail valide.",
-    "invalidCode": "Le code n’est pas valide ou a expiré.",
-    "linkError": "Le lien n’est pas valide ou a expiré. Demandez-en un nouveau.",
-    "rateLimited": "Trop de liens demandés. Patientez quelques minutes.",
-    "signOut": "Se déconnecter",
-    "notConfigured": "La connexion n’est pas encore configurée."
+    "linkError": "La connexion a échoué. Réessayez.",
+    "signOut": "Se déconnecter"
   },
   "writeReview": "Écrire un avis",
   "reviewsTitle": "Avis",

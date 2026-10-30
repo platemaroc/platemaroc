@@ -67,18 +67,11 @@
   "explore": "Explore by type of place",
   "breadcrumb": "Breadcrumb",
   "auth": {
+    "google": "Sign in with Google",
+    "signupClosed": "New accounts are not open yet.",
     "title": "Sign in",
-    "emailLabel": "Your email",
-    "send": "Email me a sign-in link",
-    "sent": "If that email has an account, we have sent you a sign-in link. Check your spam folder too.",
-    "codeLabel": "If the email includes a code, type it here",
-    "verify": "Sign in with the code",
-    "invalidEmail": "Enter a valid email.",
-    "invalidCode": "The code is not valid or has expired.",
-    "linkError": "The link is not valid or has expired. Ask for a new one.",
-    "rateLimited": "Too many links requested. Wait a few minutes.",
-    "signOut": "Sign out",
-    "notConfigured": "Sign-in is not configured yet."
+    "linkError": "Sign-in failed. Please try again.",
+    "signOut": "Sign out"
   },
   "writeReview": "Write a review",
   "reviewsTitle": "Reviews",

@@ -104,19 +104,6 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
     assert.ok(session.length > 0 && session.every((c) => c.httpOnly && c.sameSite === 'Lax'), 'cookie de sesión HttpOnly');
     console.log('cookies de sesión: HttpOnly y SameSite=Lax');
 
-    // Límite de intentos: dirección de un dominio reservado, sin cuenta (no se envía ningún email).
-    const login = await (await browser.newContext()).newPage();
-    await login.goto(`${BASE}/auth/entrar?lang=es`);
-    let limited = false;
-    for (let i = 0; i < 7 && !limited; i++) {
-      await login.fill('#email', `nadie${i}@platemaroc-e2e.test`);
-      await login.locator('form').first().locator('button[type=submit]').click();
-      await login.waitForTimeout(1200);
-      limited = (await login.locator('form p[role=alert]').count()) > 0 && /demasiados/i.test(await login.locator('form p[role=alert]').first().textContent());
-    }
-    assert.ok(limited, 'corta tras varios enlaces seguidos');
-    console.log('límite de intentos: corta los enlaces de acceso repetidos');
-
     // Derechos del usuario.
     const user = await signIn(browser, GONE, '/cuenta?lang=es');
     await user.waitForSelector('h1:has-text("Mi cuenta")');

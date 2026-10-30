@@ -9,6 +9,20 @@
   font-size: var(--text-title);
 }
 
+.google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  margin-bottom: var(--space-lg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .form {
   display: grid;
   gap: var(--space-sm);

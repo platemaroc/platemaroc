@@ -26,4 +26,15 @@ export function safeNextPath(next: unknown, fallback = '/'): string {
   }
 }
 
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/** Margen para reconocer una cuenta recién creada: una cuenta anterior nunca se retira, aunque luego se cierre el alta. */
+export const NEW_ACCOUNT_MS = 5 * 60_000;
+
+/**
+ * Cuenta creada con Google ahora mismo estando cerrada el alta. Una cuenta que ya existía conserva su proveedor original
+ * al enlazar Google, así que aquí no entra. La administración nunca se retira.
+ */
+export function isClosedSignup(user: AuthUserLike & { created_at?: string }, signupOpen: boolean, now = Date.now()): boolean {
+  if (signupOpen || user.app_metadata?.role === 'admin' || user.app_metadata?.provider !== 'google' || !user.created_at) return false;
+  const age = now - Date.parse(user.created_at);
+  return age >= 0 && age < NEW_ACCOUNT_MS;
+}
