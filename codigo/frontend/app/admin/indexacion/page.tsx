@@ -16,7 +16,7 @@ export default async function Indexing() {
     <>
       <p className={styles.back}><a href="/admin">← Panel</a></p>
       <h1 className={styles.title}>Indexación</h1>
-      <p role="status" className={indexingEnabled() ? styles.saved : styles.errors}>
+      <p role="status" className={indexingEnabled() ? styles.saved : styles.notice}>
         {indexingEnabled() ? 'Interruptor ENCENDIDO: Google puede indexar lo que pase el Quality Gate.' : 'Interruptor APAGADO: toda la web lleva noindex y robots.txt bloquea a los buscadores.'}
       </p>
       <ul className={styles.counters}>

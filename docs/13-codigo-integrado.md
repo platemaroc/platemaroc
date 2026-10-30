@@ -227,4 +227,4 @@ No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), 
 
 Dirección «Té a la menta», elegida por el titular entre tres propuestas. Colores en `components-ui/mobile-design/tokens.css` y `tokens.ts`; contraste de texto de 5,3:1 o más en todas las combinaciones.
 Títulos en Fraunces 600 con `next/font`: la sirve la propia web, la CSP no cambia y el texto normal sigue con la fuente del sistema. Construir necesita internet para descargarla.
-Logo en `SiteHeader.tsx` e icono en `app/icon.svg`. La portada no lleva buscador porque la web no tiene búsqueda.
+Logo en `components/Brand.tsx` (web, panel, acceso y cuenta) e icono en `app/icon.svg`. La portada no lleva buscador porque la web no tiene búsqueda.

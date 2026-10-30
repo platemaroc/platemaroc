@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { SITE_NAME } from '../../../../seo/types.ts';
+import { Brand } from '../../components/Brand.tsx';
 import { requireAdmin } from '../../lib/admin.ts';
 import { signOut } from '../auth/actions.ts';
 import styles from './admin.module.css';
@@ -13,7 +14,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   return (
     <div className={styles.frame}>
       <header className={styles.header}>
-        <a className={styles.brand} href="/admin">{SITE_NAME} · Panel</a>
+        <Brand href="/admin">{SITE_NAME} · Panel</Brand>
         <span className={styles.who}>{user.email}</span>
         <form action={signOut}><button type="submit" className={styles.secondary}>Salir</button></form>
       </header>
