@@ -4,6 +4,9 @@ import { PLACE_SECTIONS, sectionPath, type Section } from '../../../shared/route
 import { listIndexable, listingIndexableLocales } from '../../lib/data.ts';
 import { absoluteUrl, indexingEnabled } from '../../lib/seo.ts';
 
+// El interruptor y las URLs indexables se leen en el servidor, no al construir.
+export const dynamic = 'force-dynamic';
+
 const LISTINGS: Section[] = [...PLACE_SECTIONS, 'lugares', 'platos-tipicos', 'guias-gastronomicas', 'ciudades-y-barrios'];
 
 function entries(paths: Partial<Record<Locale, string>>, lastmod?: string | null): SitemapEntry[] {

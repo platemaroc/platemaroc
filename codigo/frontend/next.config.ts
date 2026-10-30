@@ -5,7 +5,8 @@ import type { NextConfig } from 'next';
 const repoRoot = path.join(__dirname, '../..');
 
 const nextConfig: NextConfig = {
-  // Renderizado en servidor; sin exportación estática (README).
+  // Renderizado en servidor; sin exportación estática (README). standalone: el servidor recibe solo lo necesario (config/deploy).
+  output: 'standalone',
   poweredByHeader: false,
   turbopack: { root: repoRoot },
   outputFileTracingRoot: repoRoot,

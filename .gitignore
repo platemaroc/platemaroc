@@ -13,6 +13,7 @@ node_modules/
 out/
 build/
 dist/
+build-output/
 *.tsbuildinfo
 next-env.d.ts
 

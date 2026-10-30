@@ -24,8 +24,12 @@
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
 ## Añadidos en la Fase 6 (30-10-2026)
-12. Aprobar aplicar `policies-rls/0130_admin_dos_pasos.sql` al proyecto real y activar el segundo factor del titular.
+12. Activar el segundo factor del titular en `/auth/mfa` (`0130` ya está aplicada al proyecto real, 30-10-2026).
 13. Reloj del equipo del titular: va una hora atrasado y el servicio de hora de Windows está parado.
+
+## Añadidos en la Fase 7 (30-10-2026)
+14. Proveedor de la copia externa de backups y de la copia semanal de fotos (`config/backups/README.md`).
+15. Rol de solo lectura en la base para `backup-db.sh`.
 
 ## Ya decidido
 - Precios exclusivamente en MAD, sin conversiones (29-10-2026).

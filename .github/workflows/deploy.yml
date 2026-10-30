@@ -1,0 +1,71 @@
+# Solo se lanza a mano desde GitHub (Actions > deploy > Run workflow). Un push nunca publica nada (config/deploy/README.md).
+name: deploy
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Dos despliegues a la vez pisarían el enlace `current`
+concurrency: deploy
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Escáner de secretos
+        run: node codigo/security/scan-secrets.mjs .
+      - run: npm run typecheck
+      - run: npm test
+      # La construcción tiene que ser en Linux: sharp incluye un binario para cada sistema.
+      - name: Construir
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ vars.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+        run: npm run release
+      - name: Subir release y activar
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER_: ${{ secrets.DEPLOY_USER }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_deploy && chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          REL="/srv/platemaroc/releases/${GITHUB_SHA}"
+          SSH="ssh -i $HOME/.ssh/id_deploy $USER_@$HOST"
+          $SSH "mkdir -p $REL"
+          rsync -az --delete -e "ssh -i $HOME/.ssh/id_deploy" ./build-output/ "$USER_@$HOST:$REL/"
+          # Si la versión nueva no responde en 30 s, vuelve a la anterior y el despliegue queda en rojo.
+          $SSH "REL=$REL bash -s" <<'REMOTO'
+          set -uo pipefail
+          PREV="$(readlink -f /srv/platemaroc/current || true)"
+          ln -sfn "$REL" /srv/platemaroc/current
+          sudo /usr/bin/systemctl restart platemaroc
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://127.0.0.1:3000/; then
+              # Conserva las 5 versiones más recientes y nunca borra la activa
+              ls -1dt /srv/platemaroc/releases/* | tail -n +6 | grep -vxF "$REL" | xargs -r rm -rf
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "La versión nueva no responde: vuelvo a la anterior" >&2
+          if [ -n "$PREV" ] && [ "$PREV" != "$REL" ]; then
+            ln -sfn "$PREV" /srv/platemaroc/current
+            sudo /usr/bin/systemctl restart platemaroc
+          fi
+          exit 1
+          REMOTO

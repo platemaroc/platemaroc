@@ -4,10 +4,10 @@ After=network.target
 
 [Service]
 User=deploy
-WorkingDirectory=/srv/platemaroc/current
+# Salida standalone con la raíz en el repositorio: server.js queda en esta subcarpeta (codigo/frontend/scripts/package-release.mjs)
+WorkingDirectory=/srv/platemaroc/current/codigo/frontend
 EnvironmentFile=/etc/platemaroc/app.env
 Environment=NODE_ENV=production PORT=3000 HOSTNAME=127.0.0.1
-# Ajustar a la salida real del build (p. ej. modo standalone de Next.js)
 ExecStart=/usr/bin/node server.js
 Restart=on-failure
 RestartSec=3
