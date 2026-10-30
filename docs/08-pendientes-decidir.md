@@ -19,8 +19,7 @@
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
 
 ## Añadidos en el bloque 4c (30-10-2026)
-11. Aprobar aplicar `policies-rls/0120_resenas_limites.sql` al proyecto real.
-12. Textos legales: política de privacidad (`/privacidad` está en borrador) y frases de consentimiento de reseña y fotos. Sin ellos y sin SMTP, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
+11. Textos legales: política de privacidad (`/privacidad` está en borrador) y frases de consentimiento de reseña y fotos. Sin ellos y sin SMTP, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
 
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 

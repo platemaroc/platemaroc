@@ -163,4 +163,4 @@ No probado aún: Google Maps real, Safari/iOS, y el panel con el rol del titular
 
 Verificado: tipos, 44 pruebas unitarias, 31 de humo SQL, build, y en el proyecto de pruebas `reviews.e2e.cjs` (recorrido completo y ataques directos a la API:
 aprobarse la reseña o la foto, crear una foto aprobada, subir al bucket, editar/borrar/leer lo ajeno, sexta reseña en 24 h; todos rechazados) más `admin.e2e.cjs`.
-`0120` está aplicada solo al proyecto de pruebas. No probado: alta de una cuenta nueva con email real, Safari/iOS.
+`0120` aprobada por el titular y aplicada a pruebas y a real el 30-10-2026. No probado: alta de una cuenta nueva con email real, Safari/iOS.
