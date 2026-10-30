@@ -11,6 +11,10 @@ test('alta cerrada: se retira la cuenta de Google recién creada', () => {
   assert.equal(isClosedSignup({ id: 'a', app_metadata: google, created_at: justNow }, false, now), true);
 });
 
+test('alta cerrada: también con Apple', () => {
+  assert.equal(isClosedSignup({ id: 'a', app_metadata: { provider: 'apple' }, created_at: justNow }, false, now), true);
+});
+
 test('alta abierta: no se retira nada', () => {
   assert.equal(isClosedSignup({ id: 'a', app_metadata: google, created_at: justNow }, true, now), false);
 });

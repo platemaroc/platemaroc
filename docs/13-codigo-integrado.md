@@ -227,9 +227,13 @@ No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), 
 
 Decisión del titular. `policies-rls/0150` borra las tablas (vacías), el tipo y su valor en la auditoría; `business_claims` se conserva. Las migraciones aplicadas no se editan. Los documentos históricos (`docs/02` a `docs/07` y los hashes del paquete) conservan sus menciones como registro.
 
+## Acceso con email, Google y Apple (30-10-2026)
+
+El titular recuperó el acceso por email y pidió Apple. Conviven los tres. `lib/oauth.ts` empieza Google y Apple; Apple se muestra con `APPLE_LOGIN_ENABLED=1` y aún no está configurado ni probado. `isClosedSignup` cubre Google y Apple. Lo que sigue sobre la retirada del email quedó sustituido por esto.
+
 ## Acceso con Google (30-10-2026)
 
-`app/auth/google/route.ts` empieza el acceso (ruta y no formulario, por la CSP) y `app/auth/callback` lo termina. Con `PUBLIC_SIGNUP_ENABLED` apagado, `isClosedSignup` retira la cuenta de Google recién creada; las cuentas anteriores y la de administración no se tocan. Este control es de la aplicación: quien llame directamente a la API de Supabase podría crear una cuenta sin rol antes de llegar al callback. El panel no se ve afectado, pero antes de lanzar hay que desactivar el proveedor Email en Supabase y revisar este punto.
+`app/auth/google/route.ts` empieza el acceso (ruta y no formulario, por la CSP) y `app/auth/callback` lo termina. Con `PUBLIC_SIGNUP_ENABLED` apagado, `isClosedSignup` retira la cuenta de Google recién creada; las cuentas anteriores y la de administración no se tocan. Este control es de la aplicación: quien llame directamente a la API de Supabase podría crear una cuenta sin rol antes de llegar al callback. El panel no se ve afectado, pero hay que revisar este punto antes de lanzar.
 Retirados el formulario de email y sus límites. Probado por el titular con su cuenta real: Google quedó enlazado a la cuenta existente y el segundo paso activo. `?token_hash=` solo queda para las pruebas E2E.
 
 ## Fotos de platos, guías y ciudades (30-10-2026)

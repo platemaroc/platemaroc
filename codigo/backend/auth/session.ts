@@ -30,11 +30,14 @@ export function safeNextPath(next: unknown, fallback = '/'): string {
 export const NEW_ACCOUNT_MS = 5 * 60_000;
 
 /**
- * Cuenta creada con Google ahora mismo estando cerrada el alta. Una cuenta que ya existía conserva su proveedor original
- * al enlazar Google, así que aquí no entra. La administración nunca se retira.
+ * Cuenta creada con Google o Apple ahora mismo estando cerrada el alta. Una cuenta que ya existía conserva su proveedor original
+ * al enlazar otro, así que aquí no entra. La administración nunca se retira.
  */
 export function isClosedSignup(user: AuthUserLike & { created_at?: string }, signupOpen: boolean, now = Date.now()): boolean {
-  if (signupOpen || user.app_metadata?.role === 'admin' || user.app_metadata?.provider !== 'google' || !user.created_at) return false;
+  const provider = user.app_metadata?.provider;
+  if (signupOpen || user.app_metadata?.role === 'admin' || (provider !== 'google' && provider !== 'apple') || !user.created_at) return false;
   const age = now - Date.parse(user.created_at);
   return age >= 0 && age < NEW_ACCOUNT_MS;
 }
+
+export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

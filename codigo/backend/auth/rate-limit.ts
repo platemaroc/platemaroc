@@ -5,7 +5,9 @@
 export interface Limit { max: number; windowMs: number }
 
 export const LIMITS = {
-  /** Códigos de verificación en dos pasos: evita probar códigos a ciegas. */
+  /** Enlaces de acceso: por IP y por email, para no usar la web para acosar un buzón. */
+  authLink: { max: 5, windowMs: 15 * 60_000 },
+  /** Códigos de acceso o de verificación en dos pasos: evita probar códigos a ciegas. */
   authCode: { max: 10, windowMs: 15 * 60_000 },
   /** Formularios de usuario. */
   form: { max: 10, windowMs: 60_000 },

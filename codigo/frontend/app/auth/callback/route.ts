@@ -7,8 +7,8 @@ import { supabaseForRequest } from '../../../lib/supabase-server.ts';
 const OTP_TYPES = new Set<EmailOtpType>(['magiclink', 'email', 'signup', 'recovery', 'invite', 'email_change']);
 
 /**
- * Vuelta del acceso con Google (`?code=`, PKCE, mismo navegador). La web ya no envía enlaces por email; `?token_hash=` solo lo usan
- * las pruebas E2E, con enlaces generados por la API de administración del proyecto de pruebas.
+ * Vuelta del acceso con Google o Apple y del enlace del email. Admite los dos formatos de Supabase: `?code=` (PKCE, mismo navegador)
+ * y `?token_hash=&type=` (plantilla de email personalizada).
  * y `?token_hash=&type=` (plantilla de email personalizada). Solo redirige a rutas internas.
  */
 export async function GET(request: NextRequest) {
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   if (code) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     ok = !error;
-    // Google no tiene "no crear usuario": con el alta cerrada, la cuenta recién creada se retira al momento.
+    // Google y Apple no tienen "no crear usuario": con el alta cerrada, la cuenta recién creada se retira al momento.
     if (data.user && isClosedSignup(data.user, process.env.PUBLIC_SIGNUP_ENABLED === '1')) {
       await supabase.auth.signOut();
       await createAdminClient().auth.admin.deleteUser(data.user.id);

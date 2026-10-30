@@ -16,7 +16,7 @@
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
 
 ## Añadidos en el bloque 4c (30-10-2026)
-11. Textos legales: política de privacidad (`/privacidad` está en borrador; borrador de trabajo y preguntas para el asesor en `docs/15-borrador-politica-privacidad.md`), y frases de consentimiento de reseña y fotos. Sin ellos, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
+11. Textos legales: política de privacidad (`/privacidad` está en borrador; borrador de trabajo y preguntas para el asesor en `docs/15-borrador-politica-privacidad.md`), y frases de consentimiento de reseña y fotos. Sin ellos y sin un servicio de envío de email, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
 
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
@@ -29,6 +29,10 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 14. Proveedor de la copia externa de backups y de la copia semanal de fotos (`config/backups/README.md`).
 15. Rol de solo lectura en la base para `backup-db.sh`.
 
+## Acceso con Apple (30-10-2026)
+16. El botón y la ruta están hechos, ocultos con `APPLE_LOGIN_ENABLED`. Exige Apple Developer Program (de pago, a confirmar precio en apple.com), crear las credenciales y poner en Supabase un secreto que caduca cada 6 meses. Decidir cuándo contratarlo.
+17. Reactivar el proveedor Email en Supabase (el titular lo desactivó) y elegir servicio de envío antes de abrir altas: el de Supabase tiene un límite muy bajo.
+
 ## Al lanzar la web (pedido por el titular, 30-10-2026)
 - Google Cloud: añadir `https://platemaroc.com` a los orígenes del cliente.
 - Supabase: `https://platemaroc.com/**` en Redirect URLs y `https://platemaroc.com` como Site URL.
@@ -36,7 +40,7 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 
 ## Ya decidido
 - Sin reservas en la web: en Marruecos los restaurantes no las usan. Retiradas de código, base y documentos vivos (30-10-2026).
-- Acceso solo con Google para usuarios y titular; retirado el acceso por email, sin servicio de envío para entrar. Las reseñas de visitantes se mantienen; altas cerradas hasta abrirlas (30-10-2026). El titular activó sus dos pasos el mismo día.
+- Acceso sin contraseña con Google, email y Apple: el titular recuperó el email y pidió Apple tras haber retirado el email ese mismo día. Las reseñas de visitantes se mantienen; altas cerradas hasta abrirlas (30-10-2026). El titular activó sus dos pasos el mismo día.
 - El mapa interactivo solo se carga al pulsar «Ver mapa», por privacidad; sustituye a la carga al llegar a la sección (30-10-2026).
 - Responsable de los datos: el titular, como persona física en Marruecos (30-10-2026).
 - Identidad visual: dirección «Té a la menta», verde, crema y dorado, con títulos en Fraunces; logo de plato con estrella (30-10-2026).

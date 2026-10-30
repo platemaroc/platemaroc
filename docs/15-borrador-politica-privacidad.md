@@ -22,7 +22,7 @@ Contacto para privacidad: moradvisor@gmail.com.
 | Situación | Datos | Para qué | Base legal |
 |---|---|---|---|
 | Visitas la web | Ninguna cuenta. El servidor recibe tu dirección IP y datos técnicos del navegador | Servir la página, seguridad y límite de intentos | [PENDIENTE: confirmar con asesor: interés legítimo] |
-| Entras con Google | Email, y los datos básicos de perfil que Google facilita | Identificarte y mantener tu sesión | Ejecución del servicio que pides |
+| Creas una cuenta o entras con email, Google o Apple | Email y, con Google o Apple, los datos básicos de perfil que facilitan | Identificarte y mantener tu sesión | Ejecución del servicio que pides |
 | Escribes una reseña | Nombre visible, puntuación, comentario, fecha y lugar reseñado | Moderarla y publicarla | Consentimiento |
 | Subes fotos | Las fotos y su texto descriptivo | Moderarlas y mostrarlas con tu reseña | Consentimiento |
 | Das tu consentimiento | Finalidad, versión del texto y fecha | Poder demostrar que lo diste | Obligación de responsabilidad proactiva |
@@ -43,6 +43,8 @@ Solo con proveedores que hacen funcionar la web:
 |---|---|---|
 | Supabase | Base de datos, cuentas y almacenamiento de fotos | Unión Europea (Fráncfort) |
 | Hostinger | Servidor de la web | [PENDIENTE: país del VPS] |
+| [PENDIENTE: proveedor de email] | Envío del enlace de acceso | [PENDIENTE] |
+| Apple, si se activa | Acceso con «Entrar con Apple» | [PENDIENTE: confirmar con asesor] |
 | Google | Acceso a tu cuenta con «Entrar con Google» | [PENDIENTE: confirmar con asesor: puede implicar transferencia fuera de la UE y de Marruecos] |
 | Google | Mapa de cada ficha. Solo se carga si pulsas «Ver mapa»; entonces Google recibe tu dirección IP | [PENDIENTE: confirmar con asesor: puede implicar transferencia fuera de la UE y de Marruecos] |
 

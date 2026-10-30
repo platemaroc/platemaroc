@@ -66,16 +66,28 @@ const get = (p, init = {}) => fetch(BASE + p, { redirect: 'manual', ...init });
     const page = await browser.newPage({ viewport: { width: 375, height: 812 } });
     await page.goto(`${BASE}/auth/entrar?lang=fr`);
     assert.equal(await page.textContent('h1'), 'Se connecter');
-    assert.equal(await page.locator('input[type=email]').count(), 0, 'sin acceso por email');
     assert.equal(await page.getAttribute('main a[href^="/auth/google"]', 'href'), '/auth/google?next=%2F');
-    await page.goto(`${BASE}/auth/entrar?lang=fr&error=cerrado`);
-    assert.match(await page.textContent('main [role=alert]'), /pas encore ouverts/);
+    assert.equal(await page.locator('main a[href^="/auth/apple"]').count(), 0, 'Apple oculto hasta activarlo');
     const google = await get('/auth/google?next=/admin');
     assert.equal(google.status, 307);
     assert.match(google.headers.get('location'), /\/auth\/v1\/authorize\?provider=google/);
-    console.log('entrar: solo Google, y avisa si las altas están cerradas');
+    const apple = await get('/auth/apple?next=/admin');
+    assert.match(apple.headers.get('location'), /\/auth\/v1\/authorize\?provider=apple/);
+    console.log('entrar: Google visible, Apple oculto hasta activarlo');
 
-    const small = await page.evaluate(() => [...document.querySelectorAll('main a')]
+    await page.fill('#email', 'no-es-un-email');
+    await page.evaluate(() => document.querySelector('#email').setAttribute('type', 'text')); // saltar la validación del navegador
+    await page.click('button[type=submit]');
+    await page.waitForSelector('form p[role=alert]');
+    assert.match(await page.textContent('form p[role=alert]'), /e-mail valide/);
+    await page.fill('#email', 'nadie@platemaroc-e2e.test');
+    await page.click('button[type=submit]');
+    await page.waitForSelector('form p[role=status]', { timeout: 20_000 });
+    assert.match(await page.textContent('form p[role=status]'), /Si cet e-mail a un compte/);
+    assert.ok(await page.isVisible('#token'), 'aparece el campo del código');
+    console.log('formulario: valida el email y da el mismo mensaje exista o no la cuenta');
+
+    const small = await page.evaluate(() => [...document.querySelectorAll('main a, input:not([type=hidden]), button')]
       .filter((e) => e.getBoundingClientRect().height < 48).length);
     assert.equal(small, 0, 'campos y botones ≥ 48 px');
     console.log('AUTH E2E OK');
