@@ -223,6 +223,10 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Instalación en el móvil (30-10-2026)
+
+`app/manifest.ts`, iconos en `public/icons/` y `app/apple-icon.png`. Al abrirse instalada empieza en el selector de idioma. Instalar de verdad exige HTTPS: se comprueba tras publicar.
+
 ## Buscador y filtro por ciudad (30-10-2026)
 
 | Pieza | Dónde | Notas |

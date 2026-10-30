@@ -2,11 +2,13 @@
 
 Directorio y guía gastronómica de Marruecos. Dominio: https://platemaroc.com
 
-Estado: **fase de planificación estructural**, con documentación consolidada (candidata a congelación, pendiente de aprobación del titular) y un andamiaje inicial de código para PWA, fallback de mapas y precios en MAD. Fase 1 hecha: la aplicación Next.js está inicializada en `codigo/frontend/` con páginas provisionales (`noindex`) en `/es/`, `/en/` y `/fr/`.
+Estado: **web construida, sin publicar.** Fases 0 a 6 hechas y Fase 7 preparada en el repositorio. Ya existen plantillas en `/es/`, `/en/` y `/fr/`, panel con dos pasos, reseñas moderadas, menú digital, Quality Gate, buscador, identidad visual «Té a la menta» y modo sin conexión.
+
+Falta, por decisión del titular: instalar el servidor, comprar el dominio y cargar contenido real y fotos (la base real está casi vacía). La política de privacidad es un borrador pendiente de un asesor (`docs/15-borrador-politica-privacidad.md`). El detalle está en `docs/08-pendientes-decidir.md` y `docs/13-codigo-integrado.md`.
 
 ## Uso en local
 
-Requisitos: Node.js ≥ 22.18 y Git. Las claves van en `codigo/frontend/.env.local` (copia de `config/env-templates/.env.example`, fuera de Git).
+Requisitos: Node.js 26 (versión de `.nvmrc`; mínimo 22.18) y Git. Las claves van en `codigo/frontend/.env.local` (copia de `config/env-templates/.env.example`, fuera de Git).
 
 | Comando | Qué hace |
 |---|---|
@@ -14,6 +16,7 @@ Requisitos: Node.js ≥ 22.18 y Git. Las claves van en `codigo/frontend/.env.loc
 | `npm run dev` | Servidor de desarrollo en http://localhost:3000 (datos reales de Supabase) |
 | `npm run dev:demo` | Igual, con datos de DEMOSTRACIÓN ficticios (`demo-…`) para ver las plantillas. Prohibido en producción |
 | `npm run build` y `npm run start` | Build de producción y servidor de producción en local |
+| `npm run release` | Build y carpeta `build-output/` para desplegar (el real se hace en GitHub Actions: `config/deploy/README.md`) |
 | `npm run typecheck` | Comprueba los tipos de TypeScript |
 | `npm test` | Pruebas unitarias |
 | `npm run test:e2e` | Pruebas en Chromium real: Service Worker, mapa y plantillas (antes, una vez: `npx playwright install chromium`) |
@@ -33,7 +36,7 @@ Requisitos: Node.js ≥ 22.18 y Git. Las claves van en `codigo/frontend/.env.loc
 ## Stack y servicios
 
 - Next.js (App Router) y TypeScript.
-- PostgreSQL en Supabase (autenticación: email, Google y teléfono; seguridad con RLS).
+- PostgreSQL en Supabase (seguridad con RLS). Acceso por email con enlace; Google y teléfono están pendientes.
 - Backend separado del frontend.
 - Google Maps (mapa y "Cómo llegar"). Carga de lugares manual; Google Places y Google Business en una fase posterior (las carpetas de integración quedan reservadas).
 - Reseñas al estilo Google Business: puntuación de 1 a 5 estrellas, comentario y fotos, con moderación previa.
@@ -72,6 +75,7 @@ Todas las carpetas siguen kebab-case, sin espacios. Los archivos `.gitkeep` solo
 - `docs/08-pendientes-decidir.md`: decisiones abiertas del titular.
 - `docs/13-codigo-integrado.md`: qué código hay, qué cubre y qué falta.
 - `docs/14-ajustes-tecnicos-2026-10-29.md`: decisiones técnicas recientes (prioridad sobre especificaciones anteriores).
+- `docs/15-borrador-politica-privacidad.md`: borrador legal y preguntas para el asesor.
 - `docs/00-LEEME-paquete-integracion.md`: contenido y checklist del paquete de congelación.
 
 - `docs/decisiones.md`: decisiones tomadas hasta ahora.
