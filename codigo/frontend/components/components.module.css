@@ -118,7 +118,7 @@
 }
 
 @media (min-width: 640px) {
-  .search { grid-template-columns: 2fr 1fr auto; align-items: end; }
+  .search { grid-template-columns: minmax(0, 1fr) 15rem auto; align-items: end; }
   .searchClear { grid-column: 1 / -1; }
 }
 

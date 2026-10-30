@@ -168,23 +168,38 @@ async function waitFor(url, ms = 120_000) {
     assert.equal(meta.exif, undefined, 'la foto publicada no lleva EXIF/GPS');
     console.log('foto: aprobada con derechos y alt; /media la sirve en WebP 1600 px sin GPS');
 
-    // Foto de plato: mismo formulario; no se sirve mientras el plato sea borrador.
-    const [dish] = await api('/rest/v1/dishes', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ slug: `e2e-plato-${stamp}` }) });
-    await page.goto(`${BASE}/admin/platos/${dish.id}`);
-    const upDish = page.locator('form:has(button:has-text("Subir foto"))');
-    await upDish.locator('input[type=file]').setInputFiles(tmp);
-    await upDish.locator('input[name=source]').fill('Foto de prueba');
-    await upDish.locator('input[name=author]').fill('E2E');
-    await upDish.locator('input[name=license]').fill('Solo pruebas');
-    await upDish.locator('input[name=alt_es]').fill('Plato de prueba');
-    await upDish.locator('button:has-text("Subir foto")').click();
-    await upDish.locator('[role=status]').waitFor({ timeout: 30_000 });
-    const [dishPhoto] = await api(`/rest/v1/photos?dish_id=eq.${dish.id}&select=storage_path,status`);
-    assert.equal(dishPhoto.status, 'aprobada');
-    assert.equal((await fetch(`${BASE}/media/${dishPhoto.storage_path}`)).status, 404, 'plato en borrador: su foto no es pública');
-    await api(`/rest/v1/dishes?id=eq.${dish.id}`, { method: 'PATCH', body: JSON.stringify({ status: 'publicado' }) });
-    assert.equal((await fetch(`${BASE}/media/${dishPhoto.storage_path}`)).status, 200, 'plato publicado: su foto se sirve');
-    console.log('foto de plato: privada en borrador y pública al publicar');
+    // Fotos de plato, guía y ciudad: mismo formulario; no se sirven mientras la ficha sea borrador y se ven en la ficha publicada.
+    const created = { Prefer: 'return=representation' };
+    const [dish] = await api('/rest/v1/dishes', { method: 'POST', headers: created, body: JSON.stringify({ slug: `e2e-plato-${stamp}` }) });
+    const [guide] = await api('/rest/v1/guides', { method: 'POST', headers: created, body: JSON.stringify({ slug: `e2e-guia-${stamp}` }) });
+    const [cityRow] = await api(`/rest/v1/cities?slug=eq.e2e-ciudad-${stamp}&select=id,slug`);
+    const targets = [
+      { panel: 'platos', table: 'dishes', column: 'dish_id', type: 'dish', section: 'platos-tipicos', row: dish },
+      { panel: 'guias', table: 'guides', column: 'guide_id', type: 'guide', section: 'guias-gastronomicas', row: guide },
+      { panel: 'ciudades', table: 'cities', column: 'city_id', type: 'city', section: 'ciudades', row: cityRow },
+    ];
+    for (const x of targets) {
+      const setStatus = (status) => api(`/rest/v1/${x.table}?id=eq.${x.row.id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      await setStatus('borrador');
+      await page.goto(`${BASE}/admin/${x.panel}/${x.row.id}`);
+      const form = page.locator('form:has(button:has-text("Subir foto"))');
+      await form.locator('input[type=file]').setInputFiles(tmp);
+      await form.locator('input[name=source]').fill('Foto de prueba');
+      await form.locator('input[name=author]').fill('E2E');
+      await form.locator('input[name=license]').fill('Solo pruebas');
+      await form.locator('input[name=alt_es]').fill('Foto de ficha');
+      await form.locator('button:has-text("Subir foto")').click();
+      await form.locator('[role=status]').waitFor({ timeout: 30_000 });
+      const [photo] = await api(`/rest/v1/photos?${x.column}=eq.${x.row.id}&select=storage_path,status`);
+      assert.equal(photo.status, 'aprobada');
+      assert.equal((await fetch(`${BASE}/media/${photo.storage_path}`)).status, 404, `${x.panel} en borrador: su foto no es pública`);
+      await setStatus('publicado');
+      assert.equal((await fetch(`${BASE}/media/${photo.storage_path}`)).status, 200, `${x.panel} publicado: su foto se sirve`);
+      await api('/rest/v1/translations?on_conflict=entity_type,entity_id,locale', { method: 'POST', headers: { Prefer: 'resolution=merge-duplicates' }, body: JSON.stringify({ entity_type: x.type, entity_id: x.row.id, locale: 'es', title: `E2E ${x.row.slug}`, status: 'publicada' }) });
+      await page.goto(`${BASE}/es/${x.section}/${x.row.slug}`);
+      assert.equal(await page.getAttribute('main img[src^="/media/"]', 'alt'), 'Foto de ficha', `${x.panel}: la ficha pública muestra la foto`);
+    }
+    console.log('fotos de plato, guía y ciudad: privadas en borrador, públicas al publicar y visibles en la ficha');
 
     // Auditoría de todo lo anterior.
     const audit = await api(`/rest/v1/audit_log?entidad_id=eq.${placeId}&select=accion,campo,origen,actor`);

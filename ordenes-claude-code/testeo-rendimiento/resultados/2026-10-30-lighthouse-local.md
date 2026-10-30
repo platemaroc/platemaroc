@@ -31,3 +31,16 @@ Umbrales: LCP ≤ 2500 ms, CLS ≤ 0,1 (verde en todas); TBT ≤ 300 ms (aviso i
 
 ## Necesita aprobación del titular
 Nada por ahora.
+
+## Repetición tras la identidad visual, el buscador y el mapa al pulsar (30-10-2026)
+
+**Entorno:** build de producción en el equipo del titular, contra el proyecto real, casi vacío: las cifras no son comparables una a una con la tabla anterior, que tenía fichas de prueba.
+
+| Página | Rend. | Acces. | Buenas pr. | LCP (ms) | CLS | TBT (ms) | Servidor (ms) | Peso (KB) | Peticiones |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| /es | 79 | 100 | 100 | 911 | 0 | 888 | 1325 | 169 | 13 |
+| /es/lugares | 91 | 100 | 100 | 656 | 0 | 381 | 390 | 169 | 13 |
+| /es/lugares?q=fez | 93 | 100 | 100 | 617 | 0 | 316 | 342 | 169 | 13 |
+| /auth/entrar | 96 | 100 | 100 | 926 | 0 | 220 | 97 | 168 | 14 |
+
+LCP y CLS siguen en verde. La fuente de títulos añade unos 15 KB. El TBT sigue por encima del aviso interno de 300 ms: la acción pendiente no cambia (medir con PageSpeed Insights al publicar).
