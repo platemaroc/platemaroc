@@ -28,7 +28,6 @@ En Claude Code, con la carpeta del proyecto abierta, escribe:
 | `moderar-fotos` | Revisar derechos, alt localizado y estado de fotos | Bajo demanda |
 | `moderar-menu` | Revisar menús pendientes (precios, alérgenos, disponibilidad) | Bajo demanda |
 | `gestionar-menu-digital` | Crear y mantener menús digitales en borrador | Bajo demanda |
-| `gestionar-reservas` | Solicitudes de reserva (Fase 1.5 / Fase 2) | Bajo demanda |
 | `importar-lugares` | Importar lugares (CSV/hoja) como borrador | Bajo demanda |
 | `revisar-traducciones` | Verificar traducciones es/en/fr | Bajo demanda |
 | `revisar-pwa-conectividad` | Auditar Service Worker, caché y offline | Cada mes y tras cambios |

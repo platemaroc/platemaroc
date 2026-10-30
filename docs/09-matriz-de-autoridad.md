@@ -16,7 +16,6 @@
 | Reseñas | `moderar-resenas.md` + órdenes originales disponibles | Aplicar reglas de moderación vigentes |
 | Fotos | `moderar-fotos.md` | Derechos y alt localizado |
 | Menú | `gestionar-menu-digital.md` + `moderar-menu.md` | No inventar precios/disponibilidad |
-| Reservas | `gestionar-reservas.md` | Nunca inventar disponibilidad |
 | Seguridad | Orden original de seguridad | Auditoría primero; cambios con aprobación |
 | SEO | Órdenes SEO originales + maestro | Verificar documentación oficial vigente |
 | Datos actuales | Último `estado-del-proyecto` real | No inventar métricas |

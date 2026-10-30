@@ -30,7 +30,7 @@ Requisitos: Node.js 26 (versión de `.nvmrc`; mínimo 22.18) y Git. Las claves v
 - Mobile-First absoluto, Core Web Vitals (LCP, INP, CLS) y HTTPS estricto.
 - Control automatizado de indexabilidad con Quality Gate (`is_indexable`).
 - Idiomas oficiales: español (`es`), inglés (`en`) y francés (`fr`), con URLs `/es/`, `/en/`, `/fr/`. El árabe y el RTL están retirados. Cada idioma se indexa solo cuando su traducción está realmente preparada.
-- Menú digital en el MVP; reservas por fases (1.5 opcional, 2 con integración real).
+- Menú digital en el MVP. Sin reservas.
 - PWA y mobile-first para redes inestables, fallback de mapas con carga diferida y precios exclusivamente en MAD.
 
 ## Stack y servicios
@@ -60,7 +60,7 @@ platemaroc.com/
 │   └── testing/
 ├── content/                es, en, fr (mismas subcarpetas en cada idioma)
 ├── config/                 env-templates, server-setup, deploy, backups
-├── ordenes-claude-code/    tareas listas para pedir a Claude Code (moderación, menú, reservas, PWA, mapas, precios, SEO, backups, etc.)
+├── ordenes-claude-code/    tareas listas para pedir a Claude Code (moderación, menú, PWA, mapas, precios, SEO, backups, etc.)
 ├── public/                 sw.js (Service Worker)
 ├── seo/                    metadatos, hreflang y JSON-LD
 └── docs/                   documento maestro, matriz de autoridad, especificaciones 10-12, modelo de datos, decisiones y prompt inicial

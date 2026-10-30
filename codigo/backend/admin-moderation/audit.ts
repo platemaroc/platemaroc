@@ -1,6 +1,6 @@
 /** Registro de auditoría (docs/01-documento-maestro-operacion.md §7). */
 export const AUDIT_SOURCES = ['panel', 'claude_code', 'importacion', 'sistema'] as const;
-export const AUDIT_ENTITIES = ['place', 'dish', 'guide', 'city', 'neighborhood', 'translation', 'review', 'photo', 'menu', 'reservation', 'redirect', 'config'] as const;
+export const AUDIT_ENTITIES = ['place', 'dish', 'guide', 'city', 'neighborhood', 'translation', 'review', 'photo', 'menu', 'redirect', 'config'] as const;
 export type AuditSource = (typeof AUDIT_SOURCES)[number];
 export type AuditEntity = (typeof AUDIT_ENTITIES)[number];
 

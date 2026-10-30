@@ -4,7 +4,7 @@
  * Claude Code y el sistema no pueden hacerlo por iniciativa propia (maestro §1.1-1.2).
  */
 export type Actor = 'titular' | 'admin' | 'claude_code' | 'sistema';
-export type StateKind = 'contenido' | 'traduccion' | 'resena' | 'respuesta' | 'foto' | 'menu' | 'reserva';
+export type StateKind = 'contenido' | 'traduccion' | 'resena' | 'respuesta' | 'foto' | 'menu';
 
 const EDGES: Record<StateKind, Record<string, string[]>> = {
   contenido:  { borrador: ['revisado'], revisado: ['borrador', 'publicado'], publicado: ['revisado', 'archivado'], archivado: ['borrador'] },
@@ -13,7 +13,6 @@ const EDGES: Record<StateKind, Record<string, string[]>> = {
   respuesta:  { borrador: ['aprobada_por_titular'], aprobada_por_titular: ['borrador', 'publicada'], publicada: ['borrador'] },
   foto:       { pendiente: ['aprobada', 'rechazada'], aprobada: ['pendiente'], rechazada: ['pendiente'] },
   menu:       { borrador: ['revisado'], revisado: ['borrador', 'publicado'], publicado: ['revisado', 'archivado'], archivado: ['borrador'] },
-  reserva:    { solicitada: ['confirmada', 'rechazada', 'cancelada'], confirmada: ['completada', 'no-show', 'cancelada'] },
 };
 
 /** Estados que hacen público algo (o lo retiran): requieren titular/administración. */

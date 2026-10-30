@@ -11,7 +11,7 @@ Generar un catálogo amplio de formas de ingreso y un plan priorizado, sin daña
 1. Genera una lista lo más amplia posible (objetivo: al menos 50 ideas). Ejemplos de familias:
    - Afiliación (ver orden `afiliados`).
    - Publicidad: anuncios display, patrocinios de secciones y newsletters patrocinadas.
-   - Negocios: fichas destacadas o ampliadas de pago, paquetes para restaurantes, herramientas de gestión de reseñas, reservas con comisión.
+   - Negocios: fichas destacadas o ampliadas de pago, paquetes para restaurantes, herramientas de gestión de reseñas.
    - Contenido: guías descargables, recetarios, e-books, cursos, rutas gastronómicas de pago.
    - Experiencias: tours y catas propios o en colaboración, eventos, clases de cocina.
    - Comunidad: membresía o suscripción, newsletter premium.

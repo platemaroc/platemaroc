@@ -10,7 +10,7 @@
 - Login: email, Google y teléfono (el SMS tiene coste por mensaje; valorar si es imprescindible en el MVP).
 - Panel de administración: necesario e importante. Alta y edición de lugares con fotos, moderación de reseñas y fotos, gestión de traducciones y estados. Interfaz en `codigo/frontend/admin-panel/`, lógica en `codigo/backend/admin-moderation/`.
 - Responder a las reseñas: en el MVP Claude Code solo prepara borradores para revisión del titular; la publicación queda para la Fase 2 (documento maestro §3). El titular confirma que todos los locales han dado su autorización para responder en su nombre.
-- Menú digital en el MVP. Reservas: Fase 1.5 opcional (solicitud simple) y Fase 2 con integración real.
+- Menú digital en el MVP. Sin reservas (decisión del 30-10-2026).
 - Precios de menús exclusivamente en MAD, sin conversiones ni campo de moneda (`docs/12-especificacion-precios-mad.md`).
 - Mapa interactivo con carga diferida (IntersectionObserver), placeholder sin CLS y fallback a los 3000 ms desde que empieza la carga.
 - IndexedDB con máximo 20 páginas (LRU) y cachés del Service Worker versionadas.

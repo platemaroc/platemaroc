@@ -223,6 +223,10 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Reservas retiradas (30-10-2026)
+
+Decisión del titular. `policies-rls/0150` borra las tablas (vacías), el tipo y su valor en la auditoría; `business_claims` se conserva. Las migraciones aplicadas no se editan. Los documentos históricos (`docs/02` a `docs/07` y los hashes del paquete) conservan sus menciones como registro.
+
 ## Acceso con Google (30-10-2026)
 
 `app/auth/google/route.ts` empieza el acceso (ruta y no formulario, por la CSP) y `app/auth/callback` lo termina. Con `PUBLIC_SIGNUP_ENABLED` apagado, `isClosedSignup` retira la cuenta de Google recién creada; las cuentas anteriores y la de administración no se tocan. Este control es de la aplicación: quien llame directamente a la API de Supabase podría crear una cuenta sin rol antes de llegar al callback. El panel no se ve afectado, pero antes de lanzar hay que desactivar el proveedor Email en Supabase y revisar este punto.

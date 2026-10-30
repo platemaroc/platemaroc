@@ -9,7 +9,6 @@ Encontrar y comparar programas de afiliados coherentes con una web de gastronom�
 
 ## Categorías a investigar
 - Experiencias y tours gastronómicos, clases de cocina y visitas guiadas.
-- Reservas de restaurantes y experiencias, si existen en Marruecos.
 - Productos: especias, cerámica de cocina, tajines, utensilios, libros de cocina marroquí.
 - Servicios de viaje relacionados: alojamiento, transporte, tarjetas eSIM, seguros de viaje.
 - Redes de afiliación generales que reúnan varios anunciantes.

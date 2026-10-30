@@ -3,8 +3,6 @@
 ## Prioridad alta
 1. Formato de hoja de cálculo para carga inicial de lugares.
 2. Proveedor de SMS para login por teléfono, si se mantiene ese método.
-3. Activar o no Fase 1.5 de reservas.
-4. Proveedor/integración de reservas para Fase 2.
 
 ## Prioridad media
 5. Recetas como entidad/contenido.
@@ -37,6 +35,7 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 - Publicar la app en Google Auth Platform (de pruebas a producción), con la política de privacidad ya publicada: si no, solo entran los usuarios de prueba.
 
 ## Ya decidido
+- Sin reservas en la web: en Marruecos los restaurantes no las usan. Retiradas de código, base y documentos vivos (30-10-2026).
 - Acceso solo con Google para usuarios y titular; retirado el acceso por email, sin servicio de envío para entrar. Las reseñas de visitantes se mantienen; altas cerradas hasta abrirlas (30-10-2026). El titular activó sus dos pasos el mismo día.
 - El mapa interactivo solo se carga al pulsar «Ver mapa», por privacidad; sustituye a la carga al llegar a la sección (30-10-2026).
 - Responsable de los datos: el titular, como persona física en Marruecos (30-10-2026).
@@ -60,8 +59,6 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 - Sin RTL.
 - Sin `hreflang ar`.
 - Menú digital en MVP.
-- Reservas reales en Fase 2.
-- Fase 1.5 opcional.
 - Quality Gate por entidad e idioma.
 - Auditoría.
 - Backups sin secretos.

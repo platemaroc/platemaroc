@@ -116,12 +116,6 @@ Cuando corresponda, deben registrarse origen, autor/licencia y moderación.
 El menú está ligado a un lugar e incluye categorías, artículos, precios, alérgenos,
 disponibilidad y fotografías únicamente cuando la información exista y sea fiable.
 
-### Reservas
-`solicitada -> confirmada | rechazada | cancelada | completada | no-show`
-
-Fase 1.5: solicitud simple, sin disponibilidad en tiempo real.  
-Fase 2: integración real con disponibilidad proporcionada por el sistema conectado.
-
 ---
 
 ## 4. Quality Gate e `is_indexable`
@@ -242,7 +236,6 @@ Entidades auditables incluyen:
 - review
 - photo
 - menu
-- reservation
 - redirect
 - config
 
@@ -309,8 +302,7 @@ Revisar:
 - conversión a reseña;
 - reseñas aprobadas;
 - menús vistos;
-- QR;
-- solicitudes de reserva.
+- QR.
 
 ---
 
@@ -336,15 +328,10 @@ Revisar:
 - notificaciones;
 - analítica cuando sea aprobada.
 
-### Fase 1.5 opcional
-
-Formulario/email de solicitud de reserva. Sin disponibilidad en tiempo real.
-
 ### Fase 2
 
 - reclamación de negocios;
 - perfiles de propietarios;
-- reservas con integración real;
 - respuestas a reseñas publicadas;
 - recetas si se aprueban;
 - favoritos;

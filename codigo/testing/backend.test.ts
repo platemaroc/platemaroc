@@ -24,7 +24,6 @@ test('saltos de estado y rechazo sin motivo no se permiten', () => {
   assert.equal(canTransition('resena', 'pendiente', 'rechazada', 'claude_code').allowed, false);
   assert.equal(canTransition('resena', 'pendiente', 'rechazada', 'claude_code', { reason: 'spam' }).allowed, true);
   assert.equal(canTransition('resena', 'pendiente', 'aprobada', 'claude_code').allowed, false);
-  assert.equal(canTransition('reserva', 'solicitada', 'confirmada', 'sistema').allowed, true);
 });
 test('media solo con reseñas aprobadas', () => {
   assert.deepEqual(summarizeApproved([{ status: 'pendiente', rating: 1 }, { status: 'aprobada', rating: 5 }, { status: 'aprobada', rating: 4 }]), { count: 2, average: 4.5 });

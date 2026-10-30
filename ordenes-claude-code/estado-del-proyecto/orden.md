@@ -10,7 +10,6 @@ Crear un informe periódico del estado real.
 - reseñas;
 - fotos;
 - menús;
-- reservas;
 - indexación;
 - rendimiento;
 - seguridad;

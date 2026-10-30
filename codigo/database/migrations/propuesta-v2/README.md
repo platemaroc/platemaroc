@@ -15,7 +15,7 @@ confirmación del titular y después de ensayarlo con `codigo/database/tests/run
 | reseña / respuesta | `reviews` / `review_replies` |
 | foto / foto_traduccion | `photos` / `photo_translations` |
 | menú / categoría / artículo / menu_traduccion | `menus` / `menu_categories` / `menu_items` / `menu_translations` |
-| reserva / reserva_slot / reclamación | `reservations` / `reservation_slots` / `business_claims` |
+| reclamación | `business_claims` (las reservas se retiraron con `policies-rls/0150`) |
 | auditoría / redirect / consent | `audit_log` / `redirects` / `consents` |
 
 Precios: `menu_items.price_mad` (nulo = pendiente), sin columna de moneda (`docs/12`).
