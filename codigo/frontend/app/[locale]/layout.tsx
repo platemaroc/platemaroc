@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { isLocale } from '../../i18n/config.ts';
 import { getMessages } from '../../i18n/messages.ts';
 import { BottomNav } from '../../components/BottomNav.tsx';
+import { SiteFooter } from '../../components/SiteFooter.tsx';
 import { DemoBanner } from '../../components/content.tsx';
 import { OfflineBanner } from '../../maps/OfflineBanner.tsx';
 import { isDemo } from '../../lib/data.ts';
@@ -17,6 +18,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
     <div className={styles.frame}>
       {isDemo() && <DemoBanner locale={locale} />}
       {children}
+      <SiteFooter locale={locale} />
       <BottomNav locale={locale} labels={t.nav} ariaLabel={t.primaryNav} />
       <OfflineBanner locale={locale} />
     </div>

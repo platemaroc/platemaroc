@@ -72,6 +72,33 @@
   text-decoration: none;
 }
 
+.footer {
+  max-width: var(--content-max);
+  margin: var(--space-xl) auto 0;
+  padding: var(--space-md) var(--gutter);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer a {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+}
+
+.footer p { margin: var(--space-xs) 0 0; }
+
 /* Barra inferior fija: 5 accesos al alcance del pulgar; respeta la zona segura del iPhone. */
 .bottomNav {
   position: fixed;

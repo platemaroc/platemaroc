@@ -156,6 +156,12 @@ const PAGES = [
     assert.equal(await page.locator('select[name=tipo]').count(), 0, 'dentro de un tipo no se elige tipo');
     console.log('búsqueda avanzada OK');
 
+    await page.goto(`${BASE}/en/places`, { waitUntil: 'networkidle' });
+    assert.equal(await page.getAttribute('footer a[href^="/privacidad"]', 'href'), '/privacidad?lang=en');
+    assert.equal(await page.getAttribute('footer a[href^="/cuenta"]', 'href'), '/cuenta?lang=en');
+    console.log('pie: privacidad y acceso en el idioma de la página');
+    await page.goto(`${BASE}/es/restaurantes`, { waitUntil: 'networkidle' });
+
     // Aviso offline.
     await context.setOffline(true);
     await page.waitForSelector('[role=status]', { timeout: 10_000 });
