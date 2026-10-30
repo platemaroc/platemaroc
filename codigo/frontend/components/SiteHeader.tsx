@@ -29,6 +29,7 @@ export async function SiteHeader({ locale, available }: { locale: Locale; availa
           </nav>
           <nav aria-label={t.languageLabel} data-nav="idiomas">
             <ul className={styles.languages}>
+              <li><span aria-current="true" lang={locale}>{locale.toUpperCase()}</span></li>
               {languageLinks(pathname, locale, available).map(({ locale: l, href }) => (
                 <li key={l}><a href={href} hrefLang={l} lang={l}>{l.toUpperCase()}</a></li>
               ))}

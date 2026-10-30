@@ -29,6 +29,9 @@ npm-debug.log*
 Thumbs.db
 desktop.ini
 
+# Diseños de referencia: pesados y con fuentes incrustadas
+designo web/
+
 # Editores y ajustes locales de Claude Code
 .vscode/
 .idea/

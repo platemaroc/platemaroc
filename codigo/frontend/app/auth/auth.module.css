@@ -45,7 +45,7 @@
 .form button {
   min-height: var(--touch-target);
   border: 0;
-  border-radius: var(--radius-md);
+  border-radius: 999px;
   background: var(--color-accent);
   color: var(--color-accent-text);
   font: inherit;

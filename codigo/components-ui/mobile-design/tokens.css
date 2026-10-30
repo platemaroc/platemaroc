@@ -1,16 +1,20 @@
-/* Variables del sistema de diseño (mismos valores que tokens.ts). Dirección «Té a la menta». */
+/* Variables del sistema de diseño (mismos valores que tokens.ts). Sistema visual de Claude Design: arena y terracota. */
 :root {
-  --color-text: #1f2e27;
-  --color-muted: #4f5d55;
-  --color-bg: #f6f1e4;
+  --color-text: #1f1a17;
+  --color-muted: #5e534b;
+  --color-bg: #f7f2ea;
   --color-surface: #ffffff;
-  --color-border: #e0d9c6;
-  --color-accent: #1f4d3a;
-  --color-accent-text: #f6f1e4;
-  --color-gold: #e0a93b;
+  --color-border: #e4d9ca;
+  --color-accent: #b5482a;
+  --color-accent-dark: #8f3720;
+  --color-accent-text: #ffffff;
+  --color-accent-tint: #f6e3da;
+  --color-mint: #1f6b5c;
+  --color-mint-tint: #dcede7;
+  --color-gold: #e9b44c;
   --color-gold-text: #2c2206;
-  --color-star: #7a5a10;
-  --color-photo: #dce5d8;
+  --color-star: #8f3720;
+  --color-photo: #e9dfd1;
 
   --space-xs: 4px;
   --space-sm: 8px;
@@ -19,7 +23,7 @@
   --space-xl: 32px;
   --gutter: 16px;
   --radius-sm: 6px;
-  --radius-md: 10px;
+  --radius-md: 8px;
   --radius-lg: 16px;
 
   --touch-target: 48px; /* MIN_TOUCH_TARGET_PX */
@@ -27,8 +31,8 @@
   --content-max: 46rem; /* Texto: fichas y formularios */
   --page-max: 70rem;    /* Portada, listados, cabecera y pie */
 
-  /* Texto con la tipografía del sistema (mejor LCP). Solo los títulos descargan fuente: Fraunces, servida por la propia web (app/layout.tsx). */
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Fraunces en títulos y Manrope en el resto, servidas por la propia web (app/layout.tsx). */
+  --font-body: var(--font-manrope), system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --text-sm: 0.875rem;
   --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);

@@ -13,7 +13,7 @@
 .stars label { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: var(--touch-target); min-height: var(--touch-target); padding: 0 var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
 .check { display: grid; grid-template-columns: 24px 1fr; gap: var(--space-sm); align-items: start; min-height: var(--touch-target); }
 .check input { width: 24px; height: 24px; margin: 0; }
-.primary { min-height: var(--touch-target); padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-md); background: var(--color-accent); color: var(--color-accent-text); font: inherit; font-weight: 600; cursor: pointer; justify-self: start; }
+.primary { min-height: var(--touch-target); padding: 0 var(--space-lg); border: 0; border-radius: 999px; background: var(--color-accent); color: var(--color-accent-text); font: inherit; font-weight: 600; cursor: pointer; justify-self: start; }
 .primary:disabled { opacity: 0.6; cursor: progress; }
 .secondary { min-height: var(--touch-target); padding: 0 var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); font: inherit; cursor: pointer; }
 .error { margin: 0; padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); background: #fff1f2; color: #9f1239; }

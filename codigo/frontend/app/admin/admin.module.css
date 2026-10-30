@@ -8,15 +8,14 @@
   align-items: center;
   gap: var(--space-sm) var(--space-md);
   padding: var(--space-sm) var(--gutter);
-  background: var(--color-accent);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
 }
-
-.header a:focus-visible { outline-color: var(--color-gold); }
 
 .who {
   margin-left: auto;
   font-size: var(--text-sm);
-  color: var(--color-accent-text);
+  color: var(--color-muted);
   overflow-wrap: anywhere;
 }
 
@@ -84,7 +83,7 @@
 
 /* ---- Bloque 4b: listas, fichas y formularios (mobile-first, targets ≥ 48 px) ---- */
 .back a, .primaryLink { display: inline-flex; align-items: center; min-height: var(--touch-target); }
-.primaryLink { padding: 0 var(--space-md); border-radius: var(--radius-md); background: var(--color-accent); color: var(--color-accent-text); font-weight: 600; text-decoration: none; }
+.primaryLink { padding: 0 var(--space-md); border-radius: 999px; background: var(--color-accent); color: var(--color-accent-text); font-weight: 600; text-decoration: none; }
 .muted { color: var(--color-muted); }
 .meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm); margin: 0 0 var(--space-md); }
 .badge, .status_borrador, .status_revisado, .status_revisada, .status_publicado, .status_publicada, .status_archivado,
@@ -125,7 +124,7 @@
 .check input { width: 22px; height: 22px; }
 .checks { display: grid; gap: 0; max-height: 22rem; overflow: auto; padding: var(--space-xs) var(--space-sm); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
 .primary {
-  min-height: var(--touch-target); min-width: var(--touch-target); padding: 0 var(--space-lg); border: 0; border-radius: var(--radius-md);
+  min-height: var(--touch-target); min-width: var(--touch-target); padding: 0 var(--space-lg); border: 0; border-radius: 999px;
   background: var(--color-accent); color: var(--color-accent-text); font: inherit; font-weight: 600; cursor: pointer; justify-self: start;
 }
 .primary:disabled { opacity: 0.6; cursor: progress; }

@@ -245,6 +245,10 @@ Verificado: pruebas SQL 32 a 34, ensayo de `apply.sh` y `admin.e2e.cjs` contra e
 
 `app/manifest.ts`, iconos en `public/icons/` y `app/apple-icon.png`. Al abrirse instalada empieza en el selector de idioma. Instalar de verdad exige HTTPS: se comprueba tras publicar.
 
+## Sistema visual de Claude Design, fase 1 de 5 (30-10-2026)
+
+Colores, letras, formas, logo, cabecera, selector de idioma, botones y pie. Fases pendientes: portada y ciudad; búsqueda y «Abierto ahora»; ficha; menú. La referencia está en `designo web/`, fuera de Git. Lo escrito más abajo sobre «Té a la menta» queda sustituido.
+
 ## Pie completo y páginas informativas (30-10-2026)
 
 `SiteFooter.tsx` y 7 páginas en `/{idioma}/info/{slug}` (`i18n/info-pages.ts`): sobre nosotros, contacto, reseñas, privacidad, cookies, aviso legal y condiciones. `/privacidad` redirige a la nueva. Las cuatro legales muestran «Borrador» hasta que las apruebe el asesor; ninguna se indexa ni va en el sitemap. El aviso legal no publica la dirección del titular: se decide con el asesor. Antes de lanzar, completarlo y abrir la indexación de las que proceda.

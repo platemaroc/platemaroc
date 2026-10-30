@@ -28,8 +28,8 @@
   margin-bottom: var(--space-xs);
   font-family: var(--font-body);
   font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-gold);
+  font-weight: 700;
+  color: var(--color-accent-text);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -122,8 +122,8 @@
   margin-top: var(--space-xs);
   padding: 2px var(--space-sm);
   border-radius: 999px;
-  background: var(--color-photo);
-  color: var(--color-accent);
+  background: var(--color-accent-tint);
+  color: var(--color-accent-dark);
   font-size: var(--text-sm);
 }
 
