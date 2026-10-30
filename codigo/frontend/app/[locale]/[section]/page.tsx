@@ -5,15 +5,16 @@ import { SiteHeader } from '../../../components/SiteHeader.tsx';
 import { SearchForm } from '../../../components/SearchForm.tsx';
 import { Breadcrumbs, LinkList, PlaceList } from '../../../components/content.tsx';
 import { LOCALES } from '../../../../shared/locales.ts';
+import { hasFilters, parsePlaceFilters } from '../../../../shared/place-filters.ts';
 import { cleanSearchParam } from '../../../../shared/search.ts';
-import { listCities, listDishes, listGuides, listingIndexableLocales, resolveRoute, searchContent } from '../../../lib/data.ts';
+import { getCity, listCities, listDishes, listGuides, listingIndexableLocales, resolveRoute, searchContent } from '../../../lib/data.ts';
 import { pageMetadata } from '../../../lib/seo.ts';
 import styles from '../templates.module.css';
 
 type Params = Promise<{ locale: string; section: string }>;
 type Query = Promise<Record<string, string | string[] | undefined>>;
 
-const isFiltered = (query: Record<string, unknown>) => !!(cleanSearchParam(query.q) || cleanSearchParam(query.ciudad));
+const isFiltered = (query: Record<string, unknown>) => !!(cleanSearchParam(query.q) || cleanSearchParam(query.ciudad)) || hasFilters(parsePlaceFilters(query));
 
 export async function generateMetadata({ params, searchParams }: { params: Params; searchParams: Query }): Promise<Metadata> {
   const { locale, section } = await resolveRoute(params);
@@ -35,13 +36,18 @@ export default async function Listing({ params, searchParams }: { params: Params
 
   let body;
   if (section === 'lugares' || isPlaceSection(section)) {
-    const placeSection = section === 'lugares' ? undefined : section;
     const query = await searchParams;
     const q = cleanSearchParam(query.q);
     const cities = await listCities(locale);
     const city = cities.find((c) => c.slug === cleanSearchParam(query.ciudad))?.slug ?? '';
-    const found = await searchContent(locale, { q, citySlug: city || undefined, section: placeSection });
-    const filtered = !!(q || city);
+    const neighborhoods = city ? (await getCity(locale, city))?.neighborhoods ?? [] : [];
+    const parsed = parsePlaceFilters(query);
+    const filters = {
+      ...parsed, section: section === 'lugares' ? parsed.section : section,
+      neighborhood: neighborhoods.find((n) => n.slug === parsed.neighborhood)?.slug ?? '',
+    };
+    const found = await searchContent(locale, { q, citySlug: city || undefined, filters });
+    const filtered = !!(q || city) || hasFilters(section === 'lugares' ? filters : { ...filters, section: undefined });
     const total = found.places.length + found.dishes.length + found.guides.length + found.cities.length;
     const links = (key: 'platos-tipicos' | 'guias-gastronomicas' | 'ciudades-y-barrios', items: { slug: string; name: string; summary?: string | null }[]) => !!items.length && (
       <div className={styles.section}>
@@ -51,7 +57,7 @@ export default async function Listing({ params, searchParams }: { params: Params
     );
     body = (
       <>
-        <SearchForm locale={locale} section={section} q={q} city={city} cities={cities} />
+        <SearchForm locale={locale} section={section} q={q} city={city} cities={cities} neighborhoods={neighborhoods} filters={section === 'lugares' ? filters : { ...filters, section: undefined }} />
         {filtered ? <p role="status" className={styles.lead}>{total ? t.searchForm.results.replace('{count}', String(total)) : t.searchForm.none}</p> : section === 'lugares' && (
           <ul className={styles.tiles}>
             {PLACE_SECTIONS.map((p) => <li key={p}><a href={sectionPath(locale, p)}>{t.sections[p]}</a></li>)}

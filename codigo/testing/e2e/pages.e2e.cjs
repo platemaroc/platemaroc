@@ -140,7 +140,21 @@ const PAGES = [
     assert.ok((await page.locator('a[href*="demo-restaurante"]').count()) > 0, 'filtro por ciudad');
     await page.goto(`${BASE}/es/lugares?ciudad=no-existe`, { waitUntil: 'networkidle' });
     assert.equal(await page.inputValue('select[name=ciudad]'), '', 'una ciudad desconocida se ignora');
-    console.log('buscador OK');
+    // Búsqueda avanzada: los filtros se combinan, se conservan y nunca se indexan.
+    await page.goto(`${BASE}/es/lugares?ciudad=demo-ciudad&precio=2&valoracion=4&orden=valoracion`, { waitUntil: 'networkidle' });
+    assert.ok(await page.locator('form[role=search] details[open]').count(), 'con filtros, la sección queda abierta');
+    assert.equal(await page.inputValue('select[name=precio]'), '2');
+    assert.equal(await page.locator('main a[href*="/demo-"]').count(), 1, 'solo el restaurante cumple precio y valoración');
+    assert.match(await page.getAttribute('meta[name=robots]', 'content'), /noindex/);
+    await page.goto(`${BASE}/es/lugares?tipo=cafes-y-teterias`, { waitUntil: 'networkidle' });
+    assert.ok(await page.locator('a[href*="demo-cafe"]').count(), 'filtro por tipo');
+    assert.equal(await page.locator('a[href*="demo-restaurante"]').count(), 0);
+    await page.goto(`${BASE}/es/lugares?ciudad=demo-ciudad&barrio=demo-barrio`, { waitUntil: 'networkidle' });
+    assert.equal(await page.inputValue('select[name=barrio]'), 'demo-barrio');
+    assert.equal(await page.locator('a[href*="demo-cafe"]').count(), 0, 'el café no está en ese barrio');
+    await page.goto(`${BASE}/es/restaurantes`, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('select[name=tipo]').count(), 0, 'dentro de un tipo no se elige tipo');
+    console.log('búsqueda avanzada OK');
 
     // Aviso offline.
     await context.setOffline(true);

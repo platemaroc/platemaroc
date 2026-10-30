@@ -118,8 +118,28 @@
 }
 
 @media (min-width: 640px) {
-  .search { grid-template-columns: minmax(0, 1fr) 15rem auto; align-items: end; }
-  .searchClear { grid-column: 1 / -1; }
+  .search { grid-template-columns: minmax(0, 1fr) 15rem; align-items: end; }
+  .searchMore, .searchClear { grid-column: 1 / -1; }
+  .search button { justify-self: start; }
+}
+
+.searchMore summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  font-weight: 600;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.searchMore summary::before { content: '▸'; margin-right: var(--space-xs); }
+.searchMore[open] summary::before { content: '▾'; }
+
+.searchFields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
 }
 
 .searchCompact {

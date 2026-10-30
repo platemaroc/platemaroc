@@ -5,7 +5,8 @@ import { cached } from '../../backend/content/cache.ts';
 import { isLocale, type Locale } from '../i18n/config.ts';
 import { getMessages } from '../i18n/messages.ts';
 import { LOCALES } from '../../shared/locales.ts';
-import { isPlaceSection, sectionFromSegment, type PlaceSection, type Section } from '../../shared/routes.ts';
+import { applyPlaceFilters, hasFilters, type PlaceFilters } from '../../shared/place-filters.ts';
+import { isPlaceSection, sectionFromSegment, type Section } from '../../shared/routes.ts';
 import { matchesSearch } from '../../shared/search.ts';
 
 /** Datos públicos con caché de 60 s (backend/content/cache.ts). Solo contenido público: nunca datos de un usuario. */
@@ -41,13 +42,15 @@ export async function resolveRoute(params: Promise<{ locale: string; section?: s
 
 /**
  * Busca entre lo público, así que nunca aparece un borrador. Filtra en memoria los listados con caché: no añade consultas a la base.
- * Con ciudad o dentro de un tipo de lugar solo hay lugares, porque platos, guías y ciudades no pertenecen a una ciudad ni a un tipo.
+ * Con cualquier filtro solo hay lugares, porque platos, guías y ciudades no tienen ciudad, tipo, precio ni valoración.
  */
-export async function searchContent(locale: Locale, o: { q: string; citySlug?: string; section?: PlaceSection }) {
+export async function searchContent(locale: Locale, o: { q: string; citySlug?: string; filters: PlaceFilters }) {
   const label = getMessages(locale).sections;
-  const places = (await listPlaces(locale, { section: o.section, citySlug: o.citySlug }))
+  const { section, neighborhood } = o.filters;
+  const found = (await listPlaces(locale, { section, citySlug: o.citySlug, neighborhoodSlug: o.citySlug && neighborhood ? neighborhood : undefined }))
     .filter((p) => matchesSearch(o.q, [p.name, p.summary, p.city?.name, p.neighborhood?.name, label[p.section]]));
-  if (o.citySlug || o.section || !o.q) return { places, dishes: [], guides: [], cities: [] };
+  const places = applyPlaceFilters(found, o.filters);
+  if (o.citySlug || hasFilters(o.filters) || !o.q) return { places, dishes: [], guides: [], cities: [] };
   const hit = <T extends { name: string; summary?: string | null }>(items: T[]) => items.filter((x) => matchesSearch(o.q, [x.name, x.summary]));
   const [dishes, guides, cities] = await Promise.all([listDishes(locale), listGuides(locale), listCities(locale)]);
   return { places, dishes: hit(dishes), guides: hit(guides), cities: hit(cities) };

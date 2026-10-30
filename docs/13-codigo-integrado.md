@@ -245,6 +245,10 @@ Verificado: pruebas SQL 32 a 34, ensayo de `apply.sh` y `admin.e2e.cjs` contra e
 
 `app/manifest.ts`, iconos en `public/icons/` y `app/apple-icon.png`. Al abrirse instalada empieza en el selector de idioma. Instalar de verdad exige HTTPS: se comprueba tras publicar.
 
+## Búsqueda avanzada (30-10-2026)
+
+`shared/place-filters.ts` lee y aplica `?tipo=`, `?barrio=`, `?precio=`, `?valoracion=` y `?orden=`; un valor desconocido se ignora. En `SearchForm.tsx` van plegados bajo «Más filtros» y se abren si hay alguno elegido. El barrio aparece tras buscar por ciudad, porque el formulario funciona sin JavaScript. Un lugar sin precio o sin valoración no pasa ese filtro: nunca se supone un dato. Con filtros, `noindex` y canónica al listado.
+
 ## Buscador y filtro por ciudad (30-10-2026)
 
 | Pieza | Dónde | Notas |
