@@ -155,6 +155,8 @@ export default async function EditEntity({ params, searchParams }: { params: Par
         </section>
       ))}
 
+      {def.place && <p><a className={styles.secondaryLink} href={`/admin/lugares/${id}/menu`}>Editar menú digital</a></p>}
+
       {def.place && (
         <section className={styles.card} aria-labelledby="fotos">
           <h2 id="fotos">Fotos</h2>

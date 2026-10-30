@@ -195,7 +195,8 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
           name: names.get(c.id)!.name,
           items: items.filter((i) => i.category_id === c.id && names.has(i.id)).map((i) => ({
             name: names.get(i.id)!.name, description: names.get(i.id)!.description ?? null,
-            priceMad: i.price_mad === null ? null : Number(i.price_mad), soldOut: i.availability === 'agotado', allergens: i.allergens ?? [],
+            // Un precio sin verificar se muestra como pendiente (docs/12): el importe no sale hasta que está verificado.
+            priceMad: i.price_mad === null || i.price_status !== 'verificado' ? null : Number(i.price_mad), soldOut: i.availability === 'agotado', allergens: i.allergens ?? [],
           })),
         })).filter((c) => c.items.length > 0),
       };

@@ -18,10 +18,6 @@ const CONTENT = [
   ['lugares', 'Lugares'], ['ciudades', 'Ciudades'], ['barrios', 'Barrios'], ['platos', 'Platos'], ['guias', 'Guías'], ['regiones', 'Regiones'],
 ] as const;
 
-const SECTIONS = [
-  { title: 'Menús e importación', block: '4d', text: 'Menú digital en MAD e importación de lugares desde CSV.' },
-];
-
 export default async function AdminHome() {
   await requireAdmin();
   const [reviews, photos, drafts, reviewed, translations, replies] = await Promise.all([
@@ -49,11 +45,9 @@ export default async function AdminHome() {
       <ul className={styles.sections}>
         {CONTENT.map(([key, label]) => <li key={key}><a href={`/admin/${key}`}><strong>{label}</strong><span>Altas, edición, textos es/en/fr, fotos y estados</span></a></li>)}
       </ul>
-      <h2 className={styles.subtitle}>Próximamente</h2>
+      <h2 className={styles.subtitle}>Herramientas</h2>
       <ul className={styles.sections}>
-        {SECTIONS.map((s) => (
-          <li key={s.title}><strong>{s.title}</strong><span>{s.text}</span><em>Próximamente (bloque {s.block})</em></li>
-        ))}
+        <li><a href="/admin/importar"><strong>Importar lugares</strong><span>Desde una hoja de cálculo CSV, en borrador. El menú se edita dentro de cada lugar</span></a></li>
       </ul>
     </>
   );

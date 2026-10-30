@@ -13,7 +13,7 @@
 
 ## Añadidos al integrar el código (29-10-2026)
 8. Identidad visual (logo y colores): la paleta actual es provisional.
-9. Fotos para platos, guías y ciudades: el Quality Gate (maestro §4.2) las exige, pero `photos` solo admite lugares y reseñas. Sin una migración nueva, esas fichas nunca serán indexables.
+9. Fotos para platos, guías y ciudades: APLAZADO por el titular (30-10-2026; aún no tiene fotos). El Quality Gate (maestro §4.2) las exige y `photos` solo admite lugares y reseñas: sin la migración propuesta (columnas `dish_id`, `guide_id`, `city_id`), esas fichas no serán indexables.
 
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
@@ -33,6 +33,7 @@
 - Mapa estático de respaldo: texto y enlaces siempre + imagen opcional subida por la administración (29-10-2026).
 - Datos de demostración solo en desarrollo, con prefijo `demo-` (29-10-2026).
 - Migración 0010 aprobada y aplicada: dirección, indicaciones por idioma e imagen del mapa estático (29-10-2026).
+- Menú 4d: uno por lugar; publicar el menú completo con artículos ocultables; QR en el panel; avisos por email aplazados hasta tener SMTP; importación CSV en borrador con vista previa (30-10-2026).
 - Reseñas 4c: nombre visible obligatorio; casilla de derechos en fotos de usuarios; alt obligatorio en el idioma de la reseña; reseñas en idioma original; máximo 5 reseñas en 24 h y 3 fotos por reseña (30-10-2026).
 - Panel 4b: slug fijo al publicar; fotos procesadas con sharp; fotos del titular aprobadas si tienen origen, autor, licencia y alt; horario por días (30-10-2026).
 - Idiomas: es/en/fr.

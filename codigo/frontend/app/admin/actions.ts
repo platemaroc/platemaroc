@@ -6,6 +6,9 @@ import { isAdminEntity, type AdminEntity } from '../../../backend/admin-moderati
 import { changeStatus, changeTranslationStatus, saveFields, saveRelations, saveTranslation, type SaveResult } from '../../../backend/admin-moderation/content-admin.ts';
 import { setStaticMap, updatePhoto, uploadPlacePhoto } from '../../../backend/admin-moderation/photos-admin.ts';
 import { moderateReview, saveReply } from '../../../backend/admin-moderation/moderation-admin.ts';
+import { publishMenu, saveCategory, saveItem, setItemHidden, unpublishMenu } from '../../../backend/admin-moderation/menu-admin.ts';
+import { MAX_BYTES, type ImportReport } from '../../../backend/admin-moderation/csv-import.ts';
+import { previewImport, runImport } from '../../../backend/admin-moderation/import-admin.ts';
 import { requireAdmin } from '../../lib/admin.ts';
 import { supabaseForRequest } from '../../lib/supabase-server.ts';
 
@@ -130,4 +133,71 @@ export async function saveReplyAction(_prev: FormState, form: FormData): Promise
 
 export async function moderatePhotoAction(_prev: FormState, form: FormData): Promise<FormState> {
   return moderation(form, async ({ id, email }) => updatePhoto(await supabaseForRequest(), id, (k) => form.get(k), email), 'Foto actualizada.', '/admin/fotos');
+}
+
+/* ---------- Menú (bloque 4d) ---------- */
+
+const menuRevalidate = (id: string) => revalidatePath(`/admin/lugares/${id}/menu`);
+
+export async function menuSaveCategory(_prev: FormState, form: FormData): Promise<FormState> {
+  const categoryId = form.get('category_id') ? String(form.get('category_id')) : null;
+  const r = await run(form, async ({ id, email, get }) => saveCategory(await supabaseForRequest(), id, categoryId, get, email));
+  menuRevalidate(String(form.get('id')));
+  return r;
+}
+
+export async function menuSaveItem(_prev: FormState, form: FormData): Promise<FormState> {
+  const itemId = form.get('item_id') ? String(form.get('item_id')) : null;
+  const r = await run(form, async ({ id, email, get }) => saveItem(await supabaseForRequest(), id, itemId, get, email));
+  menuRevalidate(String(form.get('id')));
+  return r;
+}
+
+export async function menuToggleItem(_prev: FormState, form: FormData): Promise<FormState> {
+  const itemId = String(form.get('item_id') ?? '');
+  const hide = form.get('hide') === 'si';
+  const r = await run(form, async ({ id, email }) => (UUID.test(itemId) ? setItemHidden(await supabaseForRequest(), id, itemId, hide, email) : { ok: false, errors: { _: 'Artículo no válido.' } }));
+  menuRevalidate(String(form.get('id')));
+  return r;
+}
+
+export async function menuPublish(_prev: FormState, form: FormData): Promise<FormState> {
+  const withdraw = form.get('menu_action') === 'retirar';
+  const r = await run(form, async ({ id, email }) => (withdraw ? unpublishMenu(await supabaseForRequest(), id, email) : publishMenu(await supabaseForRequest(), id, email)), withdraw ? 'Menú retirado.' : 'Menú publicado.');
+  menuRevalidate(String(form.get('id')));
+  return r;
+}
+
+/* ---------- Importación CSV (bloque 4d) ---------- */
+
+export interface ImportState { report?: ImportReport; csv?: string; error?: string; created?: number }
+
+export async function previewCsv(_prev: ImportState, form: FormData): Promise<ImportState> {
+  await requireAdmin('/admin/importar');
+  const file = form.get('file');
+  if (!(file instanceof File) || file.size === 0) return { error: 'Elige un archivo CSV.' };
+  if (file.size > MAX_BYTES) return { error: 'El archivo pasa de 1 MB.' };
+  const csv = await file.text();
+  try {
+    const report = await previewImport(await supabaseForRequest(), csv);
+    return report.fatal ? { error: report.fatal } : { report, csv };
+  } catch (e) {
+    console.error('[importar]', e);
+    return { error: 'No se ha podido revisar el archivo.' };
+  }
+}
+
+export async function confirmImport(_prev: ImportState, form: FormData): Promise<ImportState> {
+  const user = await requireAdmin('/admin/importar');
+  const csv = String(form.get('csv') ?? '');
+  if (!csv || csv.length > MAX_BYTES) return { error: 'Vuelve a subir el archivo.' };
+  try {
+    const { created, report } = await runImport(await supabaseForRequest(), csv, user.email ?? user.id);
+    if (report.fatal) return { error: report.fatal };
+    revalidatePath('/admin/lugares');
+    return { created, report };
+  } catch (e) {
+    console.error('[importar]', e);
+    return { error: 'No se ha podido importar. No se ha dado por terminada: revisa la lista de lugares antes de repetir.' };
+  }
 }
