@@ -8,7 +8,8 @@
   "offline": "Hors ligne",
   "tagline": "Guide gastronomique du Maroc",
   "cityType": "{type} à {city}",
-  "footerNav": "Liens du pied de page",
+  "footerExplore": "Explorer",
+  "footerLegal": "Mentions",
   "searchForm": {
     "more": "Plus de filtres",
     "type": "Type de lieu",

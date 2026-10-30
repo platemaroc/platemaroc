@@ -8,7 +8,8 @@
   "offline": "Sin conexión",
   "tagline": "Guía gastronómica de Marruecos",
   "cityType": "{type} en {city}",
-  "footerNav": "Enlaces del pie",
+  "footerExplore": "Explorar",
+  "footerLegal": "Legal",
   "searchForm": {
     "more": "Más filtros",
     "type": "Tipo de lugar",

@@ -8,7 +8,8 @@
   "offline": "Offline",
   "tagline": "Food guide to Morocco",
   "cityType": "{type} in {city}",
-  "footerNav": "Footer links",
+  "footerExplore": "Explore",
+  "footerLegal": "Legal",
   "searchForm": {
     "more": "More filters",
     "type": "Type of place",

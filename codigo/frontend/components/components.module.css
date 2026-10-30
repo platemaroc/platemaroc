@@ -82,29 +82,44 @@
 .footerBar a:focus-visible { outline-color: var(--color-gold); }
 
 .footer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-md);
   max-width: var(--page-max);
   margin: 0 auto;
-  padding: var(--space-md) var(--gutter);
+  padding: var(--space-lg) var(--gutter) var(--space-md);
   font-size: var(--text-sm);
 }
 
+.footerBrand, .footerCopy { grid-column: 1 / -1; }
+.footerBrand p, .footerCopy { margin: 0; }
+
+.footer h2 {
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-base);
+  color: var(--color-gold);
+}
+
 .footer ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--space-lg);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.footer a {
+.footer li a {
   display: inline-flex;
   align-items: center;
   min-width: var(--touch-target);
   min-height: var(--touch-target);
+  text-decoration: none;
 }
 
-.footer p { margin: var(--space-xs) 0 0; }
+.footer li a:hover { text-decoration: underline; }
+
+@media (min-width: 640px) {
+  .footer { grid-template-columns: 1.4fr repeat(3, 1fr); }
+  .footerBrand { grid-column: auto; }
+}
 
 /* Menú de escritorio: sustituye a la barra inferior, que en pantalla grande parece de móvil. */
 .desktopNav { display: none; margin-left: auto; }

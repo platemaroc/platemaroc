@@ -154,6 +154,19 @@
   margin: 0 0 var(--space-md);
 }
 
+.prose h2 {
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: var(--text-lg);
+}
+
+.draft {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  background: #fef3c7;
+  color: #713f12;
+}
+
 .chips {
   display: flex;
   flex-wrap: wrap;

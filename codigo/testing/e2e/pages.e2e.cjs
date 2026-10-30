@@ -157,7 +157,20 @@ const PAGES = [
     console.log('búsqueda avanzada OK');
 
     await page.goto(`${BASE}/en/places`, { waitUntil: 'networkidle' });
-    assert.equal(await page.getAttribute('footer a[href^="/privacidad"]', 'href'), '/privacidad?lang=en');
+    assert.equal(await page.locator('footer a[href^="/en/info/"]').count(), 7, 'las 7 páginas en el pie');
+    for (const slug of ['sobre-nosotros', 'contacto', 'como-funcionan-las-resenas', 'privacidad', 'cookies', 'aviso-legal', 'condiciones']) {
+      assert.equal((await page.goto(`${BASE}/fr/info/${slug}`)).status(), 200, slug);
+      assert.ok((await page.textContent('h1')).length > 0);
+      assert.match(await page.getAttribute('meta[name=robots]', 'content'), /noindex/);
+    }
+    assert.equal(await page.locator('main [role=note]').count(), 1, 'una página legal avisa de que es borrador');
+    await page.goto(`${BASE}/es/info/contacto`);
+    assert.equal(await page.locator('main [role=note]').count(), 0);
+    assert.ok(await page.locator('main a[href^="mailto:"]').count());
+    assert.equal((await page.goto(`${BASE}/es/info/no-existe`)).status(), 404);
+    await page.goto(`${BASE}/privacidad?lang=fr`);
+    assert.match(page.url(), /\/fr\/info\/privacidad$/, 'la dirección antigua lleva a la nueva');
+    await page.goto(`${BASE}/en/places`, { waitUntil: 'networkidle' });
     assert.equal(await page.getAttribute('footer a[href^="/cuenta"]', 'href'), '/cuenta?lang=en');
     console.log('pie: privacidad y acceso en el idioma de la página');
 
