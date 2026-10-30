@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { LOCALES, type Locale } from '../../shared/locales.ts';
-import { isPlaceSection, sectionPath, type PlaceSection, type Section } from '../../shared/routes.ts';
+import { isPlaceSection, MENU_SEGMENT, sectionPath, type PlaceSection, type Section } from '../../shared/routes.ts';
 import { summarizeApproved } from '../reviews/rating.ts';
 import type { SupabasePublicConfig } from '../supabase/env.ts';
 import {
@@ -179,11 +179,21 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       fetch('places', ids('place')), fetch('dishes', ids('dish')), fetch('guides', ids('guide')), fetch('cities', ids('city')), fetch('neighborhoods', ids('neighborhood')), placeTypes(),
     ]);
     const hoodCities = await fetch('cities', [...new Set(hoods.map((h) => h.city_id))], 'id,slug');
+    const menuTrs = await rows(db.from('menu_translations').select('target_id,locale').eq('target_type', 'menu').eq('is_indexable', true));
+    const menuRows = await fetch('menus', [...new Set(menuTrs.map((t) => t.target_id))], 'id,place_id,updated_at');
+    const menuPlaces = await fetch('places', menuRows.map((m) => m.place_id), 'id,slug,place_type_id');
+    const menuEntries: IndexEntry[] = menuRows.flatMap((m) => {
+      const p = menuPlaces.find((x) => x.id === m.place_id);
+      const s = p && (types.get(p.place_type_id) as PlaceSection | undefined);
+      if (!p || !s || !isPlaceSection(s)) return [];
+      return [{ paths: Object.fromEntries(menuTrs.filter((t) => t.target_id === m.id).map((t) => [t.locale, sectionPath(t.locale, s, p.slug, MENU_SEGMENT)])), lastmod: m.updated_at ?? null }];
+    });
     const entry = (type: string, row: Row, path: (l: Locale) => string): IndexEntry => ({
       paths: Object.fromEntries(trs.filter((t) => t.entity_type === type && t.entity_id === row.id).map((t) => [t.locale, path(t.locale)])), lastmod: row.updated_at ?? null,
     });
     const simple = (type: string, list: Row[], section: Section) => list.map((r) => entry(type, r, (l) => sectionPath(l, section, r.slug)));
     return [
+      ...menuEntries,
       ...places.flatMap((p) => { const s = types.get(p.place_type_id) as PlaceSection | undefined; return s && isPlaceSection(s) ? [entry('place', p, (l) => sectionPath(l, s, p.slug))] : []; }),
       ...simple('dish', dishes, 'platos-tipicos'), ...simple('guide', guides, 'guias-gastronomicas'), ...simple('city', cities, 'ciudades-y-barrios'),
       ...hoods.flatMap((h) => { const c = hoodCities.find((x) => x.id === h.city_id); return c ? [entry('neighborhood', h, (l) => sectionPath(l, 'ciudades-y-barrios', c.slug, h.slug))] : []; }),
@@ -226,9 +236,11 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       const items = cats.length ? await rows(db.from('menu_items').select('*').in('category_id', cats.map((c) => c.id)).order('position')) : [];
       const names = new Map((await rows(db.from('menu_translations').select('target_id,name,description').eq('locale', locale).eq('status', 'publicada')
         .in('target_id', [...cats, ...items].map((x) => x.id).concat(menu.id)))).filter((t) => t.name?.trim()).map((t) => [t.target_id, t]));
+      const menuIndex = await rows(db.from('menu_translations').select('locale').eq('target_type', 'menu').eq('target_id', menu.id).eq('is_indexable', true));
       return {
         place: { slug, name: placeTr.title, section },
         locales: await publishedLocales('place', row.id),
+        indexableLocales: LOCALES.filter((l) => menuIndex.some((t) => t.locale === l)),
         categories: cats.filter((c) => names.has(c.id)).map((c) => ({
           name: names.get(c.id)!.name,
           items: items.filter((i) => i.category_id === c.id && names.has(i.id)).map((i) => ({

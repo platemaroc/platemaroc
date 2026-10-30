@@ -9,7 +9,7 @@ import { suggestLocale } from '../../i18n/negotiate.ts';
 import { currentUser, supabaseForRequest } from '../../lib/supabase-server.ts';
 import { signOut } from '../auth/actions.ts';
 import { UserForm } from './UserForm.tsx';
-import { removeReview, saveName } from './actions.ts';
+import { removeAccount, removeReview, saveName } from './actions.ts';
 import styles from './cuenta.module.css';
 
 export const metadata: Metadata = { title: 'Mi cuenta', robots: { index: false, follow: false } };
@@ -65,6 +65,20 @@ export default async function Account({ searchParams }: { searchParams: Promise<
             })}
           </ul>
         )}
+      </section>
+
+      <section className={styles.section}>
+        <h2>{a.dataTitle}</h2>
+        <p><a className={styles.link} href="/cuenta/exportar" download>{a.export}</a></p>
+        <details>
+          <summary className={styles.link}>{a.deleteTitle}</summary>
+          <p className={styles.muted}>{a.deleteHint}</p>
+          <UserForm action={removeAccount} hidden={{ lang: locale }} submit={a.deleteButton} sending="…">
+            <label className={styles.field}>{a.deleteConfirm}
+              <input name="confirm" type="email" autoComplete="off" />
+            </label>
+          </UserForm>
+        </details>
       </section>
     </main>
   );

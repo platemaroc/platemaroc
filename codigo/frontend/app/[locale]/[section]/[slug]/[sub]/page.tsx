@@ -24,7 +24,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const page = await load(params);
   if (!page.data) return {};
   const t = getMessages(page.locale);
-  if (page.kind === 'menu') return { title: `${t.menu} · ${page.data.place.name}` };
+  if (page.kind === 'menu') {
+    const m = page.data;
+    return pageMetadata({
+      locale: page.locale, title: `${t.menu} · ${m.place.name}`, description: `${t.menu} · ${m.place.name}`, indexable: m.indexableLocales,
+      paths: Object.fromEntries(m.locales.map((l) => [l, sectionPath(l, m.place.section, m.place.slug, MENU_SEGMENT)])),
+    });
+  }
   const n = page.data;
   const seo = await seoInfo('neighborhood', n.slug, page.locale, n.city.slug);
   return pageMetadata({

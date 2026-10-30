@@ -89,7 +89,15 @@
     "pendiente": "En attente de modération",
     "aprobada": "Publié",
     "rechazada": "Refusé",
-    "reason": "Motif"
+    "reason": "Motif",
+    "dataTitle": "Vos données",
+    "export": "Télécharger mes données",
+    "deleteTitle": "Supprimer mon compte",
+    "deleteHint": "Votre compte, votre profil, vos avis, vos photos et vos consentements seront définitivement supprimés. Cette action est irréversible.",
+    "deleteConfirm": "Saisissez votre e-mail pour confirmer",
+    "deleteButton": "Supprimer mon compte",
+    "deleteWrong": "L’e-mail ne correspond pas à votre compte.",
+    "deleteAdmin": "Un compte administrateur ne peut pas être supprimé ici."
   },
   "form": {
     "title": "Votre avis",

@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const { chromium } = require('playwright');
+const { resetFactors, passMfa, syncClock } = require('./mfa-helper.cjs');
 
 const FRONTEND = path.join(__dirname, '../../frontend');
 const PORT = 3105;
@@ -43,6 +44,8 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
   const stamp = Date.now().toString(36);
   const { users } = await api('/auth/v1/admin/users?per_page=200');
   if (!users.some((u) => u.email === ADMIN)) await api('/auth/v1/admin/users', { method: 'POST', body: JSON.stringify({ email: ADMIN, email_confirm: true, app_metadata: { role: 'admin' } }) });
+  await resetFactors(api, ADMIN);
+  await syncClock(URL_);
   const [region] = await api('/rest/v1/regions?select=id&limit=1');
   const [type] = await api('/rest/v1/place_types?select=id&slug=eq.restaurantes');
   const city = await insert('cities', { region_id: region.id, slug: `e2e-s-${stamp}`, status: 'publicado' });
@@ -75,6 +78,7 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
     const l = await api('/auth/v1/admin/generate_link', { method: 'POST', body: JSON.stringify({ type: 'magiclink', email: ADMIN }) });
     const page = await (await browser.newContext()).newPage();
     await page.goto(`${BASE}/auth/callback?token_hash=${l.hashed_token ?? l.properties.hashed_token}&type=magiclink&next=/admin/indexacion`);
+    await passMfa(page);
     await page.waitForSelector('h1:has-text("Indexación")');
     assert.ok(await page.isVisible('text=Interruptor ENCENDIDO'));
     await page.click('button:has-text("Recalcular ahora")');
@@ -107,6 +111,22 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
     assert.ok(ld.some((x) => x['@type'] === 'BreadcrumbList'));
     assert.ok(es.includes('Bien'), 'la reseña valorada se ve en la página');
     console.log('JSON-LD: negocio con dirección, horario y valoración visible; migas de pan');
+
+    // Menú publicado de la ficha apta: indexable si tiene texto suficiente.
+    const menu = await insert('menus', { place_id: ok.id, status: 'publicado' });
+    const cat = await insert('menu_categories', { menu_id: menu.id, status: 'publicado' });
+    await insert('menu_translations', { target_type: 'category', target_id: cat.id, locale: 'es', name: 'Principales', status: 'publicada' });
+    const item = await insert('menu_items', { category_id: cat.id, status: 'publicado', price_mad: 120, price_status: 'verificado' });
+    await insert('menu_translations', { target_type: 'item', target_id: item.id, locale: 'es', name: 'Plato', description: words(40), status: 'publicada' });
+    await page.goto(`${BASE}/admin/indexacion`);
+    await page.click('button:has-text("Recalcular ahora")');
+    await page.waitForSelector('[role=status]:has-text("textos evaluados")', { timeout: 60_000 });
+    const menuHtml = await html(`/es/restaurantes/${ok.slug}/menu`);
+    assert.match(meta(menuHtml, 'robots') ?? '', /^index/);
+    assert.equal(canonical(menuHtml), `https://platemaroc.com/es/restaurantes/${ok.slug}/menu`);
+    assert.ok((await html('/sitemap.xml')).includes(`/es/restaurantes/${ok.slug}/menu</loc>`));
+    assert.match(meta(await html(`/en/restaurants/${ok.slug}`), 'robots') ?? '', /^index/);
+    console.log('menú: indexable y en el sitemap cuando su ficha lo es y tiene texto suficiente');
 
     const bad = await html(`/es/restaurantes/${noPhoto.slug}`);
     assert.match(meta(bad, 'robots') ?? '', /^noindex/);

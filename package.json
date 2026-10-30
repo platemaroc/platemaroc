@@ -19,14 +19,16 @@
     "test:db": "bash codigo/database/tests/run.sh",
     "test:e2e": "node codigo/testing/e2e/sw.e2e.cjs && node codigo/testing/e2e/map.e2e.cjs && node codigo/testing/e2e/pages.e2e.cjs && node codigo/testing/e2e/auth.e2e.cjs",
     "scan:secrets": "node codigo/security/scan-secrets.mjs --git",
-    "test:e2e:admin": "node codigo/testing/e2e/admin.e2e.cjs && node codigo/testing/e2e/reviews.e2e.cjs && node codigo/testing/e2e/menu.e2e.cjs && node codigo/testing/e2e/seo.e2e.cjs"
+    "test:e2e:admin": "node codigo/testing/e2e/admin.e2e.cjs && node codigo/testing/e2e/reviews.e2e.cjs && node codigo/testing/e2e/menu.e2e.cjs && node codigo/testing/e2e/seo.e2e.cjs && node codigo/testing/e2e/security.e2e.cjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@types/node": "26.6.6",
     "@types/qrcode": "1.5.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "esbuild": "0.28.2",
+    "lighthouse": "13.6.0",
     "playwright": "1.64.1",
     "typescript": "6.0.3"
   }

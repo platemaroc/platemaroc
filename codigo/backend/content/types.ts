@@ -52,7 +52,7 @@ export interface PlaceDetail extends PlaceSummary {
 }
 
 export interface MenuItemView { name: string; description: string | null; priceMad: number | null; soldOut: boolean; allergens: string[] }
-export interface MenuView { place: Ref & { section: PlaceSection }; categories: { name: string; items: MenuItemView[] }[]; locales: Locale[] }
+export interface MenuView { place: Ref & { section: PlaceSection }; categories: { name: string; items: MenuItemView[] }[]; locales: Locale[]; indexableLocales: Locale[] }
 
 export interface DishSummary { slug: string; name: string; summary: string | null; indexable?: boolean }
 export interface DishDetail extends DishSummary { content: string | null; ingredients: string[]; region: Ref | null; places: PlaceSummary[]; locales: Locale[] }

@@ -8,6 +8,7 @@ const path = require('path');
 const assert = require('assert');
 const { chromium } = require('playwright');
 const sharp = require('sharp');
+const { resetFactors, passMfa, syncClock } = require('./mfa-helper.cjs');
 
 const FRONTEND = path.join(__dirname, '../../frontend');
 const PORT = 3102;
@@ -64,6 +65,8 @@ async function waitFor(url, ms = 120_000) {
 (async () => {
   await ensureUser(ADMIN_EMAIL, 'admin');
   await ensureUser(USER_EMAIL, null);
+  await resetFactors(api, ADMIN_EMAIL);
+  await syncClock(URL_);
   const server = startServer();
   let browser;
   const stamp = Date.now().toString(36);
@@ -80,6 +83,7 @@ async function waitFor(url, ms = 120_000) {
 
     const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await signIn(ctx, ADMIN_EMAIL, '/admin');
+    await passMfa(page);
     await page.waitForSelector('h1:has-text("Pendiente de tu decisión")');
     console.log('administrador: entra en el panel');
 

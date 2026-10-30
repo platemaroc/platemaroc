@@ -74,7 +74,7 @@ export const demoSource: ContentSource = {
     const p = published(l).find((x) => x.slug === slug && x.section === section && x.hasMenu);
     if (!p) return null;
     return {
-      place: { ...ref(p, l), section }, locales: localesOf(p),
+      place: { ...ref(p, l), section }, locales: localesOf(p), indexableLocales: [],
       categories: [{
         name: all('Demo · Platos principales', 'Demo · Main courses', 'Démo · Plats principaux')[l],
         items: [

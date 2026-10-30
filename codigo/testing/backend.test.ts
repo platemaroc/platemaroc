@@ -5,6 +5,7 @@ import { canTransition } from '../shared/states.ts';
 import { summarizeApproved } from '../backend/reviews/rating.ts';
 import { supabasePublicConfig, supabaseServiceRoleKey } from '../backend/supabase/env.ts';
 import { safeNextPath, toSessionUser } from '../backend/auth/session.ts';
+import { allow, clientIp, resetLimits } from '../backend/auth/rate-limit.ts';
 import { checkDisplayName, checkReview } from '../backend/reviews/validate.ts';
 import { buildAuditEntry, panelAudit } from '../backend/admin-moderation/audit.ts';
 import { suggestLocale } from '../frontend/i18n/negotiate.ts';
@@ -94,4 +95,16 @@ test('reseña: valida estrellas, longitud y fecha; nombre visible sin email ni t
   assert.deepEqual(checkReview(f({ rating: '4', visited_on: '2030-01-01' }), today).errors, ['visited_on']);
   assert.equal(checkDisplayName('  Ana   López '), 'Ana López');
   for (const bad of ['a', 'yo@correo.com', 'Tel 0612345678', 'x'.repeat(41)]) assert.equal(checkDisplayName(bad), null, bad);
+});
+
+test('límite de intentos: corta al superar el máximo, se recupera y separa claves', () => {
+  resetLimits();
+  const l = { max: 2, windowMs: 1000 };
+  assert.equal(allow('a', l, 0), true);
+  assert.equal(allow('a', l, 1), true);
+  assert.equal(allow('a', l, 2), false);
+  assert.equal(allow('b', l, 2), true);
+  assert.equal(allow('a', l, 1001), true);
+  assert.equal(clientIp((n) => (n === 'x-real-ip' ? '1.2.3.4' : 'falsa')), '1.2.3.4');
+  assert.equal(clientIp((n) => (n === 'x-forwarded-for' ? 'falsa, 5.6.7.8' : null)), '5.6.7.8');
 });

@@ -89,7 +89,15 @@
     "pendiente": "Pendiente de moderación",
     "aprobada": "Publicada",
     "rechazada": "Rechazada",
-    "reason": "Motivo"
+    "reason": "Motivo",
+    "dataTitle": "Tus datos",
+    "export": "Descargar mis datos",
+    "deleteTitle": "Eliminar mi cuenta",
+    "deleteHint": "Se borran definitivamente tu cuenta, tu perfil, tus reseñas, tus fotos y tus consentimientos. No se puede deshacer.",
+    "deleteConfirm": "Escribe tu email para confirmar",
+    "deleteButton": "Eliminar mi cuenta",
+    "deleteWrong": "El email no coincide con el de tu cuenta.",
+    "deleteAdmin": "Una cuenta de administración no se puede eliminar desde aquí."
   },
   "form": {
     "title": "Tu reseña",

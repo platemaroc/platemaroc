@@ -25,8 +25,10 @@ select count(*) from reviews;
 update reviews set status='aprobada' where user_id=auth.uid();
 \echo '--- 6. usuario normal no ve audit_log: 0 filas (la 22 lo comprueba con datos)'
 select count(*) from audit_log; reset role;
-\echo '--- 7. admin vía JWT ve borrador: esperado 2'
-set role authenticated; set request.jwt.claims='{"app_metadata":{"role":"admin"}}'; select count(*) from places; reset role;
+\echo '--- 7. admin con dos pasos (aal2) ve borrador: esperado 2'
+set role authenticated; set request.jwt.claims='{"aal":"aal2","app_metadata":{"role":"admin"}}'; select count(*) from places; reset role;
+\echo '--- 7b. admin SIN dos pasos (aal1) no ve el borrador: esperado 1'
+set role authenticated; set request.jwt.claims='{"aal":"aal1","app_metadata":{"role":"admin"}}'; select count(*) from places; reset role;
 \echo '--- 8. rechazo sin motivo: ERROR esperado'
 update reviews set status='rechazada' where status='pendiente';
 \echo '--- 9. precio verificado sin importe: ERROR; precio pendiente nulo: OK'
@@ -70,7 +72,7 @@ where n.nspname='public' and p.prokind='f' and not coalesce(p.proconfig @> array
 \echo '--- 22. audit_log con 1 registro: usuario normal ve 0, admin ve 1'
 set role authenticated; set request.jwt.claim.sub='22222222-2222-2222-2222-222222222222'; set request.jwt.claims='';
 select count(*) as usuario from audit_log;
-set request.jwt.claims='{"app_metadata":{"role":"admin"}}'; select count(*) as admin from audit_log; reset role;
+set request.jwt.claims='{"aal":"aal2","app_metadata":{"role":"admin"}}'; select count(*) as admin from audit_log; reset role;
 -- ---- Huecos del modelo cubiertos el 29-10-2026 (perfil automático, integridad de traducciones, guía-barrio, fechas del menú)
 reset role; set request.jwt.claims = ''; set request.jwt.claim.sub = '';
 \echo '--- 23. alta en auth.users crea su perfil: esperado 1'

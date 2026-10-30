@@ -8,6 +8,7 @@ const path = require('path');
 const assert = require('assert');
 const { chromium } = require('playwright');
 const sharp = require('sharp');
+const { resetFactors, passMfa, syncClock } = require('./mfa-helper.cjs');
 
 const FRONTEND = path.join(__dirname, '../../frontend');
 const PORT = 3103;
@@ -61,6 +62,8 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
 (async () => {
   const userA = await ensureUser(A, null), userB = await ensureUser(B, null);
   await ensureUser(ADMIN, 'admin');
+  await resetFactors(api, ADMIN);
+  await syncClock(URL_);
   await api(`/rest/v1/profiles?id=in.(${userA.id},${userB.id})`, { method: 'PATCH', body: JSON.stringify({ display_name: null }) });
   await api(`/rest/v1/reviews?user_id=in.(${userA.id},${userB.id})`, { method: 'DELETE' });
   const stamp = Date.now().toString(36);
@@ -148,6 +151,7 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
 
     // Moderación.
     const admin = await signIn(browser, ADMIN, '/admin/resenas');
+    await passMfa(admin);
     const card = admin.locator(`section:has-text("Comentario E2E ${stamp}")`);
     await card.locator('button:has-text("Rechazar")').click();
     await card.locator('ul[role=alert]').waitFor();

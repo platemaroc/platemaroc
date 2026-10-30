@@ -5,6 +5,7 @@ const os = require('os');
 const path = require('path');
 const assert = require('assert');
 const { chromium } = require('playwright');
+const { resetFactors, passMfa, syncClock } = require('./mfa-helper.cjs');
 
 const FRONTEND = path.join(__dirname, '../../frontend');
 const PORT = 3104;
@@ -48,6 +49,8 @@ const text = async (u) => (await fetch(u)).text();
 
 (async () => {
   await ensureUser(ADMIN, 'admin'); await ensureUser(USER, null);
+  await resetFactors(api, ADMIN);
+  await syncClock(URL_);
   const stamp = Date.now().toString(36);
   const [region] = await api('/rest/v1/regions?select=id&limit=1');
   const [type] = await api('/rest/v1/place_types?select=id&slug=eq.restaurantes');
@@ -71,6 +74,7 @@ const text = async (u) => (await fetch(u)).text();
     console.log('usuario sin rol: 404 en importar y en el menú');
 
     const page = await signIn(browser, ADMIN, `/admin/lugares/${place.id}/menu`);
+    await passMfa(page);
     await page.waitForSelector('h1:has-text("Menú")');
     const newCat = page.locator('section:has(h2:has-text("Nueva categoría"))');
     await newCat.locator('input[name=name_es]').fill('Principales');

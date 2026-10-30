@@ -89,7 +89,15 @@
     "pendiente": "Awaiting moderation",
     "aprobada": "Published",
     "rechazada": "Rejected",
-    "reason": "Reason"
+    "reason": "Reason",
+    "dataTitle": "Your data",
+    "export": "Download my data",
+    "deleteTitle": "Delete my account",
+    "deleteHint": "Your account, profile, reviews, photos and consents will be permanently deleted. This cannot be undone.",
+    "deleteConfirm": "Type your email to confirm",
+    "deleteButton": "Delete my account",
+    "deleteWrong": "The email does not match your account.",
+    "deleteAdmin": "An administrator account cannot be deleted from here."
   },
   "form": {
     "title": "Your review",

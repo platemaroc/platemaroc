@@ -115,7 +115,7 @@ export function menuGate(data: MenuData, placeStatus: string): GateReport[] {
     translationPublished: visible.length > 0 && visible.every((i) => data.names[i.id]?.[locale]?.name),
     // Un menú no lleva texto largo: se cuenta lo escrito en nombres y descripciones.
     descriptionChars: visible.reduce((n, i) => n + (data.names[i.id]?.[locale]?.name?.length ?? 0) + (data.names[i.id]?.[locale]?.description?.length ?? 0), 0),
-    duplicateDetected: null, metadataValid: true,
+    duplicateDetected: false, metadataValid: true, // Un menú es una lista de datos: no se compara como texto.
     menu: {
       placePublished: placeStatus === 'publicado',
       categories: data.categories.map((c) => ({ published: true, publishedItems: visible.filter((i) => i.category_id === c.id).length })).filter((c) => c.publishedItems > 0),

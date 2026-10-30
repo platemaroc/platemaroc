@@ -1,9 +1,11 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { allow, LIMITS } from '../../../backend/auth/rate-limit.ts';
 import { isPlaceSection, sectionPath, type PlaceSection } from '../../../shared/routes.ts';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '../../i18n/config.ts';
 import { getMessages } from '../../i18n/messages.ts';
+import { deleteAccount } from '../../../backend/reviews/account.ts';
 import { deleteOwnReview, reviewContext, setDisplayName, submitReview } from '../../../backend/reviews/user-reviews.ts';
 import { MAX_REVIEW_PHOTOS } from '../../../backend/reviews/validate.ts';
 import { currentUser, supabaseForRequest } from '../../lib/supabase-server.ts';
@@ -22,6 +24,7 @@ async function requireUser(next: string) {
 export async function saveName(_prev: UserFormState, form: FormData): Promise<UserFormState> {
   const user = await requireUser('/cuenta');
   const t = getMessages(locale(form)).account;
+  if (!allow(`form:${user.id}`, LIMITS.form)) return { error: t.nameInvalid };
   if (!(await setDisplayName(await supabaseForRequest(), user.id, form.get('display_name')))) return { error: t.nameInvalid };
   revalidatePath('/cuenta');
   return { ok: true, message: t.saved };
@@ -33,6 +36,7 @@ export async function sendReview(_prev: UserFormState, form: FormData): Promise<
   const l = locale(form);
   const user = await requireUser(`/cuenta/resena/${section}/${slug}?lang=${l}`);
   const t = getMessages(l).form;
+  if (!allow(`form:${user.id}`, LIMITS.form)) return { error: t.err.generic };
   if (!isPlaceSection(section as PlaceSection)) return { error: t.err.place };
   const files = form.getAll('photos').filter((f): f is File => f instanceof File);
   if (files.filter((f) => f.size > 0).length > MAX_REVIEW_PHOTOS) return { error: t.err.photos_limit };
@@ -56,4 +60,16 @@ export async function removeReview(form: FormData): Promise<void> {
   const id = String(form.get('id') ?? '');
   if (/^[0-9a-f-]{36}$/.test(id)) await deleteOwnReview(await supabaseForRequest(), user.id, id);
   revalidatePath('/cuenta');
+}
+
+/** Eliminar la cuenta: hay que escribir el propio email para confirmar. */
+export async function removeAccount(_prev: UserFormState, form: FormData): Promise<UserFormState> {
+  const user = await requireUser('/cuenta');
+  const t = getMessages(locale(form)).account;
+  if (String(form.get('confirm') ?? '').trim().toLowerCase() !== (user.email ?? '').toLowerCase()) return { error: t.deleteWrong };
+  if (user.isAdmin) return { error: t.deleteAdmin };
+  const db = await supabaseForRequest();
+  if (!(await deleteAccount(db, user))) return { error: getMessages(locale(form)).form.err.generic };
+  await db.auth.signOut();
+  redirect(`/${locale(form)}`);
 }

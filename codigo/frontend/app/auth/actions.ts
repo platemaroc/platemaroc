@@ -2,6 +2,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { EMAIL_RE, safeNextPath } from '../../../backend/auth/session.ts';
+import { allow, clientIp, LIMITS } from '../../../backend/auth/rate-limit.ts';
 import { supabasePublicConfig } from '../../../backend/supabase/env.ts';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '../../i18n/config.ts';
 import { getMessages } from '../../i18n/messages.ts';
@@ -31,8 +32,11 @@ function read(form: FormData) {
 /** Envía el enlace. El alta de cuentas nuevas solo se abre con PUBLIC_SIGNUP_ENABLED=1 (decisión del titular: no en producción hasta tener política de privacidad y SMTP). */
 export async function sendLink(_prev: AuthState, form: FormData): Promise<AuthState> {
   const { t, email, next } = read(form);
+  const headersList = await headers();
   if (!EMAIL_RE.test(email)) return { status: 'error', message: t.invalidEmail };
   if (!supabasePublicConfig()) return { status: 'error', message: t.notConfigured };
+  const ip = clientIp((n) => headersList.get(n));
+  if (!allow(`link:ip:${ip}`, LIMITS.authLink) || !allow(`link:mail:${email}`, LIMITS.authLink)) return { status: 'error', message: t.rateLimited, email };
   const supabase = await supabaseForRequest();
   const { error } = await supabase.auth.signInWithOtp({
     email,
@@ -45,7 +49,10 @@ export async function sendLink(_prev: AuthState, form: FormData): Promise<AuthSt
 
 export async function verifyCode(_prev: AuthState, form: FormData): Promise<AuthState> {
   const { t, email, next } = read(form);
+  const headersList = await headers();
   const token = String(form.get('token') ?? '').replace(/\s+/g, '');
+  const ip = clientIp((n) => headersList.get(n));
+  if (!allow(`code:ip:${ip}`, LIMITS.authCode) || !allow(`code:mail:${email}`, LIMITS.authCode)) return { status: 'error', message: t.rateLimited, email };
   if (!EMAIL_RE.test(email) || !/^\d{6,10}$/.test(token)) return { status: 'error', message: t.invalidCode, email };
   const supabase = await supabaseForRequest();
   const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });

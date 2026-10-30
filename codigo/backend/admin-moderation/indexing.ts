@@ -6,6 +6,7 @@ import { recordAudit } from './audit-writer.ts';
 import { panelAudit } from './audit.ts';
 import { ENTITIES, type AdminEntity } from './entities.ts';
 import { previewGate, translationText } from './gate-preview.ts';
+import { menuGate, type MenuData } from './menu-admin.ts';
 
 /**
  * Cálculo real de `translations.is_indexable` (Fase 5): evalúa el Quality Gate de cada ficha e idioma y guarda el resultado.
@@ -72,6 +73,7 @@ export async function recomputeIndexable(db: SupabaseClient, email: string): Pro
   }
 
   const now = new Date().toISOString();
+  const menuChanges = await recomputeMenus(db, rows.lugares, translations, wanted, now);
   const changed = translations.filter((t) => wanted.has(t.id) && wanted.get(t.id) !== t.is_indexable);
   for (const value of [true, false]) {
     const ids = changed.filter((t) => wanted.get(t.id) === value).map((t) => t.id);
@@ -80,10 +82,46 @@ export async function recomputeIndexable(db: SupabaseClient, email: string): Pro
       if (error) throw new Error(error.message);
     }
   }
-  if (changed.length) {
-    await recordAudit(panelAudit(email, { entidad_tipo: 'config', entidad_id: 'quality-gate', accion: 'recalcular_indexable', valor_nuevo: { cambiadas: changed.length } }));
+  if (changed.length || menuChanges) {
+    await recordAudit(panelAudit(email, { entidad_tipo: 'config', entidad_id: 'quality-gate', accion: 'recalcular_indexable', valor_nuevo: { cambiadas: changed.length, menus: menuChanges } }));
   }
   return { evaluated: wanted.size, indexable: [...wanted.values()].filter(Boolean).length, changed: changed.length, duplicates: duplicates.size };
+}
+
+/**
+ * Menús: indexable en un idioma si su lugar lo es y pasa el Quality Gate de menú. El resultado se guarda en la fila
+ * target_type = 'menu' de menu_translations, que se crea al hacer falta (el menú no tiene más texto propio).
+ */
+async function recomputeMenus(db: SupabaseClient, places: Row[], translations: Row[], wanted: Map<string, boolean>, now: string): Promise<number> {
+  const menus = (await all(db, 'menus')).filter((m) => m.status === 'publicado');
+  const [categories, items, names] = await Promise.all([all(db, 'menu_categories'), all(db, 'menu_items'), all(db, 'menu_translations')]);
+  let changes = 0;
+  for (const menu of menus) {
+    const place = places.find((p) => p.id === menu.place_id);
+    const cats = categories.filter((c) => c.menu_id === menu.id);
+    const its = items.filter((i) => cats.some((c) => c.id === i.category_id));
+    const byTarget: MenuData['names'] = {};
+    for (const t of names) if (t.target_type !== 'menu') (byTarget[t.target_id] ??= {})[t.locale] = t;
+    for (const report of menuGate({ menu, categories: cats, items: its, names: byTarget }, place?.status ?? '')) {
+      const placeTr = translations.find((t) => t.entity_type === 'place' && t.entity_id === menu.place_id && t.locale === report.locale);
+      const ok = report.isIndexable && !!placeTr && wanted.get(placeTr.id) === true;
+      const current = names.find((t) => t.target_type === 'menu' && t.target_id === menu.id && t.locale === report.locale);
+      if (current ? current.is_indexable === ok : !ok) continue;
+      const { error } = current
+        ? await db.from('menu_translations').update({ is_indexable: ok }).eq('id', current.id)
+        : await db.from('menu_translations').insert({ target_type: 'menu', target_id: menu.id, locale: report.locale, status: 'publicada', is_indexable: true });
+      if (error) throw new Error(error.message);
+      changes += 1;
+    }
+  }
+  // Un menú retirado deja de ser indexable.
+  const retired = names.filter((t) => t.target_type === 'menu' && t.is_indexable && !menus.some((m) => m.id === t.target_id)).map((t) => t.id);
+  if (retired.length) {
+    const { error } = await db.from('menu_translations').update({ is_indexable: false }).in('id', retired);
+    if (error) throw new Error(error.message);
+    changes += retired.length;
+  }
+  return changes;
 }
 
 /** Idiomas de una ficha cuyo texto se parece demasiado a otro publicado (para la vista previa del panel). */

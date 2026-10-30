@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: repoRoot,
   // Fotos del panel: hasta 10 MB por imagen (images.ts) más el margen del formulario. Por defecto Next.js corta en 1 MB.
   experimental: { serverActions: { bodySizeLimit: '11mb' } },
+  // Algunas herramientas piden /favicon.ico aunque la página declare el icono.
+  async rewrites() {
+    return [{ source: '/favicon.ico', destination: '/icon.svg' }];
+  },
   async headers() {
     // Las páginas reciben todas las cabeceras (CSP con nonce) en proxy.ts. Aquí solo lo que no pasa por el proxy.
     const base = [
