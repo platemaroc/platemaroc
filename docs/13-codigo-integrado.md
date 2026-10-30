@@ -146,5 +146,7 @@ español; horario por días (vacío = cerrado); proyecto Supabase de pruebas par
 | Horario | `shared/week.ts` | {mon..sun}; los días y "Cerrado" se traducen solos en la web |
 
 Verificado: tipos, 43 pruebas unitarias (incl. una foto con GPS que sale sin EXIF), build y ensayo de `apply.sh`.
-Pendiente: `admin.e2e.cjs` (alta con errores, traducción, publicación, slug fijo, foto sin GPS servida por /media, auditoría, usuario sin rol → 404)
-cuando exista el proyecto de pruebas; hasta entonces el panel no se ha probado guardando datos.
+`admin.e2e.cjs` pasa contra el proyecto Supabase de pruebas (aws-0-eu-west-2, 13 archivos aplicados): usuario sin rol → 404; alta con errores
+claros y datos conservados; textos, publicación y ficha pública; slug fijo; foto con GPS servida por /media en WebP 1600 px sin EXIF; auditoría con
+origen panel; todo ≥ 48 px en móvil. El proyecto real no recibió datos de prueba.
+No probado aún: Google Maps real, Safari/iOS, y el panel con el rol del titular guardando contenido real.

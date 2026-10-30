@@ -175,7 +175,7 @@ async function waitFor(url, ms = 120_000) {
     // En móvil, todo pulsable ≥ 48 px en la ficha de edición.
     const small = await page.evaluate(() => [...document.querySelectorAll('main a, main button, main input:not([type=hidden]):not([type=checkbox]), main select')]
       .filter((e) => { const b = e.getBoundingClientRect(); return b.width > 0 && b.height < 48; }).map((e) => e.outerHTML.slice(0, 60)));
-    assert.deepEqual(small, [], 'elementos < 48 px');
+    assert.deepEqual(small, [], `elementos < 48 px: ${JSON.stringify(small)}`);
     console.log('ADMIN E2E OK');
   } finally {
     if (browser) await browser.close();

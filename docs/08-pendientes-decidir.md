@@ -14,7 +14,6 @@
 ## Añadidos al integrar el código (29-10-2026)
 8. Identidad visual (logo y colores): la paleta actual es provisional.
 9. Fotos para platos, guías y ciudades: el Quality Gate (maestro §4.2) las exige, pero `photos` solo admite lugares y reseñas. Sin una migración nueva, esas fichas nunca serán indexables.
-10. Proyecto Supabase de pruebas (`platemaroc-test`): aprobado; lo crea el titular y se rellena `codigo/frontend/.env.test.local`.
 
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
