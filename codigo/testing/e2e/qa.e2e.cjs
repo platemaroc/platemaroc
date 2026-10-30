@@ -48,7 +48,7 @@ async function waitFor(url, ms = 120_000) { for (const end = Date.now() + ms; Da
       assert.ok(r.overflow <= 0, `${p}: scroll horizontal en WebKit (${r.overflow})`);
     }
     await iphone.goto(`${BASE}/es/restaurantes/demo-restaurante`, { waitUntil: 'load' });
-    await iphone.locator('[data-map-status]').scrollIntoViewIfNeeded();
+    await iphone.click('[data-map-status] button');
     await iphone.waitForSelector('[data-map-status="fallback"]', { timeout: 30_000 });
     assert.ok(await iphone.getAttribute('a[href^="https://www.google.com/maps"]', 'href'), 'enlace https para iOS');
     assert.deepEqual(errors, [], `Errores en WebKit: ${errors.join(' | ')}`);

@@ -106,6 +106,9 @@ const PAGES = [
     });
     assert.equal(await page.getAttribute('[data-map-status]', 'data-map-status'), 'idle', 'el mapa empieza en idle');
     await page.locator('[data-map-status]').scrollIntoViewIfNeeded();
+    assert.equal(await page.getAttribute('[data-map-status]', 'data-map-status'), 'idle', 'sin pulsar, el mapa no se carga');
+    assert.equal(await page.locator('script[src*="maps.googleapis"]').count(), 0, 'sin pulsar, no se contacta con Google');
+    await page.click('[data-map-status] button');
     // Sin clave de Google Maps el interactivo falla al instante → fallback (en dev, más el tiempo de compilar el trozo del mapa).
     await page.waitForSelector('[data-map-status="fallback"]', { timeout: 30_000 });
     const after = await page.evaluate(() => ({

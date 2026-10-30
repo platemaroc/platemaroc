@@ -1,4 +1,4 @@
-// E2E del mapa con carga diferida en Chromium real. Requiere: playwright, esbuild, react, react-dom (dependencias del proyecto en la Fase 1).
+// E2E del mapa que se carga al pulsar, en Chromium real. Requiere: playwright, esbuild, react, react-dom (dependencias del proyecto en la Fase 1).
 // Uso: node codigo/testing/e2e/map.e2e.cjs
 const http = require('http'), assert = require('assert'), path = require('path');
 const esbuild = require('esbuild');
@@ -14,16 +14,17 @@ const calls = (p) => p.evaluate(() => window.__log.filter(([e]) => e === 'render
 (async () => {
   const base = `http://localhost:${srv.address().port}`; const browser = await chromium.launch();
   const mk = async (opts = {}) => { const ctx = await browser.newContext({ viewport: { width: 390, height: 700 }, ...opts }); return [ctx, await ctx.newPage()]; };
-  // A: sin llegar a la sección
-  let [ctx, p] = await mk(); await p.goto(base); await sleep(3800);
-  assert.strictEqual(await calls(p), 0, 'A: el SDK no se carga en el render inicial'); assert.strictEqual(await status(p), 'idle');
+  const load = (p) => p.click('section[data-map-status] button');
+  // A: llega a la sección pero no pulsa
+  let [ctx, p] = await mk(); await p.goto(base); await p.evaluate(() => document.querySelector('section').scrollIntoView()); await sleep(3800);
+  assert.strictEqual(await calls(p), 0, 'A: sin pulsar no se carga el SDK'); assert.strictEqual(await status(p), 'idle');
   assert.strictEqual(await p.locator('#gmap').count(), 0);
   const h0 = await p.evaluate(() => document.querySelector('section > div').getBoundingClientRect().height);
   assert(h0 > 150, 'A: el placeholder reserva espacio (' + h0 + 'px)'); console.log('A OK: sin carga inicial; placeholder', Math.round(h0), 'px');
-  // B: scroll a los 2 s -> el timeout cuenta desde el inicio de la carga
-  [ctx, p] = await mk(); await p.goto(base); await sleep(2000);
-  await p.evaluate(() => document.querySelector('section').scrollIntoView()); await sleep(100);
-  const tLoad = await p.evaluate(() => window.__log.find(([e]) => e === 'renderInteractive')[1]); assert(tLoad, 'B: carga al llegar');
+  // B: pulsa a los 2 s -> el timeout cuenta desde el inicio de la carga
+  [ctx, p] = await mk(); await p.goto(base); await p.evaluate(() => document.querySelector('section').scrollIntoView()); await sleep(2000);
+  await load(p); await sleep(100);
+  const tLoad = await p.evaluate(() => window.__log.find(([e]) => e === 'renderInteractive')[1]); assert(tLoad, 'B: carga al pulsar');
   const t0 = Date.now(); while ((await status(p)) !== 'fallback' && Date.now() - t0 < 6000) await sleep(25);
   const waited = Date.now() - t0; console.log('B: fallback', waited + 100, 'ms tras iniciar la carga (esperado ~3000); carga iniciada a', tLoad, 'ms desde el arranque');
   assert(waited + 100 > 2800 && waited + 100 < 3500, 'B: ~3000 ms desde el inicio de carga, no desde el arranque');
@@ -32,13 +33,10 @@ const calls = (p) => p.evaluate(() => window.__log.filter(([e]) => e === 'render
   assert.strictEqual(await p.locator('a[href^="geo:"]').count(), 1); assert.strictEqual(await p.locator('a[href^="https://www.google.com/maps"]').count(), 1);
   const cls = await p.evaluate(() => window.__cls); console.log('B: CLS =', cls); assert(cls < 0.01, 'B: sin CLS');
   // C: el mapa responde -> no hay fallback
-  [ctx, p] = await mk(); await p.goto(base + '/?ready=1'); await p.evaluate(() => document.querySelector('section').scrollIntoView());
+  [ctx, p] = await mk(); await p.goto(base + '/?ready=1'); await load(p);
   await sleep(3700); assert.strictEqual(await status(p), 'ready'); assert.strictEqual(await p.locator('#gmap').count(), 1); console.log('C OK: ready, sin fallback a los 3,7 s');
   // D: offline
   [ctx, p] = await mk(); await p.goto(base); await ctx.setOffline(true); await p.evaluate(() => document.querySelector('section').scrollIntoView()); await sleep(500);
-  assert.strictEqual(await calls(p), 0, 'D: offline no carga el SDK'); assert.strictEqual(await status(p), 'fallback'); console.log('D OK: offline -> fallback sin cargar SDK');
-  // E: sin IntersectionObserver
-  [ctx, p] = await mk(); await p.addInitScript(() => { delete window.IntersectionObserver; }); await p.goto(base); await p.evaluate(() => document.querySelector('section').scrollIntoView()); await sleep(500);
-  assert.strictEqual(await calls(p), 0); assert.strictEqual(await status(p), 'fallback'); console.log('E OK: sin IntersectionObserver -> fallback sin cargar SDK');
+  assert.strictEqual(await calls(p), 0, 'D: offline no carga el SDK'); assert.strictEqual(await status(p), 'fallback'); assert.strictEqual(await p.locator('section[data-map-status] button').count(), 0, 'D: sin botón'); console.log('D OK: offline -> fallback sin cargar SDK');
   console.log('MAP E2E OK'); await browser.close(); srv.close();
 })().catch((e) => { console.error('FALLO', e); process.exit(1); });

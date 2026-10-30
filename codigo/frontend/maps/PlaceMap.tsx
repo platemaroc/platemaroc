@@ -13,7 +13,6 @@ export function PlaceMap(props: {
   return (
     <MapFallback
       {...props}
-      rootMargin="200px"
       renderInteractive={({ onReady, onError }) => (
         <GoogleMapInteractive lat={props.lat as number} lng={props.lng as number} name={props.name} onReady={onReady} onError={onError} />
       )}

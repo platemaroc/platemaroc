@@ -18,7 +18,7 @@
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
 
 ## Añadidos en el bloque 4c (30-10-2026)
-11. Textos legales: política de privacidad (`/privacidad` está en borrador) y frases de consentimiento de reseña y fotos. Sin ellos y sin SMTP, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
+11. Textos legales: política de privacidad (`/privacidad` está en borrador; borrador de trabajo y preguntas para el asesor en `docs/15-borrador-politica-privacidad.md`), y frases de consentimiento de reseña y fotos. Sin ellos y sin SMTP, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
 
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
@@ -32,6 +32,8 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 15. Rol de solo lectura en la base para `backup-db.sh`.
 
 ## Ya decidido
+- El mapa interactivo solo se carga al pulsar «Ver mapa», por privacidad; sustituye a la carga al llegar a la sección (30-10-2026).
+- Responsable de los datos: el titular, como persona física en Marruecos (30-10-2026).
 - Identidad visual: dirección «Té a la menta», verde, crema y dorado, con títulos en Fraunces; logo de plato con estrella (30-10-2026).
 - Precios exclusivamente en MAD, sin conversiones (29-10-2026).
 - Mapa con carga diferida; IndexedDB máx. 20 con LRU; cachés versionadas (29-10-2026).

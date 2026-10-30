@@ -223,6 +223,10 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Mapa al pulsar (30-10-2026)
+
+`maps/MapFallback.tsx`: Google Maps solo se carga al pulsar «Ver mapa» (docs/11). Retirado `useNearViewport.ts`; quedan obsoletas las menciones anteriores a `IntersectionObserver`.
+
 ## Identidad visual (30-10-2026)
 
 Dirección «Té a la menta», elegida por el titular entre tres propuestas. Colores en `components-ui/mobile-design/tokens.css` y `tokens.ts`; contraste de texto de 5,3:1 o más en todas las combinaciones.

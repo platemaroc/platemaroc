@@ -1,22 +1,20 @@
 'use client';
 /**
- * Mapa interactivo con carga diferida y fallback (docs/11-protocolo-fallback-mapas.md).
+ * Mapa interactivo que se carga al pulsar, con fallback (docs/11-protocolo-fallback-mapas.md).
  *
  * Estados: idle → loading → ready | fallback
- *  - idle: placeholder con espacio reservado (sin CLS). NO se llama a `renderInteractive`, así que
- *    el SDK del mapa y sus componentes pesados no entran en el render inicial.
- *  - loading: el usuario llegó visualmente a la sección (IntersectionObserver); se monta el mapa y
- *    ENTONCES empieza el temporizador de 3000 ms.
+ *  - idle: botón en el espacio reservado (sin CLS). NO se llama a `renderInteractive`: hasta que el
+ *    usuario pulsa, el navegador no contacta con Google (privacidad, decisión del titular 30-10-2026).
+ *  - loading: el usuario pulsó; se monta el mapa y ENTONCES empieza el temporizador de 3000 ms.
  *  - ready: el mapa llamó a `onReady`.
  *  - fallback: timeout, `onError`, sin red o sin coordenadas válidas → mapa estático en el mismo espacio.
  * La dirección, las indicaciones y los enlaces (`geo:` + https para iOS) se muestran siempre bajo el mapa.
  *
  * `renderInteractive` debe importar el SDK de forma dinámica (p. ej. `next/dynamic` con `ssr:false`).
  */
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import type { Locale } from '../../shared/locales';
 import { useOnlineStatus } from './useOnlineStatus';
-import { useNearViewport } from './useNearViewport';
 
 export const MAP_TIMEOUT_MS = 3000;
 
@@ -40,18 +38,16 @@ export interface MapFallbackProps {
   timeoutMs?: number;
   /** Relación ancho/alto del espacio reservado. */
   aspectRatio?: string;
-  /** Margen del observer; '0px' = solo cuando entra en pantalla. */
-  rootMargin?: string;
   /** Render del mapa interactivo externo. Solo se invoca cuando empieza la carga. */
   renderInteractive: (controls: MapControls) => ReactNode;
 }
 
 type Status = 'idle' | 'loading' | 'ready' | 'fallback';
 
-const TEXT: Record<Locale, { open: string; openWeb: string; address: string; directions: string; staticAlt: (n: string) => string; noCoords: string; loading: string }> = {
-  es: { open: 'Abrir en aplicación de mapas externa', openWeb: 'Abrir en el navegador (iPhone y otros)', address: 'Dirección', directions: 'Cómo llegar', staticAlt: (n) => `Mapa de ${n}`, noCoords: 'Ubicación no disponible.', loading: 'Cargando mapa…' },
-  en: { open: 'Open in external maps app', openWeb: 'Open in browser (iPhone and others)', address: 'Address', directions: 'Directions', staticAlt: (n) => `Map of ${n}`, noCoords: 'Location not available.', loading: 'Loading map…' },
-  fr: { open: 'Ouvrir dans une application de cartes', openWeb: 'Ouvrir dans le navigateur (iPhone et autres)', address: 'Adresse', directions: 'Itinéraire', staticAlt: (n) => `Carte de ${n}`, noCoords: 'Emplacement indisponible.', loading: 'Chargement de la carte…' },
+const TEXT: Record<Locale, { open: string; openWeb: string; address: string; directions: string; staticAlt: (n: string) => string; noCoords: string; load: string; loadNotice: string }> = {
+  es: { open: 'Abrir en aplicación de mapas externa', openWeb: 'Abrir en el navegador (iPhone y otros)', address: 'Dirección', directions: 'Cómo llegar', staticAlt: (n) => `Mapa de ${n}`, noCoords: 'Ubicación no disponible.', load: 'Ver mapa', loadNotice: 'Se carga desde Google, que recibirá tu dirección IP.' },
+  en: { open: 'Open in external maps app', openWeb: 'Open in browser (iPhone and others)', address: 'Address', directions: 'Directions', staticAlt: (n) => `Map of ${n}`, noCoords: 'Location not available.', load: 'View map', loadNotice: 'It loads from Google, which will receive your IP address.' },
+  fr: { open: 'Ouvrir dans une application de cartes', openWeb: 'Ouvrir dans le navigateur (iPhone et autres)', address: 'Adresse', directions: 'Itinéraire', staticAlt: (n) => `Carte de ${n}`, noCoords: 'Emplacement indisponible.', load: 'Voir la carte', loadNotice: 'Elle se charge depuis Google, qui recevra votre adresse IP.' },
 };
 
 export function validCoords(lat: unknown, lng: unknown): lat is number {
@@ -75,23 +71,16 @@ export function buildWebMapUrl(lat: number, lng: number): string {
 
 export function MapFallback({
   name, lat, lng, address, directionsText, staticMapSrc,
-  locale = 'es', timeoutMs = MAP_TIMEOUT_MS, aspectRatio = '16 / 9', rootMargin = '0px', renderInteractive,
+  locale = 'es', timeoutMs = MAP_TIMEOUT_MS, aspectRatio = '16 / 9', renderInteractive,
 }: MapFallbackProps) {
   const online = useOnlineStatus();
   const hasCoords = validCoords(lat, lng);
-  const boxRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<Status>(hasCoords ? 'idle' : 'fallback');
-  const { near, supported } = useNearViewport(boxRef, hasCoords && status === 'idle', rootMargin);
 
-  // Sin red, sin coordenadas o sin IntersectionObserver: no se carga el SDK.
+  // Sin red o sin coordenadas: no se carga el SDK.
   useEffect(() => {
-    if ((!hasCoords || !online || !supported) && (status === 'idle' || status === 'loading')) setStatus('fallback');
-  }, [hasCoords, online, supported, status]);
-
-  // El usuario llegó a la sección: empieza la carga.
-  useEffect(() => {
-    if (near && status === 'idle' && online && hasCoords) setStatus('loading');
-  }, [near, status, online, hasCoords]);
+    if ((!hasCoords || !online) && (status === 'idle' || status === 'loading')) setStatus('fallback');
+  }, [hasCoords, online, status]);
 
   // El temporizador de 3000 ms nace al entrar en 'loading', no antes.
   useEffect(() => {
@@ -110,12 +99,22 @@ export function MapFallback({
   return (
     <section aria-label={name} data-map-status={status}>
       <div
-        ref={boxRef}
         style={{ position: 'relative', width: '100%', aspectRatio, overflow: 'hidden', background: 'var(--color-photo)' }}
-        aria-busy={status === 'idle' || status === 'loading'}
+        aria-busy={status === 'loading'}
       >
         {mounted && <div style={{ position: 'absolute', inset: 0 }}>{renderInteractive({ onReady, onError })}</div>}
-        {status === 'idle' && <span style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', fontSize: 14 }}>{t.loading}</span>}
+        {status === 'idle' && (
+          <div style={{ position: 'absolute', inset: 0, display: 'grid', placeContent: 'center', justifyItems: 'center', gap: 8, padding: 16, textAlign: 'center' }}>
+            <button
+              type="button"
+              onClick={() => setStatus('loading')}
+              style={{ minHeight: 48, minWidth: 48, padding: '0 24px', border: 0, borderRadius: 'var(--radius-md)', background: 'var(--color-accent)', color: 'var(--color-accent-text)', font: 'inherit', fontWeight: 600, cursor: 'pointer' }}
+            >
+              {t.load}
+            </button>
+            <small style={{ color: 'var(--color-muted)' }}>{t.loadNotice}</small>
+          </div>
+        )}
         {status === 'fallback' && (staticMapSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={staticMapSrc} alt={t.staticAlt(name)} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
