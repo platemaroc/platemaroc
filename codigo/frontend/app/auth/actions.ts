@@ -28,7 +28,7 @@ function read(form: FormData) {
   return { locale, t: getMessages(locale).auth, email: String(form.get('email') ?? '').trim().toLowerCase(), next: safeNextPath(form.get('next')) };
 }
 
-/** Envía el enlace (y el código, si la plantilla de email lo incluye). Solo cuentas ya existentes: aún no hay alta pública (4c). */
+/** Envía el enlace. El alta de cuentas nuevas solo se abre con PUBLIC_SIGNUP_ENABLED=1 (decisión del titular: no en producción hasta tener política de privacidad y SMTP). */
 export async function sendLink(_prev: AuthState, form: FormData): Promise<AuthState> {
   const { t, email, next } = read(form);
   if (!EMAIL_RE.test(email)) return { status: 'error', message: t.invalidEmail };
@@ -36,7 +36,7 @@ export async function sendLink(_prev: AuthState, form: FormData): Promise<AuthSt
   const supabase = await supabaseForRequest();
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: false, emailRedirectTo: `${await baseUrl()}/auth/callback?next=${encodeURIComponent(next)}` },
+    options: { shouldCreateUser: process.env.PUBLIC_SIGNUP_ENABLED === '1', emailRedirectTo: `${await baseUrl()}/auth/callback?next=${encodeURIComponent(next)}` },
   });
   if (error && (error.status === 429 || error.code === 'over_email_send_rate_limit')) return { status: 'error', message: t.rateLimited, email };
   // Mismo mensaje exista o no la cuenta: no se revela qué emails están registrados.

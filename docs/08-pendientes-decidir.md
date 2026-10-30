@@ -18,6 +18,10 @@
 ## Añadidos al revisar RLS (29-10-2026)
 10. Nombre del bucket de Storage para fotos (propuesto: `fotos`, privado).
 
+## Añadidos en el bloque 4c (30-10-2026)
+11. Aprobar aplicar `policies-rls/0120_resenas_limites.sql` al proyecto real.
+12. Textos legales: política de privacidad (`/privacidad` está en borrador) y frases de consentimiento de reseña y fotos. Sin ellos y sin SMTP, `PUBLIC_SIGNUP_ENABLED` no se activa en producción.
+
 (Retirado el 29-10-2026: "si un usuario puede borrar su propia reseña" ya estaba decidido en `docs/modelo-de-datos.md`: sí puede.)
 
 ## Ya decidido
@@ -30,6 +34,7 @@
 - Mapa estático de respaldo: texto y enlaces siempre + imagen opcional subida por la administración (29-10-2026).
 - Datos de demostración solo en desarrollo, con prefijo `demo-` (29-10-2026).
 - Migración 0010 aprobada y aplicada: dirección, indicaciones por idioma e imagen del mapa estático (29-10-2026).
+- Reseñas 4c: nombre visible obligatorio; casilla de derechos en fotos de usuarios; alt obligatorio en el idioma de la reseña; reseñas en idioma original; máximo 5 reseñas en 24 h y 3 fotos por reseña (30-10-2026).
 - Panel 4b: slug fijo al publicar; fotos procesadas con sharp; fotos del titular aprobadas si tienen origen, autor, licencia y alt; horario por días (30-10-2026).
 - Idiomas: es/en/fr.
 - Árabe retirado.

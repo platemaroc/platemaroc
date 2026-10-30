@@ -79,6 +79,25 @@ export default async function Detail({ params }: { params: Params }) {
             <ul className={styles.chips}>{p.dishes.map((d) => <li key={d.slug}><a href={sectionPath(locale, 'platos-tipicos', d.slug)}>{d.name}</a></li>)}</ul>
           </section>
         )}
+        <section className={styles.section} aria-labelledby="resenas">
+          <h2 id="resenas">{t.reviewsTitle}</h2>
+          {p.reviews.length === 0 && <p>{t.noReviews}</p>}
+          <ul className={styles.reviews}>
+            {p.reviews.map((r, i) => (
+              <li key={i}>
+                <strong>{r.author}</strong>
+                <span aria-label={`${r.rating}/5`} className={styles.reviewStars}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</span>
+                <small>
+                  {new Date(r.date).toLocaleDateString(locale)}
+                  {r.locale && r.locale !== locale ? ` · ${t.reviewIn} ${r.locale.toUpperCase()}` : ''}
+                </small>
+                {r.comment && <p lang={r.locale ?? undefined}>{r.comment}</p>}
+                {r.photos.length > 0 && <div className={styles.reviewPhotos}>{r.photos.map((ph) => <Photo key={ph.src} src={ph.src} alt={ph.alt} emptyLabel="" />)}</div>}
+              </li>
+            ))}
+          </ul>
+          <p><ButtonLink href={`/cuenta/resena/${p.section}/${p.slug}?lang=${locale}`}>{t.writeReview}</ButtonLink></p>
+        </section>
         <section className={styles.section} aria-labelledby="ubicacion">
           <h2 id="ubicacion">{t.location}</h2>
           <PlaceMap name={p.name} lat={p.lat} lng={p.lng} address={p.address ?? undefined} directionsText={p.directions ?? undefined}

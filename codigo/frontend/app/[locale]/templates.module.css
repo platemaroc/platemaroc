@@ -135,3 +135,10 @@
   align-items: center;
   min-height: var(--touch-target);
 }
+
+.reviews { display: grid; gap: var(--space-sm); margin: 0 0 var(--space-md); padding: 0; list-style: none; }
+.reviews li { display: grid; gap: var(--space-xs); padding: var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.reviews p { margin: 0; }
+.reviews small { color: var(--color-muted); }
+.reviewStars { color: var(--color-star); }
+.reviewPhotos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xs); }

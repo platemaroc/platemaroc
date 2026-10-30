@@ -71,8 +71,11 @@ export async function updatePhoto(db: SupabaseClient, photoId: string, form: For
   }
   if (to === 'aprobada') {
     if (!photoRightsComplete(rights)) errors.status = 'Para aprobar, completa origen, autor y licencia.';
-    const [es] = (await must(db.from('photo_translations').select('alt').eq('photo_id', photoId).eq('locale', 'es').limit(1))) as Row[];
-    if (!emptyToNull(form('alt_es')) && !es?.alt) errors.alt_es = 'Para aprobar, escribe el texto alternativo en español.';
+    // Fotos de reseña: el alt obligatorio es el del idioma de la reseña (decisión del 30-10-2026); el resto, en español.
+    const reviewLocale = photo.review_id ? ((await must(db.from('reviews').select('locale').eq('id', photo.review_id).limit(1))) as Row[])[0]?.locale : null;
+    const altLocale = reviewLocale ?? 'es';
+    const [existing] = (await must(db.from('photo_translations').select('alt').eq('photo_id', photoId).eq('locale', altLocale).limit(1))) as Row[];
+    if (!emptyToNull(form(`alt_${altLocale}`)) && !existing?.alt) errors[`alt_${altLocale}`] = `Para aprobar, escribe el texto alternativo en "${altLocale}".`;
   }
   // Nada se guarda si hay errores: así no quedan cambios a medias sin auditar.
   if (Object.keys(errors).length) return { ok: false, errors };

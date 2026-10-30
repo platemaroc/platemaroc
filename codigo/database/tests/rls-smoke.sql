@@ -96,3 +96,16 @@ update translations set directions='Indicaciones demo' where entity_type='place'
 set role anon;
 select count(*) from places p join translations t on t.entity_id=p.id and t.locale='es' where p.address is not null and t.directions is not null;
 reset role;
+-- ---- Límites del bloque 4c (0120)
+reset role; set request.jwt.claims = '';
+insert into places(slug,city_id,place_type_id,status) select 'demo-l'||g,c.id,t.id,'publicado' from cities c, place_types t, generate_series(1,6) g;
+set role authenticated; set request.jwt.claim.sub='33333333-3333-3333-3333-333333333333';
+\echo '--- 29. usuario 3: 5 reseñas en 24 h OK; la sexta ERROR reviews_daily_limit'
+insert into reviews(user_id,place_id,rating) select auth.uid(),id,4 from places where slug in ('demo-l1','demo-l2','demo-l3','demo-l4','demo-l5');
+insert into reviews(user_id,place_id,rating) select auth.uid(),id,4 from places where slug='demo-l6';
+\echo '--- 30. comentario de más de 2000 caracteres: ERROR esperado'
+update reviews set comment=repeat('x',2001),status='pendiente' where user_id=auth.uid() and place_id=(select id from places where slug='demo-l1');
+\echo '--- 31. tres fotos por reseña OK; la cuarta ERROR photos_per_review_limit'
+insert into photos(user_id,review_id,storage_path) select auth.uid(),r.id,auth.uid()||'/f'||g||'.webp' from reviews r, generate_series(1,3) g where r.user_id=auth.uid() and r.place_id=(select id from places where slug='demo-l1');
+insert into photos(user_id,review_id,storage_path) select auth.uid(),r.id,auth.uid()||'/f4.webp' from reviews r where r.user_id=auth.uid() and r.place_id=(select id from places where slug='demo-l1');
+reset role;

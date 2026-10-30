@@ -5,6 +5,7 @@ import { canTransition } from '../shared/states.ts';
 import { summarizeApproved } from '../backend/reviews/rating.ts';
 import { supabasePublicConfig, supabaseServiceRoleKey } from '../backend/supabase/env.ts';
 import { safeNextPath, toSessionUser } from '../backend/auth/session.ts';
+import { checkDisplayName, checkReview } from '../backend/reviews/validate.ts';
 import { buildAuditEntry, panelAudit } from '../backend/admin-moderation/audit.ts';
 import { suggestLocale } from '../frontend/i18n/negotiate.ts';
 import { splitLocale } from '../frontend/i18n/config.ts';
@@ -82,4 +83,15 @@ test('auditoría del panel: actor, origen panel y aprobación con fecha', () => 
   assert.equal(e.origen, 'panel');
   assert.equal(e.actor, 'titular@example.com');
   assert.ok(e.aprobado_por && e.fecha_aprobacion);
+});
+
+test('reseña: valida estrellas, longitud y fecha; nombre visible sin email ni teléfono', () => {
+  const f = (v: Record<string, string>) => (k: string) => v[k] ?? null;
+  const today = new Date('2026-10-30T12:00:00Z');
+  assert.deepEqual(checkReview(f({ rating: '5', lang: 'fr', visited_on: '2026-10-01' }), today).value, { rating: 5, comment: null, locale: 'fr', visited_on: '2026-10-01' });
+  assert.deepEqual(checkReview(f({ rating: '6' }), today).errors, ['rating']);
+  assert.deepEqual(checkReview(f({ rating: '4', comment: 'x'.repeat(2001) }), today).errors, ['comment']);
+  assert.deepEqual(checkReview(f({ rating: '4', visited_on: '2030-01-01' }), today).errors, ['visited_on']);
+  assert.equal(checkDisplayName('  Ana   López '), 'Ana López');
+  for (const bad of ['a', 'yo@correo.com', 'Tel 0612345678', 'x'.repeat(41)]) assert.equal(checkDisplayName(bad), null, bad);
 });

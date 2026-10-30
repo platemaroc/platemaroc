@@ -6,7 +6,7 @@ import type { SupabasePublicConfig } from '../supabase/env.ts';
 import {
   normalizeOpeningHours, type CityDetail, type CitySummary, type ContentSource, type DishDetail, type DishSummary, type GuideDetail,
   type GuideSummary, type MenuView, type NeighborhoodDetail, type PhotoView, type PlaceDetail, type PlaceFilter, type PlaceSummary,
-  type RatingView, type Ref,
+  type RatingView, type Ref, type ReviewView,
 } from './types.ts';
 
 const mediaSrc = (path: string) => `/media/${path.split('/').map(encodeURIComponent).join('/')}`;
@@ -71,6 +71,22 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
       out.set(p.place_id, [...(out.get(p.place_id) ?? []), view]);
     }
     return out;
+  }
+
+  /** Reseñas aprobadas (RLS) con su autor visible y sus fotos aprobadas. Nunca se lee el email. */
+  async function approvedReviews(placeId: string): Promise<ReviewView[]> {
+    const data = await rows(db.from('reviews').select('id,user_id,rating,comment,locale,visited_on,created_at').eq('place_id', placeId).eq('status', 'aprobada').order('created_at', { ascending: false }).limit(50));
+    if (!data.length) return [];
+    const [profiles, pics] = await Promise.all([
+      rows(db.from('profiles').select('id,display_name').in('id', data.map((r) => r.user_id))),
+      rows(db.from('photos').select('id,review_id,storage_path').in('review_id', data.map((r) => r.id))),
+    ]);
+    const alts = pics.length ? await rows(db.from('photo_translations').select('photo_id,alt').in('photo_id', pics.map((p) => p.id))) : [];
+    return data.map((r) => ({
+      author: profiles.find((p) => p.id === r.user_id)?.display_name ?? '—', rating: r.rating, comment: r.comment ?? null, locale: r.locale ?? null,
+      visitedOn: r.visited_on ?? null, date: r.created_at,
+      photos: pics.filter((p) => p.review_id === r.id).map((p) => ({ src: mediaSrc(p.storage_path), alt: alts.find((a) => a.photo_id === p.id)?.alt ?? '' })),
+    }));
   }
 
   async function summaries(placeRows: Row[], locale: Locale): Promise<PlaceSummary[]> {
@@ -158,7 +174,7 @@ export function supabaseSource(config: SupabasePublicConfig): ContentSource {
         lat: row.lat === null ? null : Number(row.lat), lng: row.lng === null ? null : Number(row.lng), address: row.address ?? null,
         staticMapSrc: row.static_map_path ? mediaSrc(row.static_map_path) : null,
         openingHours: normalizeOpeningHours(row.opening_hours, locale), phone: row.phone ?? null, website: row.website ?? null,
-        dishes: [...dishes.values()], hasMenu: menus.length > 0, photos: pics.get(row.id) ?? [], locales,
+        reviews: await approvedReviews(row.id), dishes: [...dishes.values()], hasMenu: menus.length > 0, photos: pics.get(row.id) ?? [], locales,
       };
     },
 

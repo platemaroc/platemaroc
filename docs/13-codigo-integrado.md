@@ -150,3 +150,17 @@ Verificado: tipos, 43 pruebas unitarias (incl. una foto con GPS que sale sin EXI
 claros y datos conservados; textos, publicación y ficha pública; slug fijo; foto con GPS servida por /media en WebP 1600 px sin EXIF; auditoría con
 origen panel; todo ≥ 48 px en móvil. El proyecto real no recibió datos de prueba.
 No probado aún: Google Maps real, Safari/iOS, y el panel con el rol del titular guardando contenido real.
+
+## Fase 4c (30-10-2026): reseñas y moderación
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Usuario | `app/cuenta/`, `backend/reviews/` | Mi cuenta (nombre visible, reseñas con estado y motivo, editar, borrar) y formulario de reseña. Zona privada: la ficha pública sigue sin consultar la sesión |
+| Moderación | `app/admin/resenas`, `app/admin/fotos`, `moderation-admin.ts` | Aprobar o rechazar con motivo; fotos con alt en el idioma de la reseña; respuestas hasta "aprobada", nunca publicadas (Fase 2) |
+| Público | `[slug]/page.tsx`, `supabase-source.ts` | Solo reseñas aprobadas, en su idioma original, con nombre visible; nunca el email |
+| Base de datos | `policies-rls/0120_resenas_limites.sql` | Máx. 5 reseñas en 24 h, 3 fotos por reseña, comentario ≤ 2000. El usuario ya no puede subir al bucket: solo el servidor, tras procesar la imagen. Bucket limitado a WebP de 5 MB |
+| Alta pública | `PUBLIC_SIGNUP_ENABLED` | Apagada por defecto. No activar en producción sin política de privacidad y SMTP |
+
+Verificado: tipos, 44 pruebas unitarias, 31 de humo SQL, build, y en el proyecto de pruebas `reviews.e2e.cjs` (recorrido completo y ataques directos a la API:
+aprobarse la reseña o la foto, crear una foto aprobada, subir al bucket, editar/borrar/leer lo ajeno, sexta reseña en 24 h; todos rechazados) más `admin.e2e.cjs`.
+`0120` está aplicada solo al proyecto de pruebas. No probado: alta de una cuenta nueva con email real, Safari/iOS.

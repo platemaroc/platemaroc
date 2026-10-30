@@ -69,5 +69,56 @@
     "rateLimited": "Trop de liens demandés. Patientez quelques minutes.",
     "signOut": "Se déconnecter",
     "notConfigured": "La connexion n’est pas encore configurée."
+  },
+  "writeReview": "Écrire un avis",
+  "reviewsTitle": "Avis",
+  "reviewIn": "Avis en",
+  "visited": "Visite",
+  "myAccount": "Mon compte",
+  "account": {
+    "title": "Mon compte",
+    "name": "Nom affiché",
+    "nameHint": "Affiché à côté de vos avis. N’utilisez ni votre e-mail ni votre téléphone.",
+    "saveName": "Enregistrer le nom",
+    "nameInvalid": "Saisissez un nom de 2 à 40 caractères, sans e-mail ni téléphone.",
+    "saved": "Enregistré.",
+    "myReviews": "Mes avis",
+    "none": "Vous n’avez encore écrit aucun avis.",
+    "edit": "Modifier",
+    "remove": "Supprimer définitivement",
+    "pendiente": "En attente de modération",
+    "aprobada": "Publié",
+    "rechazada": "Refusé",
+    "reason": "Motif"
+  },
+  "form": {
+    "title": "Votre avis",
+    "editing": "Le modifier le renvoie en modération.",
+    "rating": "Note",
+    "comment": "Commentaire",
+    "visited": "Date de visite (facultatif)",
+    "photos": "Photos (3 maximum, 10 Mo max. chacune)",
+    "consent": "J’accepte la politique de confidentialité et la publication de mon avis et de mon nom affiché après modération.",
+    "photoConsent": "Les photos sont de moi et j’autorise Platemaroc à les afficher avec mon avis.",
+    "privacy": "Politique de confidentialité",
+    "send": "Envoyer l’avis",
+    "sent": "Merci. Votre avis est en attente de modération.",
+    "err": {
+      "rating": "Choisissez de 1 à 5 étoiles.",
+      "comment": "Le commentaire ne peut pas dépasser 2000 caractères.",
+      "visited_on": "La date de visite n’est pas valide.",
+      "consent": "Vous devez accepter la politique de confidentialité.",
+      "photo_consent": "Confirmez que les photos sont de vous.",
+      "name": "Choisissez d’abord votre nom affiché dans Mon compte.",
+      "place": "Ce lieu n’accepte pas d’avis.",
+      "limit": "Vous avez atteint la limite de 5 avis en 24 heures.",
+      "photos_limit": "3 photos maximum par avis.",
+      "photo_invalid": "Une des photos n’est pas valide (JPG, PNG, WebP ou HEIC jusqu’à 10 Mo).",
+      "generic": "L’envoi a échoué. Réessayez."
+    }
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "draft": "Brouillon : le texte définitif est en attente du titulaire."
   }
 }

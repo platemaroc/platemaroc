@@ -69,5 +69,56 @@
     "rateLimited": "Too many links requested. Wait a few minutes.",
     "signOut": "Sign out",
     "notConfigured": "Sign-in is not configured yet."
+  },
+  "writeReview": "Write a review",
+  "reviewsTitle": "Reviews",
+  "reviewIn": "Review in",
+  "visited": "Visit",
+  "myAccount": "My account",
+  "account": {
+    "title": "My account",
+    "name": "Display name",
+    "nameHint": "Shown next to your reviews. Do not use your email or phone number.",
+    "saveName": "Save name",
+    "nameInvalid": "Enter a name of 2 to 40 characters, with no email or phone number.",
+    "saved": "Saved.",
+    "myReviews": "My reviews",
+    "none": "You have not written any reviews yet.",
+    "edit": "Edit",
+    "remove": "Delete permanently",
+    "pendiente": "Awaiting moderation",
+    "aprobada": "Published",
+    "rechazada": "Rejected",
+    "reason": "Reason"
+  },
+  "form": {
+    "title": "Your review",
+    "editing": "Editing sends it back to moderation.",
+    "rating": "Rating",
+    "comment": "Comment",
+    "visited": "Visit date (optional)",
+    "photos": "Photos (up to 3, max 10 MB each)",
+    "consent": "I accept the privacy policy and agree that my review and display name will be published after moderation.",
+    "photoConsent": "The photos are mine and I authorise Platemaroc to show them with my review.",
+    "privacy": "Privacy policy",
+    "send": "Send review",
+    "sent": "Thank you. Your review is awaiting moderation.",
+    "err": {
+      "rating": "Choose 1 to 5 stars.",
+      "comment": "The comment cannot exceed 2000 characters.",
+      "visited_on": "The visit date is not valid.",
+      "consent": "You must accept the privacy policy.",
+      "photo_consent": "Confirm that the photos are yours.",
+      "name": "First choose your display name in My account.",
+      "place": "This place does not accept reviews.",
+      "limit": "You have reached the limit of 5 reviews in 24 hours.",
+      "photos_limit": "Maximum 3 photos per review.",
+      "photo_invalid": "One of the photos is not valid (JPG, PNG, WebP or HEIC up to 10 MB).",
+      "generic": "It could not be sent. Please try again."
+    }
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "draft": "Draft: the final text is pending from the owner."
   }
 }

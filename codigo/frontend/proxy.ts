@@ -6,7 +6,7 @@ import { splitLocale } from './i18n/config.ts';
 
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 /** Zonas privadas: sesión renovada, sin caché, sin indexar. */
-const PRIVATE = /^\/(admin|auth)(\/|$)/;
+const PRIVATE = /^\/(admin|auth|cuenta)(\/|$)/;
 
 /**
  * Renueva la sesión de Supabase (cookies) en las zonas privadas. Se valida con el servidor de Auth (getUser).
@@ -40,9 +40,11 @@ export async function proxy(request: NextRequest) {
   const session = isPrivate ? await refreshSession(request) : null;
 
   // Comprobación rápida: sin sesión no se entra en /admin. La comprobación real (y la de rol) la hace el layout del panel.
-  if (session && !session.user && /^\/admin(\/|$)/.test(pathname)) {
+  if (session && !session.user && /^\/(admin|cuenta)(\/|$)/.test(pathname)) {
     const login = new URL('/auth/entrar', request.url);
-    login.searchParams.set('next', pathname);
+    login.searchParams.set('next', `${pathname}${request.nextUrl.search}`);
+    const lang = request.nextUrl.searchParams.get('lang');
+    if (lang) login.searchParams.set('lang', lang);
     return NextResponse.redirect(login);
   }
 

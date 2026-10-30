@@ -5,6 +5,7 @@ import { isLocale } from '../../i18n/config.ts';
 import { isAdminEntity, type AdminEntity } from '../../../backend/admin-moderation/entities.ts';
 import { changeStatus, changeTranslationStatus, saveFields, saveRelations, saveTranslation, type SaveResult } from '../../../backend/admin-moderation/content-admin.ts';
 import { setStaticMap, updatePhoto, uploadPlacePhoto } from '../../../backend/admin-moderation/photos-admin.ts';
+import { moderateReview, saveReply } from '../../../backend/admin-moderation/moderation-admin.ts';
 import { requireAdmin } from '../../lib/admin.ts';
 import { supabaseForRequest } from '../../lib/supabase-server.ts';
 
@@ -95,4 +96,38 @@ export async function uploadStaticMap(_prev: FormState, form: FormData): Promise
   return run(form, async ({ key, id, email, get }) => (key === 'lugares'
     ? setStaticMap(await supabaseForRequest(), id, get, email)
     : { ok: false, errors: { _: 'Solo los lugares tienen mapa estático.' } }), 'Mapa estático guardado.');
+}
+
+/* ---------- Moderación (bloque 4c) ---------- */
+
+async function moderation(form: FormData, op: (ctx: { id: string; email: string }) => Promise<SaveResult>, okMessage: string, back: string): Promise<FormState> {
+  const id = String(form.get('id') ?? '');
+  const user = await requireAdmin(back);
+  if (!UUID.test(id)) return { errors: { _: 'Petición no válida.' } };
+  try {
+    const result = await op({ id, email: user.email ?? user.id });
+    if (!result.ok) return { errors: result.errors };
+    revalidatePath(back);
+    revalidatePath('/admin');
+    return { ok: true, message: okMessage };
+  } catch (e) {
+    console.error('[admin]', e);
+    return { errors: { _: 'No se ha podido guardar. Inténtalo de nuevo.' } };
+  }
+}
+
+export async function moderateReviewAction(_prev: FormState, form: FormData): Promise<FormState> {
+  const to = String(form.get('to') ?? '');
+  const reason = form.get('reason') ? String(form.get('reason')) : null;
+  const note = form.get('note') ? String(form.get('note')) : null;
+  return moderation(form, async ({ id, email }) => moderateReview(await supabaseForRequest(), id, to, reason, note, email), 'Hecho.', '/admin/resenas');
+}
+
+export async function saveReplyAction(_prev: FormState, form: FormData): Promise<FormState> {
+  const approve = form.get('reply_action') === 'aprobar';
+  return moderation(form, async ({ id, email }) => saveReply(await supabaseForRequest(), id, form.get('body') ? String(form.get('body')) : null, approve, email), 'Respuesta guardada (no se publica en esta fase).', '/admin/resenas');
+}
+
+export async function moderatePhotoAction(_prev: FormState, form: FormData): Promise<FormState> {
+  return moderation(form, async ({ id, email }) => updatePhoto(await supabaseForRequest(), id, (k) => form.get(k), email), 'Foto actualizada.', '/admin/fotos');
 }

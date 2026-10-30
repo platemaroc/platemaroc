@@ -19,7 +19,6 @@ const CONTENT = [
 ] as const;
 
 const SECTIONS = [
-  { title: 'Reseñas y fotos', block: '4c', text: 'Moderación (aprobar o rechazar con motivo) y borradores de respuesta.' },
   { title: 'Menús e importación', block: '4d', text: 'Menú digital en MAD e importación de lugares desde CSV.' },
 ];
 
@@ -40,6 +39,11 @@ export default async function AdminHome() {
         {pending.map(([label, n]) => (
           <li key={label}><strong>{n ?? '—'}</strong><span>{label}</span></li>
         ))}
+      </ul>
+      <h2 className={styles.subtitle}>Moderación</h2>
+      <ul className={styles.sections}>
+        <li><a href="/admin/resenas"><strong>Reseñas</strong><span>Aprobar, rechazar con motivo y borradores de respuesta</span></a></li>
+        <li><a href="/admin/fotos"><strong>Fotos</strong><span>Derechos, texto alternativo y aprobación</span></a></li>
       </ul>
       <h2 className={styles.subtitle}>Contenido</h2>
       <ul className={styles.sections}>

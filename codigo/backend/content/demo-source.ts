@@ -65,6 +65,7 @@ export const demoSource: ContentSource = {
       lat: p.lat, lng: p.lng, staticMapSrc: null, address: all('Dirección de prueba, 1 (ficticia)', '1 Test address (fictitious)', '1 adresse de test (fictive)')[l],
       directions: p.lat === null ? null : all('Indicaciones de prueba: no corresponden a ningún lugar real.', 'Test directions: they do not match any real place.', 'Indications de test : elles ne correspondent à aucun lieu réel.')[l],
       openingHours: [[all('Lunes a domingo', 'Monday to Sunday', 'Lundi au dimanche')[l], '00:00–00:00 (demo)']],
+      reviews: p.ratings.slice(0, 1).map((rating) => ({ author: 'Demo', rating, comment: all('Reseña ficticia de demostración.', 'Fictitious demo review.', 'Avis fictif de démonstration.')[l], locale: l, visitedOn: null, date: '2026-01-01T00:00:00Z', photos: [] })),
       phone: null, website: null, dishes: p.section === 'restaurantes' ? [ref(DISH, l)] : [], hasMenu: p.hasMenu, photos: [], locales: localesOf(p),
     };
   },

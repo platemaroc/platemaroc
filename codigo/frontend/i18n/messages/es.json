@@ -69,5 +69,56 @@
     "rateLimited": "Has pedido demasiados enlaces. Espera unos minutos.",
     "signOut": "Salir",
     "notConfigured": "El acceso todavía no está configurado."
+  },
+  "writeReview": "Escribir una reseña",
+  "reviewsTitle": "Reseñas",
+  "reviewIn": "Reseña en",
+  "visited": "Visita",
+  "myAccount": "Mi cuenta",
+  "account": {
+    "title": "Mi cuenta",
+    "name": "Nombre visible",
+    "nameHint": "Aparece junto a tus reseñas. No uses tu email ni tu teléfono.",
+    "saveName": "Guardar nombre",
+    "nameInvalid": "Escribe un nombre de 2 a 40 caracteres, sin email ni teléfono.",
+    "saved": "Guardado.",
+    "myReviews": "Mis reseñas",
+    "none": "Todavía no has escrito ninguna reseña.",
+    "edit": "Editar",
+    "remove": "Borrar definitivamente",
+    "pendiente": "Pendiente de moderación",
+    "aprobada": "Publicada",
+    "rechazada": "Rechazada",
+    "reason": "Motivo"
+  },
+  "form": {
+    "title": "Tu reseña",
+    "editing": "Al editarla volverá a moderación.",
+    "rating": "Puntuación",
+    "comment": "Comentario",
+    "visited": "Fecha de visita (opcional)",
+    "photos": "Fotos (hasta 3, máx. 10 MB cada una)",
+    "consent": "Acepto la política de privacidad y que mi reseña y mi nombre visible se publiquen tras la moderación.",
+    "photoConsent": "Las fotos son mías y autorizo a Platemaroc a mostrarlas con mi reseña.",
+    "privacy": "Política de privacidad",
+    "send": "Enviar reseña",
+    "sent": "Gracias. Tu reseña está pendiente de moderación.",
+    "err": {
+      "rating": "Elige de 1 a 5 estrellas.",
+      "comment": "El comentario no puede pasar de 2000 caracteres.",
+      "visited_on": "La fecha de visita no es válida.",
+      "consent": "Debes aceptar la política de privacidad.",
+      "photo_consent": "Confirma que las fotos son tuyas.",
+      "name": "Elige primero tu nombre visible en Mi cuenta.",
+      "place": "Este lugar no admite reseñas.",
+      "limit": "Has alcanzado el límite de 5 reseñas en 24 horas.",
+      "photos_limit": "Máximo 3 fotos por reseña.",
+      "photo_invalid": "Una de las fotos no es válida (JPG, PNG, WebP o HEIC de hasta 10 MB).",
+      "generic": "No se ha podido enviar. Inténtalo de nuevo."
+    }
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "draft": "Borrador: el texto definitivo está pendiente del titular."
   }
 }

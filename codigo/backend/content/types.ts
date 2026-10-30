@@ -23,8 +23,12 @@ export interface PlaceSummary {
   photo: PhotoView | null;
 }
 
+export interface ReviewView { author: string; rating: number; comment: string | null; locale: Locale | null; visitedOn: string | null; date: string; photos: PhotoView[] }
+
 export interface PlaceDetail extends PlaceSummary {
   content: string | null;
+  /** Solo reseñas aprobadas, en su idioma original (sin traducción automática). */
+  reviews: ReviewView[];
   lat: number | null;
   lng: number | null;
   /** Dirección postal (pendiente de añadir al modelo: migración 0010). */

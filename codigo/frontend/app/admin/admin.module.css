@@ -145,3 +145,5 @@
 .photo img, .mapPreview { width: 160px; height: auto; border-radius: var(--radius-sm); object-fit: cover; }
 .sections a { display: grid; gap: var(--space-xs); color: inherit; text-decoration: none; }
 .meta a { display: inline-flex; align-items: center; min-height: var(--touch-target); }
+.secondaryLink { display: inline-flex; align-items: center; min-height: var(--touch-target); padding: 0 var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-md); text-decoration: none; }
+.thumb { width: 96px; height: 72px; object-fit: cover; border-radius: var(--radius-sm); }
