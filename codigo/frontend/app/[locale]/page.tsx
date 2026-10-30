@@ -26,9 +26,14 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     <>
       {indexingEnabled() && <JsonLd data={websiteJsonLd()} />}
       <SiteHeader locale={locale} />
-      <main id="contenido" className={styles.main}>
-        <h1 className={styles.title}>{SITE_NAME}</h1>
-        <p className={styles.lead}>{t.tagline}</p>
+      <main id="contenido">
+        <div className={styles.hero}>
+          <div className={styles.heroInner}>
+            <h1>{t.tagline}</h1>
+            <a className={styles.heroCta} href={sectionPath(locale, 'lugares')}>{t.sections.lugares}</a>
+          </div>
+        </div>
+        <div className={styles.main}>
 
         <section className={styles.section} aria-labelledby="tipos">
           <h2 id="tipos">{t.explore}</h2>
@@ -51,6 +56,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <h2 id="ciudades">{t.sections['ciudades-y-barrios']}</h2>
           <LinkList empty={t.empty} items={cities.map((c) => ({ href: sectionPath(locale, 'ciudades-y-barrios', c.slug), name: c.name, summary: c.summary }))} />
         </section>
+        </div>
       </main>
     </>
   );

@@ -13,6 +13,12 @@ body {
   background: var(--color-bg);
 }
 
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
 a { color: var(--color-accent); }
 
 a:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }

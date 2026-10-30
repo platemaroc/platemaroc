@@ -12,7 +12,6 @@
 7. Ajuste final de los umbrales internos del Quality Gate.
 
 ## Añadidos al integrar el código (29-10-2026)
-8. Identidad visual (logo y colores): la paleta actual es provisional.
 9. Fotos para platos, guías y ciudades: APLAZADO por el titular (30-10-2026; aún no tiene fotos). El Quality Gate (maestro §4.2) las exige y `photos` solo admite lugares y reseñas: sin la migración propuesta (columnas `dish_id`, `guide_id`, `city_id`), esas fichas no serán indexables.
 
 ## Añadidos al revisar RLS (29-10-2026)
@@ -28,10 +27,12 @@
 13. Reloj del equipo del titular: va una hora atrasado y el servicio de hora de Windows está parado.
 
 ## Añadidos en la Fase 7 (30-10-2026)
+Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No comprará dominio ni VPS hasta terminar el proyecto y el diseño. Los puntos 14 y 15 quedan aplazados con ella.
 14. Proveedor de la copia externa de backups y de la copia semanal de fotos (`config/backups/README.md`).
 15. Rol de solo lectura en la base para `backup-db.sh`.
 
 ## Ya decidido
+- Identidad visual: dirección «Té a la menta», verde, crema y dorado, con títulos en Fraunces; logo de plato con estrella (30-10-2026).
 - Precios exclusivamente en MAD, sin conversiones (29-10-2026).
 - Mapa con carga diferida; IndexedDB máx. 20 con LRU; cachés versionadas (29-10-2026).
 - Enlace `https` de respaldo para iOS además de `geo:` (29-10-2026).

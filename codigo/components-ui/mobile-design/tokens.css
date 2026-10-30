@@ -1,13 +1,16 @@
-/* Variables del sistema de diseño (mismos valores que tokens.ts). Paleta provisional. */
+/* Variables del sistema de diseño (mismos valores que tokens.ts). Dirección «Té a la menta». */
 :root {
-  --color-text: #1f1a17;
-  --color-muted: #5b524b;
-  --color-bg: #fbf8f4;
+  --color-text: #1f2e27;
+  --color-muted: #4f5d55;
+  --color-bg: #f6f1e4;
   --color-surface: #ffffff;
-  --color-border: #e6ddd3;
-  --color-accent: #9a3412;
-  --color-accent-text: #ffffff;
-  --color-star: #b45309;
+  --color-border: #e0d9c6;
+  --color-accent: #1f4d3a;
+  --color-accent-text: #f6f1e4;
+  --color-gold: #e0a93b;
+  --color-gold-text: #2c2206;
+  --color-star: #7a5a10;
+  --color-photo: #dce5d8;
 
   --space-xs: 4px;
   --space-sm: 8px;
@@ -23,8 +26,9 @@
   --bottom-nav: 64px;   /* BOTTOM_NAV_PX */
   --content-max: 46rem;
 
-  /* Tipografía del sistema: sin descargar fuentes (mejor LCP). */
+  /* Texto con la tipografía del sistema (mejor LCP). Solo los títulos descargan fuente: Fraunces, servida por la propia web (app/layout.tsx). */
   --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --text-sm: 0.875rem;
   --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.3rem);

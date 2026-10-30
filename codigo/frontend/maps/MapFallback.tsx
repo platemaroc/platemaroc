@@ -111,7 +111,7 @@ export function MapFallback({
     <section aria-label={name} data-map-status={status}>
       <div
         ref={boxRef}
-        style={{ position: 'relative', width: '100%', aspectRatio, overflow: 'hidden', background: '#e8e8e8' }}
+        style={{ position: 'relative', width: '100%', aspectRatio, overflow: 'hidden', background: 'var(--color-photo)' }}
         aria-busy={status === 'idle' || status === 'loading'}
       >
         {mounted && <div style={{ position: 'absolute', inset: 0 }}>{renderInteractive({ onReady, onError })}</div>}

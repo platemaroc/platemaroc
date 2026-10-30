@@ -222,3 +222,9 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
+
+## Identidad visual (30-10-2026)
+
+Dirección «Té a la menta», elegida por el titular entre tres propuestas. Colores en `components-ui/mobile-design/tokens.css` y `tokens.ts`; contraste de texto de 5,3:1 o más en todas las combinaciones.
+Títulos en Fraunces 600 con `next/font`: la sirve la propia web, la CSP no cambia y el texto normal sigue con la fuente del sistema. Construir necesita internet para descargarla.
+Logo en `SiteHeader.tsx` e icono en `app/icon.svg`. La portada no lleva buscador porque la web no tiene búsqueda.

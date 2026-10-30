@@ -12,6 +12,40 @@
   padding: 0 var(--gutter) var(--space-lg);
 }
 
+/* Portada: el verde de la cabecera continúa detrás del título. */
+.hero {
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.heroInner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-md) var(--gutter) var(--space-xl);
+}
+
+.hero h1 {
+  margin: 0 0 var(--space-lg);
+  font-size: var(--text-title);
+  line-height: 1.2;
+  color: inherit;
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-lg);
+  border-radius: var(--radius-md);
+  background: var(--color-gold);
+  color: var(--color-gold-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.heroCta:focus-visible { outline-color: var(--color-accent-text); }
+
 .title {
   margin: 0 0 var(--space-sm);
   font-size: var(--text-title);

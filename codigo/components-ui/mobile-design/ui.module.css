@@ -31,7 +31,7 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #efe6db, #e4d6c6);
+  background: var(--color-photo);
 }
 
 .photo img {
