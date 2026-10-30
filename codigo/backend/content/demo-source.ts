@@ -28,7 +28,7 @@ const PLACES: DemoPlace[] = [
     summary: all('Ficha ficticia sin coordenadas: el mapa muestra el texto alternativo.', 'Fictitious listing without coordinates: the map shows the text fallback.', 'Fiche fictive sans coordonnées : la carte affiche le texte de secours.'),
     priceRange: 1, ratings: [], lat: null, lng: null, hasMenu: false, neighborhood: false },
   // Solo en es/en: sirve para comprobar que /fr/... da 404 y que el selector de idioma no la ofrece en francés.
-  { slug: 'demo-panaderia', section: 'pastelerias-y-panaderias', name: { es: 'Demo · Panadería de prueba', en: 'Demo · Test bakery' },
+  { slug: 'demo-puesto', section: 'comida-callejera', name: { es: 'Demo · Puesto de prueba', en: 'Demo · Test stall' },
     summary: all('Ficha ficticia publicada solo en español e inglés.', 'Fictitious listing published only in Spanish and English.', ''),
     priceRange: null, ratings: [3], lat: 35.96, lng: -6.31, hasMenu: false, neighborhood: true },
 ];

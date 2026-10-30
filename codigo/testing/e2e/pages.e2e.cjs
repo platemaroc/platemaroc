@@ -38,7 +38,7 @@ async function waitFor(url, ms = 90_000) {
 const STATUS = {
   '/es': 200, '/en/restaurants': 200, '/fr/restaurants': 200, '/en/restaurantes': 404, '/es/lugares': 200,
   '/es/restaurantes/demo-restaurante': 200, '/es/restaurantes/demo-restaurante/menu': 200, '/es/cafes-y-teterias/demo-cafe/menu': 404,
-  '/fr/patisseries-et-boulangeries/demo-panaderia': 404, '/es/platos-tipicos/demo-plato': 200, '/en/food-guides/demo-guia': 200,
+  '/fr/cuisine-de-rue/demo-puesto': 404, '/es/platos-tipicos/demo-plato': 200, '/en/food-guides/demo-guia': 200,
   '/fr/villes/demo-ciudad': 200, '/es/ciudades/demo-ciudad/demo-barrio': 200, '/es/ciudades/demo-ciudad/no-existe': 404, '/ar': 404,
 };
 
@@ -92,10 +92,10 @@ const PAGES = [
     }
     console.log(`plantillas OK (${PAGES.length}): lang, sin scroll horizontal a 375 px, targets ≥ 48 px, alt, aviso demo, sin SDK inicial`);
 
-    // Selector de idioma: la panadería demo solo está en es/en → el enlace FR lleva a la portada francesa, no a un 404.
-    await page.goto(`${BASE}/es/pastelerias-y-panaderias/demo-panaderia`);
+    // Selector de idioma: el puesto demo solo está en es/en → el enlace FR lleva a la portada francesa, no a un 404.
+    await page.goto(`${BASE}/es/comida-callejera/demo-puesto`);
     const langs = await page.$$eval('header nav a', (as) => as.map((a) => a.getAttribute('href')));
-    assert.deepEqual(langs, ['/en/bakeries-and-pastry-shops/demo-panaderia', '/fr']);
+    assert.deepEqual(langs, ['/en/street-food/demo-puesto', '/fr']);
     console.log('selector de idioma OK:', langs.join(' , '));
 
     // Mapa diferido + CLS en la ficha.

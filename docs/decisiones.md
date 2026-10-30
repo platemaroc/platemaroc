@@ -5,7 +5,7 @@
 - Enfoque nacional: Marruecos.
 
 ## Producto
-- Gastronomía: restaurantes, cafés y teterías, pastelerías y panaderías, comida callejera, mercados y zocos, platos típicos, guías gastronómicas, ciudades y barrios.
+- Gastronomía: restaurantes, cafés y teterías, comida callejera, mercados y zocos, platos típicos, guías gastronómicas, ciudades y barrios.
 - Cuentas de usuario y reseñas con moderación previa. Reseñas al estilo Google Business: puntuación única de 1 a 5 estrellas, comentario y fotos.
 - Login: email, Google y teléfono (el SMS tiene coste por mensaje; valorar si es imprescindible en el MVP).
 - Panel de administración: necesario e importante. Alta y edición de lugares con fotos, moderación de reseñas y fotos, gestión de traducciones y estados. Interfaz en `codigo/frontend/admin-panel/`, lógica en `codigo/backend/admin-moderation/`.

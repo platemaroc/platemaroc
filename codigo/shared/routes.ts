@@ -6,14 +6,13 @@ import type { Locale } from './locales.ts';
  * Las claves coinciden con las carpetas de content/ y con place_types.slug. Los nombres en/fr los debe revisar un nativo
  * (ordenes-claude-code/revisar-traducciones). Cambiar un segmento publicado exige una redirección 301 (la decide el titular).
  */
-export const PLACE_SECTIONS = ['restaurantes', 'cafes-y-teterias', 'pastelerias-y-panaderias', 'comida-callejera', 'mercados-y-zocos'] as const;
+export const PLACE_SECTIONS = ['restaurantes', 'cafes-y-teterias', 'comida-callejera', 'mercados-y-zocos'] as const;
 export type PlaceSection = (typeof PLACE_SECTIONS)[number];
 export type Section = PlaceSection | 'lugares' | 'platos-tipicos' | 'guias-gastronomicas' | 'ciudades-y-barrios';
 
 export const SEGMENTS: Record<Section, Record<Locale, string>> = {
   restaurantes: { es: 'restaurantes', en: 'restaurants', fr: 'restaurants' },
   'cafes-y-teterias': { es: 'cafes-y-teterias', en: 'cafes-and-tea-rooms', fr: 'cafes-et-salons-de-the' },
-  'pastelerias-y-panaderias': { es: 'pastelerias-y-panaderias', en: 'bakeries-and-pastry-shops', fr: 'patisseries-et-boulangeries' },
   'comida-callejera': { es: 'comida-callejera', en: 'street-food', fr: 'cuisine-de-rue' },
   'mercados-y-zocos': { es: 'mercados-y-zocos', en: 'markets-and-souks', fr: 'marches-et-souks' },
   lugares: { es: 'lugares', en: 'places', fr: 'lieux' },

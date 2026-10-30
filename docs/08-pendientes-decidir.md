@@ -43,6 +43,7 @@ Fase 7, parte 2 (instalar el servidor): APLAZADA por el titular (30-10-2026). No
 - Publicar la app en Google Auth Platform (de pruebas a producción), con la política de privacidad ya publicada: si no, solo entran los usuarios de prueba.
 
 ## Ya decidido
+- Sin pastelerías y panaderías como tipo de lugar: retirado de código, base y documentos vivos (30-10-2026).
 - Sin reservas en la web: en Marruecos los restaurantes no las usan. Retiradas de código, base y documentos vivos (30-10-2026).
 - Acceso sin contraseña con Google, email y Apple: el titular recuperó el email y pidió Apple tras haber retirado el email ese mismo día. Las reseñas de visitantes se mantienen; altas cerradas hasta abrirlas (30-10-2026). El titular activó sus dos pasos el mismo día.
 - El mapa interactivo solo se carga al pulsar «Ver mapa», por privacidad; sustituye a la carga al llegar a la sección (30-10-2026).

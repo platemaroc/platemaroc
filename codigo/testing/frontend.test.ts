@@ -48,7 +48,7 @@ test('datos demo: prohibidos en producción; sin Supabase, origen vacío', async
 test('datos demo: todo lleva el prefijo demo- y una ficha sin francés no existe en /fr', async () => {
   const places = await demoSource.listPlaces('es');
   assert.ok(places.length > 0 && places.every((p) => p.slug.startsWith('demo-') && /^Demo/.test(p.name)));
-  assert.equal(await demoSource.getPlace('fr', 'pastelerias-y-panaderias', 'demo-panaderia'), null);
+  assert.equal(await demoSource.getPlace('fr', 'comida-callejera', 'demo-puesto'), null);
   const menu = await demoSource.getMenu('es', 'restaurantes', 'demo-restaurante');
   assert.ok(menu!.categories[0].items.some((i) => i.priceMad === null), 'el menú demo incluye un precio pendiente');
 });

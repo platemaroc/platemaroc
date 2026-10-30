@@ -26,9 +26,9 @@ echo "Ensayo de apply.sh en otra BD temporal (como se aplicará a Supabase):"
 $P -d postgres -c "create database a"
 $P -v ON_ERROR_STOP=1 -d a -f "$HERE/tests/stub-supabase.sql"
 export DATABASE_URL="postgresql://postgres@127.0.0.1:$PORT/a"
-echo "--- A1. primera vez: 18 aplicado(s) (11 migraciones, 6 de RLS y 1 de datos de referencia)"; bash "$HERE/apply.sh" --seed | tail -1
+echo "--- A1. primera vez: 19 aplicado(s) (11 migraciones, 6 de RLS y 2 de datos de referencia)"; bash "$HERE/apply.sh" --seed | tail -1
 echo "--- A2. segunda vez: Nada pendiente"; bash "$HERE/apply.sh" --seed | tail -1
-echo "--- A3. datos de referencia: esperado 5 tipos, 12 regiones, 1 ciudad, todo en borrador"
+echo "--- A3. datos de referencia: esperado 4 tipos, 12 regiones, 1 ciudad, todo en borrador"
 $P -d a -At -c "select (select count(*) from place_types) || ' tipos, ' || (select count(*) from regions) || ' regiones, ' || (select count(*) from cities) || ' ciudad, publicados: ' || (select count(*) from regions where status <> 'borrador') + (select count(*) from cities where status <> 'borrador')"
 echo "--- A4. un archivo ya aplicado que cambia: ERROR esperado"
 $P -d a -c "update platemaroc_meta.applied_files set sha256 = 'x' where file like '%0001_tipos.sql'"

@@ -28,7 +28,7 @@ Se empieza por Tánger y se amplía sin cambiar la estructura.
 - fechas de creación y última verificación
 
 ### tipo_de_lugar
-Restaurante, café o tetería, pastelería o panadería, puesto de comida callejera, mercado o zoco.
+Restaurante, café o tetería, puesto de comida callejera, mercado o zoco.
 
 ### especialidad (etiquetas de cocina)
 Ejemplos: marroquí tradicional, rifeña, de mariscos, vegetariana, halal. Relación muchos a muchos con lugar.

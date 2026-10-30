@@ -53,7 +53,7 @@ function crumbs(t: Messages, locale: Locale, section: Section, name: string) {
 
 /** Subtipo de schema.org más específico para cada tipo de lugar (norma vigente de Google). */
 const SCHEMA_TYPE: Record<PlaceSection, string> = {
-  restaurantes: 'Restaurant', 'cafes-y-teterias': 'CafeOrCoffeeShop', 'pastelerias-y-panaderias': 'Bakery', 'comida-callejera': 'FoodEstablishment', 'mercados-y-zocos': 'LocalBusiness',
+  restaurantes: 'Restaurant', 'cafes-y-teterias': 'CafeOrCoffeeShop', 'comida-callejera': 'FoodEstablishment', 'mercados-y-zocos': 'LocalBusiness',
 };
 
 /** Ficha de lugar, plato, guía o ciudad. */

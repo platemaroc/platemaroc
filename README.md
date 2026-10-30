@@ -26,7 +26,7 @@ Requisitos: Node.js 26 (versión de `.nvmrc`; mínimo 22.18) y Git. Las claves v
 
 ## Visión
 
-- Enfoque nacional: gastronomía de Marruecos (restaurantes, cafés y teterías, pastelerías y panaderías, comida callejera, mercados y zocos, platos típicos y guías).
+- Enfoque nacional: gastronomía de Marruecos (restaurantes, cafés y teterías, comida callejera, mercados y zocos, platos típicos y guías).
 - Mobile-First absoluto, Core Web Vitals (LCP, INP, CLS) y HTTPS estricto.
 - Control automatizado de indexabilidad con Quality Gate (`is_indexable`).
 - Idiomas oficiales: español (`es`), inglés (`en`) y francés (`fr`), con URLs `/es/`, `/en/`, `/fr/`. El árabe y el RTL están retirados. Cada idioma se indexa solo cuando su traducción está realmente preparada.
