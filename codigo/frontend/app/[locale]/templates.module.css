@@ -142,3 +142,11 @@
 .reviews small { color: var(--color-muted); }
 .reviewStars { color: var(--color-star); }
 .reviewPhotos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xs); }
+
+/* Enlaces a ciudad y barrio en la ficha: target táctil de 48 px. */
+.lead a {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+}
