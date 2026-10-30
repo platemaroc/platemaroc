@@ -58,8 +58,10 @@ test('foto: derechos completos solo con origen, autor y licencia', () => {
 
 test('imágenes: quita EXIF y GPS, reduce a 1600 px, convierte a WebP y rechaza lo que no es imagen', async () => {
   const withGps = await sharp({ create: { width: 3000, height: 2000, channels: 3, background: '#a33' } })
-    .jpeg().withExif({ IFD0: { Artist: 'prueba' }, GPS: { GPSLatitudeRef: 'N', GPSLatitude: '35/1 47/1 0/1' } }).toBuffer();
-  assert.ok((await sharp(withGps).metadata()).exif, 'la imagen de prueba lleva EXIF');
+    .jpeg().withExif({ IFD0: { Artist: 'prueba' }, IFD3: { GPSLatitudeRef: 'N', GPSLatitude: '35/1 47/1 0/1' } }).toBuffer();
+  const noGps = await sharp({ create: { width: 3000, height: 2000, channels: 3, background: '#a33' } }).jpeg().withExif({ IFD0: { Artist: 'prueba' } }).toBuffer();
+  const exifBytes = async (b: Buffer) => (await sharp(b).metadata()).exif?.length ?? 0;
+  assert.ok((await exifBytes(withGps)) > (await exifBytes(noGps)), 'la imagen de prueba lleva GPS de verdad');
   const out = await processImage(withGps);
   assert.ok(out.ok);
   const meta = await sharp(out.data).metadata();

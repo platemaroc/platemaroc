@@ -141,7 +141,8 @@ async function waitFor(url, ms = 120_000) {
     console.log('ficha pública en /es/restaurantes/' + slug + ' y slug fijo');
 
     // Foto con GPS: se aprueba con derechos y alt, y la sirve /media sin EXIF.
-    const jpeg = await sharp({ create: { width: 2400, height: 1600, channels: 3, background: '#a55' } }).jpeg().withExif({ GPS: { GPSLatitudeRef: 'N', GPSLatitude: '35/1 47/1 0/1' } }).toBuffer();
+    const jpeg = await sharp({ create: { width: 2400, height: 1600, channels: 3, background: '#a55' } }).jpeg().withExif({ IFD3: { GPSLatitudeRef: 'N', GPSLatitude: '35/1 47/1 0/1' } }).toBuffer();
+    assert.ok((await sharp(jpeg).metadata()).exif, 'la foto de prueba lleva GPS de verdad');
     const tmp = path.join(require('os').tmpdir(), `e2e-${stamp}.jpg`);
     fs.writeFileSync(tmp, jpeg);
     const up = page.locator('form:has(button:has-text("Subir foto"))');
