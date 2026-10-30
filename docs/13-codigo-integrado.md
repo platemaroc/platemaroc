@@ -205,5 +205,5 @@ Límites: las páginas de menú siguen en noindex y fuera del sitemap; sin fotos
 | Cookies | `SESSION_COOKIE` | HttpOnly y SameSite=Lax; retirado el cliente de navegador, que no se usaba |
 | Pruebas | `security.e2e.cjs`, `qa.e2e.cjs`, `run-lighthouse.mjs` | Informes en `ordenes-claude-code/testeo-rendimiento/resultados/` y `seguridad-servidor/resultados/` |
 
-Verificado: tipos, 56 pruebas unitarias, 33 de humo SQL, build y todas las E2E. `0130` está aplicada solo al proyecto de pruebas.
+Verificado: tipos, 56 pruebas unitarias, 32 de humo SQL, build y todas las E2E. `0130` está aplicada solo al proyecto de pruebas.
 No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y la cuenta real del titular con dos pasos.
