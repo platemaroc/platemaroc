@@ -31,20 +31,7 @@
   color: inherit;
 }
 
-.heroCta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--touch-target);
-  padding: 0 var(--space-lg);
-  border-radius: var(--radius-md);
-  background: var(--color-gold);
-  color: var(--color-gold-text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.heroCta:focus-visible { outline-color: var(--color-accent-text); }
+.hero :focus-visible { outline: 3px solid var(--color-gold); outline-offset: 2px; }
 
 .title {
   margin: 0 0 var(--space-sm);

@@ -7,6 +7,16 @@
   "pricePending": "Price pending",
   "offline": "Offline",
   "tagline": "Food guide to Morocco",
+  "searchForm": {
+    "label": "Search",
+    "placeholder": "Place, dish or city",
+    "city": "City",
+    "allCities": "All cities",
+    "submit": "Search",
+    "clear": "Clear filters",
+    "results": "Results: {count}",
+    "none": "No results. Try other words or clear the filters."
+  },
   "comingSoon": "We are preparing the guide. Check back soon.",
   "chooseLanguage": "Choose your language",
   "suggested": "Suggested",

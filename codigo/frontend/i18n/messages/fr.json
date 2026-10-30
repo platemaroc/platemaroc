@@ -7,6 +7,16 @@
   "pricePending": "Prix à confirmer",
   "offline": "Hors ligne",
   "tagline": "Guide gastronomique du Maroc",
+  "searchForm": {
+    "label": "Rechercher",
+    "placeholder": "Lieu, plat ou ville",
+    "city": "Ville",
+    "allCities": "Toutes les villes",
+    "submit": "Rechercher",
+    "clear": "Effacer les filtres",
+    "results": "Résultats : {count}",
+    "none": "Aucun résultat. Essayez d'autres mots ou effacez les filtres."
+  },
   "comingSoon": "Nous préparons le guide. Revenez bientôt.",
   "chooseLanguage": "Choisissez votre langue",
   "suggested": "Suggéré",

@@ -7,6 +7,16 @@
   "pricePending": "Precio pendiente",
   "offline": "Sin conexión",
   "tagline": "Guía gastronómica de Marruecos",
+  "searchForm": {
+    "label": "Buscar",
+    "placeholder": "Lugar, plato o ciudad",
+    "city": "Ciudad",
+    "allCities": "Todas las ciudades",
+    "submit": "Buscar",
+    "clear": "Quitar filtros",
+    "results": "Resultados: {count}",
+    "none": "No hay resultados. Prueba con otras palabras o quita los filtros."
+  },
   "comingSoon": "Estamos preparando la guía. Vuelve pronto.",
   "chooseLanguage": "Elige idioma",
   "suggested": "Sugerido",

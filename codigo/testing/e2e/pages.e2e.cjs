@@ -126,6 +126,22 @@ const PAGES = [
     assert.ok((await page.innerText('[data-map-status]')).includes('Ubicación no disponible'));
     console.log('mapa sin coordenadas OK');
 
+    // Buscador: desde la portada, sin acentos, con filtro por ciudad y nunca indexable.
+    await page.goto(`${BASE}/es`, { waitUntil: 'networkidle' });
+    await page.fill('form[role=search] input[name=q]', 'cafe');
+    await page.click('form[role=search] button');
+    await page.waitForURL(/\/es\/lugares\?q=cafe/);
+    assert.ok((await page.innerText('main')).includes('Demo · Café'), 'encuentra el café sin acento');
+    assert.equal(await page.getAttribute('meta[name=robots]', 'content').then((c) => /noindex/.test(c)), true, 'una búsqueda no se indexa');
+    await page.goto(`${BASE}/es/lugares?q=zzzz`, { waitUntil: 'networkidle' });
+    assert.ok((await page.innerText('[role=status]')).includes('No hay resultados'));
+    await page.goto(`${BASE}/es/lugares?ciudad=demo-ciudad`, { waitUntil: 'networkidle' });
+    assert.equal(await page.inputValue('select[name=ciudad]'), 'demo-ciudad');
+    assert.ok((await page.locator('a[href*="demo-restaurante"]').count()) > 0, 'filtro por ciudad');
+    await page.goto(`${BASE}/es/lugares?ciudad=no-existe`, { waitUntil: 'networkidle' });
+    assert.equal(await page.inputValue('select[name=ciudad]'), '', 'una ciudad desconocida se ignora');
+    console.log('buscador OK');
+
     // Aviso offline.
     await context.setOffline(true);
     await page.waitForSelector('[role=status]', { timeout: 10_000 });

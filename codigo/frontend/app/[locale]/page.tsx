@@ -6,6 +6,7 @@ import { LOCALES } from '../../../shared/locales.ts';
 import { JsonLd } from '../../components/JsonLd.tsx';
 import { indexingEnabled, pageMetadata } from '../../lib/seo.ts';
 import { getMessages } from '../../i18n/messages.ts';
+import { SearchForm } from '../../components/SearchForm.tsx';
 import { SiteHeader } from '../../components/SiteHeader.tsx';
 import { LinkList, PlaceList } from '../../components/content.tsx';
 import { listCities, listGuides, listPlaces, resolveRoute } from '../../lib/data.ts';
@@ -30,7 +31,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         <div className={styles.hero}>
           <div className={styles.heroInner}>
             <h1>{t.tagline}</h1>
-            <a className={styles.heroCta} href={sectionPath(locale, 'lugares')}>{t.sections.lugares}</a>
+            <SearchForm locale={locale} compact />
           </div>
         </div>
         <div className={styles.main}>

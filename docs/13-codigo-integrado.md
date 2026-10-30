@@ -223,6 +223,17 @@ No probado: iPhone real, móvil y red reales, Google Maps real (CSP incluida), y
 Verificado en Windows: construcción sin secretos, web standalone arrancada con la indexación apagada y encendida, cabeceras de caché, tipos, pruebas y escáner sobre lo que verá GitHub.
 No probado (necesita servidor): el flujo de GitHub Actions, Nginx (`nginx -t`), el servicio systemd, la vuelta atrás y las copias. `sharp` no se ha probado en Linux: hay que subir una foto tras el primer despliegue.
 
+## Buscador y filtro por ciudad (30-10-2026)
+
+| Pieza | Dónde | Notas |
+|---|---|---|
+| Comparación | `shared/search.ts` | Sin mayúsculas ni acentos; deben aparecer todas las palabras |
+| Búsqueda | `searchContent` en `frontend/lib/data.ts` | Filtra en memoria los listados públicos con caché: no toca la base y nunca ve borradores |
+| Formulario | `components/SearchForm.tsx` | GET con `?q=` y `?ciudad=`, funciona sin JavaScript; en la portada y en los listados de lugares |
+| SEO | `app/[locale]/[section]/page.tsx` | Con filtros, `noindex` y canónica al listado limpio |
+
+Límites: compara texto literal, así que «tagine» no encuentra «tajine» y no busca dentro de menús ni de la descripción completa. No registra lo que se busca (la analítica sigue sin aprobar). Con muchos miles de lugares habría que pasarla a la base de datos.
+
 ## Mapa al pulsar (30-10-2026)
 
 `maps/MapFallback.tsx`: Google Maps solo se carga al pulsar «Ver mapa» (docs/11). Retirado `useNearViewport.ts`; quedan obsoletas las menciones anteriores a `IntersectionObserver`.

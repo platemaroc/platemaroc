@@ -110,6 +110,74 @@
   box-shadow: inset 0 3px 0 var(--color-gold);
 }
 
+/* Buscador: columna en móvil; en escritorio, en fila. */
+.search {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 0 0 var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .search { grid-template-columns: 2fr 1fr auto; align-items: end; }
+  .searchClear { grid-column: 1 / -1; }
+}
+
+.searchCompact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-sm);
+}
+
+.searchLabel {
+  display: grid;
+  gap: var(--space-xs);
+  font-weight: 600;
+}
+
+.searchLabelHidden span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.search input, .search select, .searchCompact input {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding: 0 var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+}
+
+.search button, .searchCompact button {
+  min-height: var(--touch-target);
+  padding: 0 var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.searchCompact button {
+  background: var(--color-gold);
+  color: var(--color-gold-text);
+}
+
+.searchClear {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+}
+
 .demo {
   margin: 0;
   padding: var(--space-sm) var(--gutter);
