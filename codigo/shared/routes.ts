@@ -40,6 +40,9 @@ export function sectionPath(locale: Locale, section: Section, ...rest: string[])
   return ['', locale, SEGMENTS[section][locale], ...rest.filter(Boolean)].join('/');
 }
 
+/** Lugares de un tipo en una ciudad: `/es/ciudades/tanger/restaurantes`. El tipo se traduce, como toda sección. */
+export const cityTypePath = (locale: Locale, citySlug: string, type: PlaceSection) => sectionPath(locale, 'ciudades-y-barrios', citySlug, SEGMENTS[type][locale]);
+
 /** Para el Service Worker: segmentos de todos los idiomas de las secciones dadas, como alternativa de RegExp. */
 export function segmentsAlternation(sections: readonly Section[]): string {
   const all = new Set(sections.flatMap((s) => Object.values(SEGMENTS[s])));

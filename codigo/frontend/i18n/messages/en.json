@@ -7,6 +7,7 @@
   "pricePending": "Price pending",
   "offline": "Offline",
   "tagline": "Food guide to Morocco",
+  "cityType": "{type} in {city}",
   "footerNav": "Footer links",
   "searchForm": {
     "more": "More filters",

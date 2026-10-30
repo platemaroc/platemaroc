@@ -7,6 +7,7 @@
   "pricePending": "Precio pendiente",
   "offline": "Sin conexión",
   "tagline": "Guía gastronómica de Marruecos",
+  "cityType": "{type} en {city}",
   "footerNav": "Enlaces del pie",
   "searchForm": {
     "more": "Más filtros",

@@ -160,6 +160,25 @@ const PAGES = [
     assert.equal(await page.getAttribute('footer a[href^="/privacidad"]', 'href'), '/privacidad?lang=en');
     assert.equal(await page.getAttribute('footer a[href^="/cuenta"]', 'href'), '/cuenta?lang=en');
     console.log('pie: privacidad y acceso en el idioma de la página');
+
+    // Páginas de ciudad por tipo, con el segmento traducido.
+    await page.goto(`${BASE}/es/ciudades/demo-ciudad`, { waitUntil: 'networkidle' });
+    await page.click('main a[href="/es/ciudades/demo-ciudad/restaurantes"]');
+    await page.waitForSelector('h1:has-text("Restaurantes en")');
+    assert.equal(await page.locator('a[href*="demo-restaurante"]').count(), 1);
+    assert.equal(await page.locator('a[href*="demo-cafe"]').count(), 0, 'solo ese tipo');
+    assert.match(await page.getAttribute('meta[name=robots]', 'content'), /noindex/, 'sin fichas indexables no se indexa');
+    assert.equal((await page.goto(`${BASE}/en/cities/demo-ciudad/restaurants`)).status(), 200);
+    assert.equal((await page.goto(`${BASE}/es/ciudades/demo-ciudad/restaurants`)).status(), 404, 'el segmento de otro idioma no vale');
+    assert.equal((await page.goto(`${BASE}/es/ciudades/no-existe/restaurantes`)).status(), 404);
+    console.log('ciudad por tipo OK');
+
+    // Plantillas: el restaurante da menú y datos antes que el texto; el resto usa la general.
+    await page.goto(`${BASE}/es/restaurantes/demo-restaurante`, { waitUntil: 'networkidle' });
+    assert.ok(await page.locator('[data-template=restaurante] a:has-text("menú")').count(), 'restaurante: menú en el bloque destacado');
+    await page.goto(`${BASE}/es/cafes-y-teterias/demo-cafe`, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('[data-template]').count(), 0, 'café: plantilla general');
+    console.log('plantillas OK');
     await page.goto(`${BASE}/es/restaurantes`, { waitUntil: 'networkidle' });
 
     // Aviso offline.

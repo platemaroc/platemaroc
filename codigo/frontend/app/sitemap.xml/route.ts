@@ -1,7 +1,7 @@
 import { buildSitemapXml, type SitemapEntry } from '../../../base-indexing/sitemap.ts';
 import { LOCALES, type Locale } from '../../../shared/locales.ts';
 import { PLACE_SECTIONS, sectionPath, type Section } from '../../../shared/routes.ts';
-import { listIndexable, listingIndexableLocales } from '../../lib/data.ts';
+import { listCityTypePages, listIndexable, listingIndexableLocales } from '../../lib/data.ts';
 import { absoluteUrl, indexingEnabled } from '../../lib/seo.ts';
 
 // El interruptor y las URLs indexables se leen en el servidor, no al construir.
@@ -24,6 +24,7 @@ export async function GET() {
       const locales = await listingIndexableLocales(section);
       items.push(...entries(Object.fromEntries(locales.map((l) => [l, sectionPath(l, section)]))));
     }
+    for (const paths of await listCityTypePages()) items.push(...entries(paths));
     for (const e of await listIndexable()) items.push(...entries(e.paths, e.lastmod));
   }
   return new Response(buildSitemapXml(items), { headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' } });

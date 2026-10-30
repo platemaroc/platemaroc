@@ -6,7 +6,7 @@ import { isLocale, type Locale } from '../i18n/config.ts';
 import { getMessages } from '../i18n/messages.ts';
 import { LOCALES } from '../../shared/locales.ts';
 import { applyPlaceFilters, hasFilters, type PlaceFilters } from '../../shared/place-filters.ts';
-import { isPlaceSection, sectionFromSegment, type Section } from '../../shared/routes.ts';
+import { cityTypePath, isPlaceSection, PLACE_SECTIONS, sectionFromSegment, type PlaceSection, type Section } from '../../shared/routes.ts';
 import { matchesSearch } from '../../shared/search.ts';
 
 /** Datos públicos con caché de 60 s (backend/content/cache.ts). Solo contenido público: nunca datos de un usuario. */
@@ -58,6 +58,22 @@ export async function searchContent(locale: Locale, o: { q: string; citySlug?: s
 
 /** Un listado solo se indexa con al menos 3 fichas indexables en ese idioma (decisión del titular): evita páginas casi vacías. */
 export const MIN_INDEXABLE_ITEMS = 3;
+
+/** Tipo de lugar en una ciudad: misma regla que los listados. */
+export async function cityTypeIndexableLocales(citySlug: string, section: PlaceSection): Promise<Locale[]> {
+  const counts = await Promise.all(LOCALES.map(async (l) => (await listPlaces(l, { section, citySlug })).filter((p) => p.indexable).length));
+  return LOCALES.filter((_, i) => counts[i] >= MIN_INDEXABLE_ITEMS);
+}
+
+/** Páginas de ciudad por tipo que pasan esa regla, para el sitemap. */
+export async function listCityTypePages(): Promise<Partial<Record<Locale, string>>[]> {
+  const slugs = new Set((await Promise.all(LOCALES.map((l) => listCities(l)))).flat().map((c) => c.slug));
+  const pages = await Promise.all([...slugs].flatMap((slug) => PLACE_SECTIONS.map(async (section) => {
+    const locales = await cityTypeIndexableLocales(slug, section);
+    return Object.fromEntries(locales.map((l) => [l, cityTypePath(l, slug, section)]));
+  })));
+  return pages.filter((p) => Object.keys(p).length > 0);
+}
 
 export async function listingIndexableLocales(section: Section): Promise<Locale[]> {
   const counts = await Promise.all(LOCALES.map(async (l) => {

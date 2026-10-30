@@ -1,21 +1,26 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { isPlaceSection, MENU_SEGMENT, sectionPath } from '../../../../../../shared/routes.ts';
+import { cityTypePath, isPlaceSection, MENU_SEGMENT, sectionFromSegment, sectionPath } from '../../../../../../shared/routes.ts';
 import { EmptyState, Price } from '../../../../../../components-ui/mobile-design/ui.tsx';
 import { getMessages } from '../../../../../i18n/messages.ts';
 import { SiteHeader } from '../../../../../components/SiteHeader.tsx';
 import { Breadcrumbs, PlaceList } from '../../../../../components/content.tsx';
-import { getMenu, getNeighborhood, resolveRoute, seoInfo } from '../../../../../lib/data.ts';
+import { cityTypeIndexableLocales, getCity, getMenu, getNeighborhood, listPlaces, resolveRoute, seoInfo } from '../../../../../lib/data.ts';
 import { pageMetadata } from '../../../../../lib/seo.ts';
 import styles from '../../../templates.module.css';
 
 type Params = Promise<{ locale: string; section: string; slug: string; sub: string }>;
 
-/** /{lugar}/menu → menú digital; /{ciudad}/{barrio} → barrio. Cualquier otra combinación es 404. */
+/** /{lugar}/menu → menú digital; /{ciudad}/{tipo de lugar} → lugares de ese tipo; /{ciudad}/{barrio} → barrio. Lo demás es 404. */
 async function load(params: Params) {
   const { locale, section } = await resolveRoute(params);
   const { slug, sub } = await params;
   if (isPlaceSection(section!) && sub === MENU_SEGMENT) return { locale, kind: 'menu' as const, section, data: await getMenu(locale, section, slug) };
+  const type = section === 'ciudades-y-barrios' ? sectionFromSegment(locale, sub) : null;
+  if (type && isPlaceSection(type)) {
+    const city = await getCity(locale, slug);
+    return { locale, kind: 'cityType' as const, section, type, data: city && { city, places: await listPlaces(locale, { section: type, citySlug: city.slug }) } };
+  }
   if (section === 'ciudades-y-barrios') return { locale, kind: 'neighborhood' as const, section, data: await getNeighborhood(locale, slug, sub) };
   notFound();
 }
@@ -29,6 +34,14 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return pageMetadata({
       locale: page.locale, title: `${t.menu} · ${m.place.name}`, description: `${t.menu} · ${m.place.name}`, indexable: m.indexableLocales,
       paths: Object.fromEntries(m.locales.map((l) => [l, sectionPath(l, m.place.section, m.place.slug, MENU_SEGMENT)])),
+    });
+  }
+  if (page.kind === 'cityType') {
+    const { city } = page.data;
+    const title = t.cityType.replace('{type}', t.sections[page.type]).replace('{city}', city.name);
+    return pageMetadata({
+      locale: page.locale, title, description: city.summary ?? title, indexable: await cityTypeIndexableLocales(city.slug, page.type),
+      paths: Object.fromEntries(city.locales.map((l) => [l, cityTypePath(l, city.slug, page.type)])),
     });
   }
   const n = page.data;
@@ -74,6 +87,25 @@ export default async function SubPage({ params }: { params: Params }) {
             </section>
           ))}
           <p className={styles.section}><a className={styles.textLink} href={placeHref}>{t.backToPlace}</a></p>
+        </main>
+      </>
+    );
+  }
+
+  if (page.kind === 'cityType') {
+    const { city, places } = page.data;
+    const cityHref = sectionPath(locale, 'ciudades-y-barrios', city.slug);
+    return (
+      <>
+        <SiteHeader locale={locale} available={city.locales} />
+        <main id="contenido" className={styles.main}>
+          <Breadcrumbs label={t.breadcrumb} items={[
+            { name: t.nav.home, href: `/${locale}` }, { name: t.sections['ciudades-y-barrios'], href: sectionPath(locale, 'ciudades-y-barrios') },
+            { name: city.name, href: cityHref }, { name: t.sections[page.type] },
+          ]} />
+          <h1 className={styles.title}>{t.cityType.replace('{type}', t.sections[page.type]).replace('{city}', city.name)}</h1>
+          <PlaceList heading="h2" places={places} locale={locale} />
+          <p className={styles.section}><a className={styles.textLink} href={cityHref}>{city.name}</a></p>
         </main>
       </>
     );

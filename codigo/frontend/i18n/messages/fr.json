@@ -7,6 +7,7 @@
   "pricePending": "Prix à confirmer",
   "offline": "Hors ligne",
   "tagline": "Guide gastronomique du Maroc",
+  "cityType": "{type} à {city}",
   "footerNav": "Liens du pied de page",
   "searchForm": {
     "more": "Plus de filtres",
