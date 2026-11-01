@@ -463,7 +463,7 @@ las protegen la moderación previa y los límites). Todas las cuentas entran sin
 | Usuarios (reseñas) | Google, email con código y **huella o cara**. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
 | Propietarios (MVP) | Google, email con código y **«Continuar con huella o cara»**, en la misma pantalla de acceso del panel. Sin segundo factor obligatorio. La titularidad del local se verifica por vías sin coste. |
 | Administración | **«Continuar con Google»** (cuentas autorizadas) seguido del código de la app de autenticación, **o «Continuar con huella o cara»** (la passkey ya es un factor fuerte). Decisión del titular, 01-11-2026. |
-| Empleados de restaurante (MVP) | Google, email con código o huella o cara. **Solo pueden ver, confirmar y marcar «No disponible» las reservas de su local; nada más.** Los invita el propietario por email desde «Empleados»; el propietario puede quitarles el acceso. |
+| Empleados de restaurante (MVP) | Google, email con código o huella o cara. **Solo pueden ver, confirmar y marcar «No disponible» las reservas de su local; nada más.** Los **añade el propietario** por email desde «Empleados» (el empleado activa su acceso con el email recibido); el propietario puede quitarles el acceso. |
 
 Reglas comunes:
 
@@ -566,7 +566,7 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
     - rol **Propietario**: el mismo panel, pero su barra lateral solo muestra «Mi local» (Escritorio, Reservas, Información, Menú,
       Fotos, Reseñas, Empleados) y solo ve los datos de su local. Confirma o marca «No disponible» y gestiona los ajustes de reservas.
     - rol **Empleado**: el mismo panel con una sola sección, **Reservas**, de su local: ver, confirmar y «No disponible». Nada más.
-12. **Empleados** (solo propietario): invitar empleados por email, reenviar o anular la invitación y quitar el acceso.
+12. **Empleados** (solo propietario): añadir empleados por email (quedan «pendientes de activar» hasta que activan su acceso), reenviar o anular y quitar el acceso. En la interfaz no se usa la palabra «invitar».
 
 ### Esqueleto del panel: 2 piezas
 
@@ -602,7 +602,7 @@ Barra lateral y cabecera del panel.
 - Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); todos los locales tienen propietario registrado, que confirma las reservas; el titular se encarga del tema de las reservas (§2, §18 bis).
 - Passkey: botón «Continuar con huella o cara» (§18).
 - Huella o cara también para propietarios y administración (§18).
-- Rol Empleado en el panel: solo reservas de su local (ver, confirmar, «No disponible»); los invita el propietario (§18, §20).
+- Rol Empleado en el panel: solo reservas de su local (ver, confirmar, «No disponible»); los añade el propietario (§18, §20).
 - Moderación automática 3 veces al día (§6).
 - Idioma: base español; al entrar, el del navegador si es es/en/fr, y si no, español (§13).
 - Favoritos en el MVP, disponibles sin conexión; nueva pestaña «Favoritos» en «Mi cuenta» y botón ♡ en la info del local (§12).
