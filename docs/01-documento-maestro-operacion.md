@@ -451,6 +451,19 @@ Reglas comunes:
 
 ---
 
+## 19. Diseño de la interfaz
+
+- **El diseño antiguo queda descartado** (decisión del titular, 01-11-2026): el sistema visual de la «fase 1» de Claude Design
+  (paleta arena y terracota, Fraunces y Manrope, logo de estrella), las plantillas actuales, la cabecera, el pie de página y sus enlaces.
+- El nuevo diseño se encarga a Claude Design y debe cumplir este documento: público europeo, es/en/fr, solo MAD, sin barrios,
+  sin ingresos, login con email + contraseña, Google y passkeys, mapa sin coste y botón «Cómo llegar».
+- El pie de página y los enlaces se rediseñan como navegación secundaria útil para el SEO (§4.4): ciudades y tipos de lugar,
+  enlaces legales, sin «Política de cookies» si no se usan cookies no imprescindibles.
+- El código del diseño antiguo se sustituye en la fase de desarrollo, cuando el nuevo diseño esté aprobado; mientras tanto no se
+  modifica (fase de planificación sin código). La web no está publicada, así que retirarlo no afecta al SEO; queda en el historial de Git.
+
+---
+
 ## Registro de cambios
 
 ### 01-11-2026 (decisiones del titular)
@@ -464,6 +477,7 @@ Reglas comunes:
 - Moderación por tarea programada varias veces al día (número pendiente).
 - Público principal: turistas europeos.
 - Este documento se actualiza con cada decisión del titular.
+- Diseño antiguo descartado (fase 1 de Claude Design, plantillas, cabecera, pie y enlaces); nuevo diseño con Claude Design (§19).
 
 ### Pendiente de decisión del titular
 
