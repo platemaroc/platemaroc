@@ -324,6 +324,9 @@ Revisar:
 
 ### MVP
 
+- acceso de propietarios al panel (rol «Propietario») y reclamación de su local con verificación de titularidad sin coste (adelantado de la Fase 2, 01-11-2026);
+- reservas gestionadas (§18 bis);
+
 - lugares;
 - ciudades;
 - platos;
@@ -343,8 +346,6 @@ Revisar:
 
 ### Fase 2
 
-- reclamación de negocios con verificación de titularidad sin coste;
-- perfiles de propietarios (§18);
 - respuestas a reseñas publicadas;
 - recetas si se aprueban;
 - favoritos;
@@ -454,7 +455,7 @@ las protegen la moderación previa y los límites). Todas las cuentas entran sin
 | Tipo de cuenta | Notas |
 |---|---|
 | Usuarios (reseñas) | Google, email con código y passkey. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
-| Propietarios (Fase 2) | Google, email con código y passkey. La titularidad del local se verifica por vías sin coste. |
+| Propietarios (MVP) | Google, email con código y passkey, en la misma pantalla de acceso del panel. Sin segundo factor obligatorio. La titularidad del local se verifica por vías sin coste. |
 | Administración | **Solo «Continuar con Google»** (cuentas de Google autorizadas) y **siempre segundo factor** con app de autenticación (decisión del titular, 01-11-2026). |
 
 Reglas comunes:
@@ -480,10 +481,13 @@ Decisión del titular (01-11-2026): **se recuperan las reservas**, que se había
 Estados: `pendiente -> confirmada | no disponible`; `confirmada -> cancelada`. Las reservas no se borran (historial).
 Ajustes del propietario: acepta reservas sí/no, franjas horarias, máximo de personas y días cerrados.
 
-Pendiente del titular:
-- si las reservas son para **todos los locales** o solo para los que marquen «Acepto reservas»;
-- la reserva gestionada necesita el **acceso de propietarios al panel**, previsto para la Fase 2: adelantarla al MVP o lanzar las reservas en la Fase 2;
-- quién confirma mientras un local no tenga propietario registrado.
+Decisiones del titular (01-11-2026):
+- solo reciben reservas los locales que marquen **«Acepto reservas»** (los demás no muestran el botón «Reservar»);
+- el acceso de propietarios al panel se **adelanta al MVP**;
+- si un local **no tiene propietario registrado**, **Platemaroc confirma las reservas** desde el panel de administración.
+
+Pendiente: quién de Platemaroc comprueba con el restaurante que hay mesa antes de confirmar. Claude Code puede gestionar
+la cola, pero no puede llamar por teléfono al restaurante.
 
 La tabla de reservas se recreará en la base de datos en la fase de desarrollo (se retiró con `0150_retirar_reservas.sql`).
 
@@ -587,6 +591,7 @@ Barra lateral y cabecera del panel.
 - Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
+- Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); sin propietario, confirma Platemaroc (§12, §18, §18 bis).
 - Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
@@ -600,7 +605,7 @@ Barra lateral y cabecera del panel.
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
 - Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
-- Reservas: todos los locales o solo los que acepten; acceso de propietarios al panel en el MVP o reservas en Fase 2; métodos de acceso de los propietarios al panel (hoy el panel es solo con Google); quién confirma sin propietario (§18 bis).
+- Reservas sin propietario: quién comprueba con el restaurante que hay mesa (Claude Code no puede llamar por teléfono) (§18 bis).
 
 ### 29-10-2026
 
