@@ -463,6 +463,9 @@ Reglas comunes:
   sin ingresos, login con email + contraseña, Google y passkeys, mapa sin coste y botón «Cómo llegar».
 - El pie de página y los enlaces se rediseñan como navegación secundaria útil para el SEO (§4.4): ciudades y tipos de lugar,
   enlaces legales, sin «Política de cookies» si no se usan cookies no imprescindibles.
+- **Una sola pantalla por plantilla** (decisión del titular, 01-11-2026): en el móvil, cada plantilla muestra lo esencial sin scroll largo.
+  Lo demás va en pestañas o secciones plegables (el contenido sigue en la página y Google lo lee). Las listas largas se cortan con
+  «Ver más» o paginación.
 - El código del diseño antiguo se sustituye en la fase de desarrollo, cuando el nuevo diseño esté aprobado; mientras tanto no se
   modifica (fase de planificación sin código). La web no está publicada, así que retirarlo no afecta al SEO; queda en el historial de Git.
 
@@ -519,6 +522,7 @@ Barra lateral y cabecera del panel.
 - Diseño antiguo descartado (fase 1 de Claude Design, plantillas, cabecera, pie y enlaces); nuevo diseño con Claude Design (§19).
 - Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
 - Vocabulario: «info del local» sustituye a «ficha» en documentación e interfaz.
+- Diseño: una sola pantalla por plantilla en el móvil, con pestañas y secciones plegables (§19).
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
 ### Pendiente de decisión del titular
