@@ -474,7 +474,7 @@ Decisión del titular (01-11-2026): **se recuperan las reservas**, que se había
 
 1. El usuario, con su cuenta, elige fecha, hora, número de personas y una petición especial opcional, y pulsa «Solicitar reserva». Sin pago.
 2. La reserva queda **pendiente de confirmar**.
-3. **El propietario la confirma o la marca como «No disponible»** desde la zona del propietario.
+3. **El propietario la confirma o la marca como «No disponible»** desde el **panel** (la misma plantilla del panel de administración, con el rol «Propietario»: solo ve su local).
 4. El usuario recibe el aviso **por email** (sin SMS) y ve el estado en «Mi cuenta → Mis reservas». Puede cancelarla.
 
 Estados: `pendiente -> confirmada | no disponible`; `confirmada -> cancelada`. Las reservas no se borran (historial).
@@ -482,7 +482,7 @@ Ajustes del propietario: acepta reservas sí/no, franjas horarias, máximo de pe
 
 Pendiente del titular:
 - si las reservas son para **todos los locales** o solo para los que marquen «Acepto reservas»;
-- la reserva gestionada necesita la **zona del propietario**, prevista para la Fase 2: adelantarla al MVP o lanzar las reservas en la Fase 2;
+- la reserva gestionada necesita el **acceso de propietarios al panel**, previsto para la Fase 2: adelantarla al MVP o lanzar las reservas en la Fase 2;
 - quién confirma mientras un local no tenga propietario registrado.
 
 La tabla de reservas se recreará en la base de datos en la fase de desarrollo (se retiró con `0150_retirar_reservas.sql`).
@@ -515,7 +515,7 @@ La tabla de reservas se recreará en la base de datos en la fase de desarrollo (
 Vegetariano (especialidad), pago con tarjeta, terraza, idiomas del personal (es/en/fr), aviso de horario de Ramadán,
 foto de la entrada del local y bloque «Cerca de aquí». Sin alcohol (§1). Cualquier otro dato necesita aprobación del titular.
 
-Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la plantilla de reserva y la zona del propietario (reservas) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
+Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la plantilla de reserva y la sección de reservas del panel + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
 
 ### Web: 12 plantillas
 
@@ -538,7 +538,7 @@ Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la 
 
 Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 
-### Panel: 10 plantillas
+### Panel: 11 plantillas
 
 1. Acceso: solo «Continuar con Google» y después el segundo factor.
 2. **Escritorio, con la moderación de reseñas y fotos dentro** (no hay sección de moderación aparte).
@@ -551,10 +551,10 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 8. Auditoría.
 9. Importar / exportar CSV.
 10. Ajustes.
-
-### Zona del propietario: 1 plantilla (por ahora)
-
-Reservas: pendientes, confirmadas e historial, con confirmar / no disponible y ajustes de reservas (§18 bis).
+11. **Reservas** (decisión del titular, 01-11-2026: el panel del propietario va dentro de la plantilla del panel):
+    - rol **Administración**: reservas de todos los locales, con filtros por ciudad y local;
+    - rol **Propietario**: el mismo panel, pero su barra lateral solo muestra «Mi local» (Escritorio, Reservas, Información, Menú,
+      Fotos, Reseñas) y solo ve los datos de su local. Confirma o marca «No disponible» y gestiona los ajustes de reservas.
 
 ### Esqueleto del panel: 2 piezas
 
@@ -587,6 +587,7 @@ Barra lateral y cabecera del panel.
 - Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
+- Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
@@ -599,7 +600,7 @@ Barra lateral y cabecera del panel.
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
 - Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
-- Reservas: todos los locales o solo los que acepten; zona del propietario en el MVP o reservas en Fase 2; quién confirma sin propietario (§18 bis).
+- Reservas: todos los locales o solo los que acepten; acceso de propietarios al panel en el MVP o reservas en Fase 2; métodos de acceso de los propietarios al panel (hoy el panel es solo con Google); quién confirma sin propietario (§18 bis).
 
 ### 29-10-2026
 
