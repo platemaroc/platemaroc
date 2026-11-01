@@ -67,8 +67,9 @@ La responsabilidad legal de la web sigue siendo del titular.
 
 ### Panel de administración
 
-Herramienta de gestión del contenido. Claude Code opera mediante scripts, backend o API documentados y autenticados;
-no asume que puede hacer clic en el panel.
+**Panel propio**, sin depender de servicios ni productos de terceros (decisión del titular, 01-11-2026): moderno, profesional y
+**reutilizable en otros proyectos futuros** (núcleo común + módulos propios de cada proyecto). Se descarta Directus.
+Claude Code opera mediante la API autenticada del panel, con permisos propios y todo auditado; no asume que puede hacer clic en el panel.
 
 ---
 
@@ -478,11 +479,12 @@ Reglas comunes:
 - Público principal: turistas europeos.
 - Este documento se actualiza con cada decisión del titular.
 - Diseño antiguo descartado (fase 1 de Claude Design, plantillas, cabecera, pie y enlaces); nuevo diseño con Claude Design (§19).
+- Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
 
 ### Pendiente de decisión del titular
 
 - Número de ejecuciones diarias de la moderación.
-- Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, Directus y Nginx, con Cloudflare gratuito delante).
+- Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, panel propio y Nginx, con Cloudflare gratuito delante).
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
 
