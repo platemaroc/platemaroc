@@ -460,8 +460,8 @@ las protegen la moderación previa y los límites). Todas las cuentas entran sin
 
 | Tipo de cuenta | Notas |
 |---|---|
-| Usuarios (reseñas) | Google, email con código y passkey. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
-| Propietarios (MVP) | Google, email con código y passkey, en la misma pantalla de acceso del panel. Sin segundo factor obligatorio. La titularidad del local se verifica por vías sin coste. |
+| Usuarios (reseñas) | Google, email con código y **huella o cara**. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
+| Propietarios (MVP) | Google, email con código y **«Continuar con huella o cara»**, en la misma pantalla de acceso del panel. Sin segundo factor obligatorio. La titularidad del local se verifica por vías sin coste. |
 | Administración | **Solo «Continuar con Google»** (cuentas de Google autorizadas) y **siempre segundo factor** con app de autenticación (decisión del titular, 01-11-2026). |
 
 Reglas comunes:
