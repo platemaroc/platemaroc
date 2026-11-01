@@ -1,28 +1,32 @@
 # Documento maestro de operación de Platemaroc
 
-**Estado:** candidato a congelación.  
-**Fecha:** 29-10-2026  
+**Estado:** vigente, se actualiza con cada decisión del titular.  
+**Última actualización:** 01-11-2026 (ver «Registro de cambios» al final).  
 **Autoridad:** máxima autoridad operativa documental.
 
-Si otra orden contradice este documento, Claude Code no ejecuta la parte contradictoria:
-la señala, registra el conflicto y espera decisión del titular.
+Si otra orden o documento contradice este documento, Claude Code no ejecuta la parte contradictoria:
+la señala, registra el conflicto y espera decisión del titular. Las decisiones del 01-11-2026 prevalecen
+sobre cualquier documento anterior (incluidos `10`, `11`, `12`, `14` y `decisiones.md`) en lo que se contradigan.
 
 ---
 
 ## 1. Principios irrenunciables
 
-1. Nada se publica sin aprobación del titular.
-2. Claude Code nunca elimina, archiva ni despublica por iniciativa propia.
-3. Si detecta contenido débil, duplicado, obsoleto o problemático, propone una acción.
-4. No se inventan datos.
-5. Precios, horarios, direcciones, ingredientes, disponibilidad, premios y citas deben
-   proceder del titular o de fuentes verificables con fecha/referencia.
-6. Afiliados, anuncios y destacados de pago no alteran puntuaciones, moderación ni orden
-   orgánico.
-7. Se aplica privacidad por defecto conforme al marco legal aplicable.
-8. Los secretos no se guardan en Git ni en backups normales.
-9. Idiomas oficiales del producto: `es`, `en`, `fr`.
-10. Árabe queda retirado del producto actual: sin RTL y sin `hreflang ar`.
+1. Claude Code opera el proyecto de principio a fin según las reglas de este documento, incluida la publicación.
+   El titular solo contrata servicios de pago y gestiona claves y secretos (§2).
+2. **Nunca se borra contenido publicado**, porque perjudica al SEO. Se modifica, se mejora, se fusiona con
+   redirección 301 o se marca como cerrado (§3.1). Solo se borra lo imprescindible por obligación legal (§3.2).
+3. Si se detecta contenido débil, duplicado, obsoleto o problemático, se corrige o se busca una solución sin borrar.
+4. **No se inventan datos.**
+5. Precios, horarios, direcciones, ingredientes, disponibilidad, premios y citas deben proceder del titular
+   o de fuentes verificables con fecha/referencia. Lo no verificado se muestra como pendiente.
+6. **Sin ningún tipo de ingreso:** sin afiliados, sin anuncios, sin destacados de pago y sin suscripciones.
+   Nada altera puntuaciones, moderación ni orden orgánico.
+7. **Minimizar gastos:** se elige siempre la opción sin coste por uso cuando existe (sin SMS, sin APIs de mapas de pago).
+8. Se aplica privacidad por defecto conforme al marco legal aplicable (RGPD; Ley 09-08 cuando corresponda).
+9. Los secretos no se guardan en Git ni en backups normales.
+10. Idiomas oficiales del producto: `es`, `en`, `fr`.
+11. Árabe retirado del producto: sin RTL y sin `hreflang ar`.
 
 ---
 
@@ -30,64 +34,74 @@ la señala, registra el conflicto y espera decisión del titular.
 
 ### Titular
 
-Decide:
+Solo:
 
-- publicación;
-- archivado/despublicación;
-- cambios de URL;
-- aprobación editorial;
-- aprobación de respuestas a reseñas;
-- servicios de pago;
-- claves y secretos;
-- decisiones de producto;
-- activación de fases opcionales;
-- decisiones ante conflictos documentales.
-
-El titular ejecuta las operaciones que requieran panel, cuenta personal o aprobación
-explícita.
+- contratar y pagar servicios (hosting, dominio, email transaccional y cualquier otro de pago);
+- crear, guardar y facilitar claves y secretos por la vía segura acordada;
+- resolver conflictos documentales cuando Claude Code se lo pida;
+- decidir cambios en este documento.
 
 ### Claude Code
 
-Puede:
+Hace todo lo demás:
 
-- redactar borradores;
-- proponer cambios;
-- auditar;
-- generar informes;
-- ejecutar scripts autorizados;
-- usar backend/API documentados y autenticados;
-- cargar contenido como borrador;
-- generar/importar CSV;
-- preparar cambios técnicos para revisión.
+- crear, verificar, traducir, revisar y **publicar** contenido;
+- moderar reseñas y fotos (aprobar o rechazar con motivo);
+- cambios de URL, siempre con redirección 301;
+- marcar locales como cerrados, fusionar duplicados y corregir datos (§3.1);
+- SEO, Quality Gate, sitemap y enlazado interno;
+- desarrollo, despliegue, seguridad, copias de seguridad, monitorización y mantenimiento;
+- informes al titular.
 
-No puede decidir autónomamente:
+Límites:
 
-- publicación;
-- archivado;
-- despublicación;
-- cambio de URL;
-- gasto;
-- contratación de servicios;
-- exposición de secretos;
-- activación de funcionalidades no aprobadas.
+- no contrata servicios ni genera gastos sin que el titular los contrate;
+- no expone secretos;
+- no borra contenido publicado (§3);
+- todas sus acciones quedan registradas en la auditoría (§7) y deben poder revertirse.
+
+Claude Code solo actúa cuando hay una sesión abierta o una tarea programada; la moderación periódica se hace
+mediante tareas programadas (§6).
+
+La responsabilidad legal de la web sigue siendo del titular.
 
 ### Panel de administración
 
-Es una herramienta para el titular/rol administrativo. Claude Code no debe asumir que
-puede hacer clic en el panel. Cuando exista acceso técnico real, debe utilizarse el
-script/backend/API documentado y autorizado.
+Herramienta de gestión del contenido. Claude Code opera mediante scripts, backend o API documentados y autenticados;
+no asume que puede hacer clic en el panel.
 
 ---
 
 ## 3. Estados
 
 ### Contenido
-`borrador -> revisado -> publicado -> archivado`
+`borrador -> revisado -> publicado`
 
 - `borrador`: no visible y no indexable.
-- `revisado`: aprobado editorialmente, todavía pendiente de publicación.
-- `publicado`: visible y candidato a indexación si supera Quality Gate.
-- `archivado`: solo por decisión del titular.
+- `revisado`: verificado, pendiente de publicar.
+- `publicado`: visible y candidato a indexación si supera el Quality Gate.
+- Un contenido publicado **no vuelve a borrador ni se archiva**: se mejora o se aplica §3.1.
+
+Estado de apertura de un lugar publicado (no lo despublica): `abierto | cerrado temporalmente | cerrado definitivamente`.
+
+### 3.1 Soluciones en lugar de borrar
+
+| Caso | Solución |
+|---|---|
+| Local cerrado temporalmente | La ficha sigue publicada con el aviso «Cerrado temporalmente» |
+| Local cerrado definitivamente | Ficha publicada con «Cerrado definitivamente» y alternativas cercanas |
+| Ficha duplicada | Fusión en una sola ficha; la URL sobrante redirige (301) a la buena |
+| Cambio de nombre o de URL | Redirección 301 de la URL antigua a la nueva |
+| Contenido pobre o desactualizado | Se mejora; mientras tanto, no indexable (Quality Gate) |
+| Dato erróneo | Se corrige y queda auditado |
+
+### 3.2 Excepciones legales (se borra solo lo imprescindible)
+
+- Solicitud de un usuario de borrar su cuenta y sus datos (RGPD).
+- Contenido ilegal o difamatorio, u orden judicial.
+- Datos personales publicados por error.
+
+La ficha del local nunca se borra por estas causas; solo el contenido afectado.
 
 ### Traducciones
 `borrador -> revisada -> publicada`
@@ -97,31 +111,27 @@ Un idioma solo puede publicarse/indexarse cuando su traducción está realmente 
 ### Reseñas
 `pendiente -> aprobada | rechazada`
 
-Las rechazadas deben conservar el motivo de moderación. Solo las aprobadas se muestran
-y cuentan para la valoración media.
+Las rechazadas conservan el motivo de moderación. Solo las aprobadas se muestran y cuentan para la valoración media.
 
-### Respuestas a reseñas
-`borrador -> aprobada por titular -> publicada`
-
-En MVP se preparan borradores; la publicación queda para la fase aprobada.
+### Respuestas a reseñas (Fase 2)
+`borrador -> revisada -> publicada`
 
 ### Fotos
 `pendiente -> aprobada | rechazada`
 
-Cuando corresponda, deben registrarse origen, autor/licencia y moderación.
+Deben registrarse origen, autor/licencia y moderación.
 
 ### Menú digital
-`borrador -> revisado -> publicado -> archivado`
+`borrador -> revisado -> publicado`
 
-El menú está ligado a un lugar e incluye categorías, artículos, precios, alérgenos,
-disponibilidad y fotografías únicamente cuando la información exista y sea fiable.
+El menú está ligado a un lugar e incluye categorías, artículos, precios, alérgenos, disponibilidad y fotografías
+únicamente cuando la información exista y sea fiable.
 
 ---
 
 ## 4. Quality Gate e `is_indexable`
 
-El Quality Gate es un criterio interno de calidad. No debe presentarse como requisito
-oficial de Google.
+El Quality Gate es un criterio interno de calidad. No debe presentarse como requisito oficial de Google.
 
 ### 4.1 Requisitos comunes por entidad e idioma
 
@@ -141,7 +151,6 @@ oficial de Google.
 | Plato | Al menos 1 relación con lugar; al menos 1 foto aprobada; enlaces útiles a lugares y/o guías; no requiere coordenadas propias. |
 | Guía | Al menos 3 relaciones útiles; al menos 2 fotos aprobadas; autoría declarada. |
 | Ciudad | Coordenadas; al menos 3 lugares publicados; al menos 1 foto aprobada. |
-| Barrio | Coordenadas; ciudad asignada; al menos 1 lugar publicado. |
 | Menú | Ligado a lugar publicado; cada categoría publicada tiene al menos 1 artículo publicado; precios verificados o claramente marcados como pendientes; traducción del idioma correspondiente. |
 
 ### 4.3 Umbrales internos
@@ -152,21 +161,21 @@ oficial de Google.
 | Plato | 300 caracteres |
 | Guía | 500 caracteres |
 | Ciudad | 500 caracteres |
-| Barrio | 250 caracteres |
 | Menú | 200 caracteres |
 
-Estos mínimos son criterios internos. No se debe rellenar artificialmente un texto para
-alcanzarlos.
+Estos mínimos son criterios internos. No se debe rellenar artificialmente un texto para alcanzarlos.
 
 ### 4.4 Enlazado interno
 
 - Lugar: al menos 1 entrante + 2 salientes.
 - Plato: al menos 1 relación saliente útil.
 - Guía: al menos 3 relaciones útiles.
-- Ciudad/barrio: al menos 1 relación saliente útil.
+- Ciudad: al menos 1 relación saliente útil.
 
-Si una entidad falla el Quality Gate, puede permanecer almacenada, pero no debe publicarse
-como indexable. No se elimina por fallar el Quality Gate.
+La navegación secundaria (pie de página, migas de pan, «cerca de aquí», listados por ciudad y tipo) es la vía
+principal para cumplir estos mínimos.
+
+Si una entidad falla el Quality Gate, permanece almacenada y publicada si procede, pero no indexable. Nunca se borra por fallarlo.
 
 ---
 
@@ -174,15 +183,15 @@ como indexable. No se elimina por fallar el Quality Gate.
 
 | Vía | Uso |
 |---|---|
-| Supabase | Scripts/backend autorizados; credenciales solo en entorno seguro. |
+| Base de datos | Scripts/backend autorizados; credenciales solo en entorno seguro. |
 | CSV | Importación/exportación documentada. |
 | API interna | Endpoint documentado y autenticado. |
-| Panel | Operación manual del titular. |
+| Panel | Gestión de contenido. |
 
 Prohibido:
 
 - credenciales hardcodeadas;
-- `service_role` en navegador;
+- claves de servicio en el navegador;
 - secretos en Git;
 - asumir acceso técnico inexistente.
 
@@ -194,20 +203,16 @@ Las operaciones técnicas relevantes deben quedar auditadas.
 
 ### Dependencia lógica
 
-`datos -> contenido -> traducciones -> moderación -> aprobación -> publicación -> Quality Gate -> sitemap/SEO`
-
-La secuencia exacta puede variar por entidad, pero nunca debe saltarse la aprobación
-requerida.
+`datos -> contenido -> traducciones -> moderación -> publicación -> Quality Gate -> sitemap/SEO`
 
 ### Frecuencias
 
+- Varias veces al día: moderación de reseñas y fotos por tarea programada de Claude Code (**número de veces al día: pendiente del titular**).
 - Diario: backup de base de datos.
 - Semanal: Search Console, rendimiento y backups de fotos/configuración no secreta.
 - Mensual: seguridad, duplicidad, SEO, estado y crecimiento.
-- Trimestral: prueba de restauración, afiliados y monetización.
-- Bajo demanda: contenido, importaciones, traducciones y moderación.
-
-La frecuencia no cambia los requisitos de aprobación.
+- Trimestral: prueba de restauración.
+- Bajo demanda: contenido, importaciones y traducciones.
 
 ---
 
@@ -216,7 +221,7 @@ La frecuencia no cambia los requisitos de aprobación.
 Campos mínimos:
 
 `id`, `fecha`, `actor`, `origen`, `entidad_tipo`, `entidad_id`, `accion`, `campo`,
-`valor_anterior`, `valor_nuevo`, `motivo`, `aprobado_por`, `fecha_aprobacion`.
+`valor_anterior`, `valor_nuevo`, `motivo`.
 
 Fuentes permitidas:
 
@@ -225,18 +230,18 @@ Fuentes permitidas:
 - `importacion`
 - `sistema`
 
-Entidades auditables incluyen:
+Entidades auditables:
 
 - place
 - dish
 - guide
 - city
-- neighborhood
 - translation
 - review
 - photo
 - menu
 - redirect
+- account
 - config
 
 ---
@@ -245,19 +250,19 @@ Entidades auditables incluyen:
 
 MVP: email + panel.
 
-Alertar de:
+Claude Code informa al titular de:
 
-- reseñas problemáticas;
-- fotos con derechos dudosos;
-- menús pendientes;
-- contenido pendiente de aprobación;
-- verificaciones antiguas;
+- servicios de pago que haya que contratar o renovar;
+- claves que haya que crear o rotar;
 - fallo de backup;
 - caídas/5xx;
-- problemas importantes de indexación;
-- alertas de seguridad.
+- alertas de seguridad;
+- conflictos documentales.
 
-No se presupone SMS/push para alertas en MVP.
+Y gestiona por sí mismo (con informe periódico): reseñas problemáticas, fotos con derechos dudosos, menús pendientes,
+verificaciones antiguas y problemas de indexación.
+
+Sin SMS ni push.
 
 ---
 
@@ -276,18 +281,18 @@ No se presupone SMS/push para alertas en MVP.
 
 ## 10. Privacidad
 
-Aplicar RGPD y Ley 09-08 según corresponda.
+Usuarios europeos: se aplica el RGPD (y la Ley 09-08 cuando corresponda).
 
 Revisar:
 
-- base legal/consentimiento;
-- versión y fecha del consentimiento;
-- exportación/eliminación de datos;
+- base legal/consentimiento, con versión y fecha;
+- exportación y eliminación de datos y de la cuenta por el propio usuario;
 - retención;
-- cookies/analítica;
-- política de privacidad;
+- analítica sin cookies, para evitar el banner de cookies;
+- política de privacidad, aviso legal y condiciones en es/en/fr, revisados por un asesor;
 - minimización;
-- logs y accesos.
+- logs y accesos;
+- fotos subidas sin metadatos de ubicación.
 
 ---
 
@@ -295,7 +300,7 @@ Revisar:
 
 - búsquedas;
 - fichas vistas;
-- clics en "Cómo llegar";
+- clics en «Cómo llegar»;
 - teléfono/web;
 - filtros;
 - ciudades/platos consultados;
@@ -312,43 +317,45 @@ Revisar:
 
 - lugares;
 - ciudades;
-- barrios;
 - platos;
 - guías;
 - traducciones es/en/fr;
 - fotos;
-- reseñas moderadas;
+- cuentas de usuario y reseñas moderadas (§18);
 - menú digital;
 - panel;
-- mapas;
+- mapas sin coste por uso (§16);
 - SEO/Quality Gate/sitemap;
 - seguridad;
 - backups;
 - auditoría;
 - notificaciones;
-- analítica cuando sea aprobada.
+- analítica sin cookies.
 
 ### Fase 2
 
-- reclamación de negocios;
-- perfiles de propietarios;
+- reclamación de negocios con verificación de titularidad sin coste;
+- perfiles de propietarios (§18);
 - respuestas a reseñas publicadas;
 - recetas si se aprueban;
 - favoritos;
-- Google Places/Business;
 - más idiomas si se decide;
-- seguimiento avanzado;
-- monetización.
+- seguimiento avanzado.
 
 ### Retirado
 
-- árabe;
-- RTL;
-- `hreflang ar`.
+- árabe, RTL y `hreflang ar`;
+- barrios y zonas (sin páginas, sin campo y sin filtro);
+- afiliados, anuncios, destacados de pago y cualquier monetización;
+- login por teléfono o SMS;
+- login con Apple;
+- Google Maps como mapa embebido.
 
 ---
 
 ## 13. Idiomas y URLs
+
+Público principal: turistas europeos.
 
 URLs oficiales:
 
@@ -365,9 +372,8 @@ No existen:
 - traducciones árabes;
 - RTL.
 
-Puede existir una sugerencia de idioma basada en `Accept-Language` como ayuda UX. La
-implementación concreta debe revisarse con la documentación técnica/SEO vigente antes
-de desarrollarse. No se afirma aquí que Google penalice una técnica concreta.
+Puede existir una sugerencia de idioma basada en `Accept-Language` como ayuda UX. La implementación concreta debe
+revisarse con la documentación técnica/SEO vigente antes de desarrollarse.
 
 ---
 
@@ -386,40 +392,35 @@ Si no resuelve el conflicto:
 
 ## 15. Conectividad móvil y PWA
 
-La política de conectividad móvil y PWA queda incorporada al proyecto.
-
-- Mobile-first bajo condiciones de red variables en Marruecos.
+- Mobile-first para turistas con datos en roaming o eSIM limitada y cobertura variable en Marruecos.
 - Service Worker con Cache-First para iconos, CSS críticos, fuentes y la página principal de guías gastronómicas.
 - Network-First para fichas de restaurantes y menús digitales.
 - Fallback a los últimos datos almacenados en `IndexedDB` cuando no haya red, con un máximo de 20 fichas/páginas y política LRU.
 - Cachés del Service Worker versionadas, con actualización y limpieza de versiones antiguas.
-- Fotografías de platos y restaurantes en WebP/AVIF con `lazy-loading`.
+- Fotografías en WebP/AVIF con `lazy-loading`.
 
 La especificación completa está en `10-politica-pwa-conectividad.md`.
 
 ---
 
-## 16. Fallback de mapas y geolocalización
+## 16. Mapas y «Cómo llegar» (sin coste por uso)
 
-Las fichas de lugares deben mantener una experiencia útil aunque el mapa interactivo externo no responda.
+Sin API de Google Maps ni de ningún mapa de pago.
 
-- Coordenadas `lat`/`lng` disponibles para las fichas de lugares.
-- Mapa estático de respaldo.
-- `MapFallback.tsx` como componente de respaldo.
-- El mapa interactivo se carga solo cuando el usuario alcanza visualmente la sección (`IntersectionObserver` o equivalente); ni el SDK ni sus componentes pesados se cargan en el render inicial.
-- El placeholder del mapa reserva su espacio para evitar CLS.
-- Timeout de `3000ms`, que empieza solo después de iniciar la carga del mapa.
-- Ruta en texto.
-- Botón para abrir una aplicación externa mediante enlace `geo:`, más enlace `https` de respaldo para iOS.
-- Indicador de conectividad offline y dirección/indicaciones en texto.
+| Pieza | Regla |
+|---|---|
+| Mapa estático | Imagen generada una sola vez al publicar el lugar y servida desde el propio servidor; reserva su espacio (sin CLS). |
+| Mapa interactivo | Solo si el usuario pulsa «Ver mapa». MapLibre con mapas de OpenStreetMap alojados en el propio servidor o en un servicio gratuito. Crédito «© OpenStreetMap» visible. |
+| Botón «Cómo llegar» | Enlace gratuito que abre la aplicación de mapas del usuario (Google Maps o Apple Maps) con las coordenadas del lugar; sin API. |
+| Indicaciones en texto y foto de la entrada | Siempre visibles bajo el mapa. |
+| Sin conexión | Dirección e indicaciones en texto disponibles; indicador de conectividad. |
 
-La especificación completa está en `11-protocolo-fallback-mapas.md`.
+Coordenadas `lat`/`lng` obligatorias en las fichas de lugares. Este apartado prevalece sobre `11-protocolo-fallback-mapas.md`
+en lo que se contradigan (proveedor del mapa); el resto del protocolo de fallback sigue vigente.
 
 ---
 
 ## 17. Precios (solo MAD)
-
-Para menús digitales:
 
 - Platemaroc utiliza exclusivamente MAD para los precios.
 - `menu_items` guarda el importe en `price_mad`; no existe campo genérico de moneda.
@@ -427,3 +428,50 @@ Para menús digitales:
 - Un precio ausente o no verificado se muestra como pendiente; nunca se inventa.
 
 La especificación completa está en `12-especificacion-precios-mad.md`.
+
+---
+
+## 18. Cuentas y login (sin SMS)
+
+| Tipo de cuenta | Métodos de acceso | Notas |
+|---|---|---|
+| Usuarios (reseñas) | Email + contraseña; login con Google; passkeys | Email verificado por enlace. |
+| Propietarios (Fase 2) | Solo email + contraseña; passkeys | Sin teléfono. La titularidad del local se verifica por vías sin coste. |
+| Administración | Email + contraseña + segundo factor | Segundo factor sin SMS (app de autenticación o passkey). |
+
+Reglas comunes:
+
+- sin SMS ni login por teléfono;
+- sin login con Apple;
+- formularios preparados para que el navegador o el gestor de contraseñas del móvil ofrezca guardar la contraseña;
+- contraseñas almacenadas con hash seguro; rechazo de contraseñas filtradas; límite de intentos;
+- recuperación de contraseña por email;
+- el email nunca se muestra públicamente; nombre visible elegido por el usuario;
+- el usuario puede descargar sus datos y borrar su cuenta (§3.2).
+
+---
+
+## Registro de cambios
+
+### 01-11-2026 (decisiones del titular)
+
+- Responsabilidades: el titular solo contrata servicios de pago y gestiona claves; Claude Code hace el resto, incluida la publicación y la moderación.
+- Nunca borrar contenido publicado: modificar, fusionar con 301 o marcar como cerrado; excepciones legales mínimas.
+- Sin ningún tipo de ingreso: retirados afiliados, anuncios, destacados de pago y monetización.
+- Barrios y zonas eliminados por completo.
+- Login sin SMS: usuarios con email + contraseña, Google y passkeys; propietarios solo con email + contraseña (y passkeys).
+- Mapas sin coste por uso: mapa estático, MapLibre/OpenStreetMap bajo demanda y botón «Cómo llegar» por enlace.
+- Moderación por tarea programada varias veces al día (número pendiente).
+- Público principal: turistas europeos.
+- Este documento se actualiza con cada decisión del titular.
+
+### Pendiente de decisión del titular
+
+- Número de ejecuciones diarias de la moderación.
+- Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, Directus y Nginx, con Cloudflare gratuito delante).
+- Favoritos en el MVP o en Fase 2.
+- Idioma por defecto al entrar sin idioma elegido.
+
+### 29-10-2026
+
+- Versión inicial candidata a congelación.
