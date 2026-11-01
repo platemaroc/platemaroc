@@ -44,7 +44,8 @@ Solo:
 - contratar y pagar servicios (hosting, dominio, email transaccional y cualquier otro de pago);
 - crear, guardar y facilitar claves y secretos por la vía segura acordada;
 - resolver conflictos documentales cuando Claude Code se lo pida;
-- decidir cambios en este documento.
+- decidir cambios en este documento;
+- encargarse de las reservas: supervisión, incidencias y contacto con los restaurantes (§18 bis).
 
 ### Claude Code
 
@@ -484,10 +485,9 @@ Ajustes del propietario: acepta reservas sí/no, franjas horarias, máximo de pe
 Decisiones del titular (01-11-2026):
 - solo reciben reservas los locales que marquen **«Acepto reservas»** (los demás no muestran el botón «Reservar»);
 - el acceso de propietarios al panel se **adelanta al MVP**;
-- si un local **no tiene propietario registrado**, **Platemaroc confirma las reservas** desde el panel de administración.
+- **todos los locales tienen propietario registrado**: el propietario confirma las reservas de su local;
+- **el titular se encarga de las reservas** en la práctica: supervisión, incidencias y contacto con los restaurantes.
 
-Pendiente: quién de Platemaroc comprueba con el restaurante que hay mesa antes de confirmar. Claude Code puede gestionar
-la cola, pero no puede llamar por teléfono al restaurante.
 
 La tabla de reservas se recreará en la base de datos en la fase de desarrollo (se retiró con `0150_retirar_reservas.sql`).
 
@@ -591,7 +591,7 @@ Barra lateral y cabecera del panel.
 - Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
-- Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); sin propietario, confirma Platemaroc (§12, §18, §18 bis).
+- Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); todos los locales tienen propietario registrado, que confirma las reservas; el titular se encarga del tema de las reservas (§2, §18 bis).
 - Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
@@ -605,7 +605,6 @@ Barra lateral y cabecera del panel.
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
 - Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
-- Reservas sin propietario: quién comprueba con el restaurante que hay mesa (Claude Code no puede llamar por teléfono) (§18 bis).
 
 ### 29-10-2026
 
