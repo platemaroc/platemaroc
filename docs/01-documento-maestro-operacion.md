@@ -564,7 +564,9 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 11. **Reservas** (decisión del titular, 01-11-2026: el panel del propietario va dentro de la plantilla del panel):
     - rol **Administración**: reservas de todos los locales, con filtros por ciudad y local;
     - rol **Propietario**: el mismo panel, pero su barra lateral solo muestra «Mi local» (Escritorio, Reservas, Información, Menú,
-      Fotos, Reseñas) y solo ve los datos de su local. Confirma o marca «No disponible» y gestiona los ajustes de reservas.
+      Fotos, Reseñas, Empleados) y solo ve los datos de su local. Confirma o marca «No disponible» y gestiona los ajustes de reservas.
+    - rol **Empleado**: el mismo panel con una sola sección, **Reservas**, de su local: ver, confirmar y «No disponible». Nada más.
+12. **Empleados** (solo propietario): invitar empleados por email, reenviar o anular la invitación y quitar el acceso.
 
 ### Esqueleto del panel: 2 piezas
 
@@ -606,8 +608,6 @@ Barra lateral y cabecera del panel.
 - Favoritos en el MVP, disponibles sin conexión; nueva pestaña «Favoritos» en «Mi cuenta» y botón ♡ en la info del local (§12).
 - Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
-    - rol **Empleado**: el mismo panel con una sola sección, **Reservas**, de su local: ver, confirmar y «No disponible». Nada más.
-12. **Empleados** (solo propietario): invitar empleados por email, reenviar o anular la invitación y quitar el acceso.
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
