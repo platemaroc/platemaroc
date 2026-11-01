@@ -133,6 +133,9 @@ Deben registrarse origen, autor/licencia y moderación.
 El menú está ligado a un lugar e incluye categorías, artículos, precios, alérgenos, disponibilidad y fotografías
 únicamente cuando la información exista y sea fiable.
 
+**Platos agotados** (decisión del titular, 01-11-2026): un plato que deja de estar disponible se **archiva**. Un plato archivado
+no aparece en la web, no se borra y se puede reactivar desde el panel. La web no muestra la etiqueta «Agotado».
+
 ---
 
 ## 4. Quality Gate e `is_indexable`
@@ -443,7 +446,7 @@ La especificación completa está en `12-especificacion-precios-mad.md`.
 |---|---|---|
 | Usuarios (reseñas) | Email + contraseña; login con Google; passkeys | Email verificado por enlace. |
 | Propietarios (Fase 2) | Solo email + contraseña; passkeys | Sin teléfono. La titularidad del local se verifica por vías sin coste. |
-| Administración | Email + contraseña + segundo factor | Segundo factor sin SMS (app de autenticación o passkey). |
+| Administración | Email + contraseña, Google o passkey, siempre con segundo factor | Segundo factor sin SMS (app de autenticación o passkey). |
 
 Reglas comunes:
 
@@ -483,7 +486,7 @@ Reglas comunes:
 Vegetariano (especialidad), pago con tarjeta, terraza, idiomas del personal (es/en/fr), aviso de horario de Ramadán,
 foto de la entrada del local y bloque «Cerca de aquí». Sin alcohol (§1). Cualquier otro dato necesita aprobación del titular.
 
-Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
+Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
 
 ### Web: 11 plantillas
 
@@ -505,10 +508,19 @@ Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador) + 3 archivos 
 
 Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 
-### Panel: 12 plantillas
+### Panel: 10 plantillas
 
-Acceso (login + segundo factor), escritorio, listado genérico, formulario de edición genérico, editor de menú,
-moderación de reseñas y fotos, biblioteca de fotos, redirecciones 301, usuarios (RGPD), auditoría, importar/exportar CSV y ajustes.
+1. Acceso: Google, email + contraseña o passkey, y después el segundo factor.
+2. **Escritorio, con la moderación de reseñas y fotos dentro** (no hay sección de moderación aparte).
+3. Listado genérico (locales, ciudades, platos, guías).
+4. **Formulario de nuevo local / editar local, con todo en pestañas:** Información, ES, EN, FR, Fotos, Menú, Redirecciones e Historial.
+   El menú y las redirecciones del local se gestionan aquí (no hay editor de menú aparte).
+5. Biblioteca de fotos.
+6. Redirecciones 301 (vista general de todas, también las de ciudades, platos y guías).
+7. Usuarios (RGPD).
+8. Auditoría.
+9. Importar / exportar CSV.
+10. Ajustes.
 
 ### Esqueleto del panel: 2 piezas
 
@@ -537,6 +549,9 @@ Barra lateral y cabecera del panel.
 - Reseñas: campo «tipo de viaje» aprobado (pareja, familia, amigos, solo).
 - Datos aprobados de la info del local: vegetariano, tarjeta, terraza, idiomas del personal, aviso de Ramadán, foto de la entrada y «Cerca de aquí» (§20).
 - Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
+- Platos agotados: se archivan, no aparecen en la web y no se borran (§3).
+- Login del panel: Google, email + contraseña o passkey, siempre con segundo factor (§18).
+- Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
 ### Pendiente de decisión del titular
