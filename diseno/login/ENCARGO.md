@@ -42,7 +42,7 @@ Llevan la cabecera de la web (logo, buscar, idioma, cuenta) y, en móvil, la bar
 | 02 | `02-continuar-con-email` | Continuar con email | Campo email, «Enviarme un código», aviso del código de 6 cifras, campo código, «Entrar», «‹ Otras opciones» |
 | 03 | `03-continuar-con-google` | Continuar con Google | Elegir cuenta o «Usar otra cuenta de Google», «Entrar», aviso de datos compartidos y de que nunca vemos la contraseña de Google, «‹ Otras opciones» |
 | 04 | `04-continuar-con-huella-o-cara` | Continuar con huella o cara | Icono de llave, «Usar huella o cara», «Tu huella o tu cara nunca salen de tu dispositivo», cómo activarlo, «‹ Otras opciones» |
-| 05 | `05-crear-cuenta` | Crear cuenta | «Nombre visible», «Crear con Google / email / huella o cara», casilla de condiciones y privacidad, «‹ Ya tengo cuenta: entrar» |
+| 05 | `05-crear-cuenta` | Crear cuenta | «Nombre visible», «Elige cómo quieres crearla:» con tres opciones a elegir (Con Google · Con email · Con huella o cara; una marcada), casilla de condiciones y privacidad, **botón principal «Crear cuenta»** y «‹ Ya tengo cuenta: entrar». Al pulsar «Crear cuenta» se sigue el paso del método elegido (código por email, ventana de Google o huella o cara) |
 | 06 | `06-crear-con-google-1` | Crear con Google · elegir cuenta | Ventana de Google sobre «Crear cuenta» (fondo atenuado) |
 | 07 | `07-crear-con-google-2` | Crear con Google · último paso | «Has entrado con Google como …», «Nombre visible», casilla de condiciones, «Crear cuenta» |
 | 08 | `08-crear-con-huella-o-cara-1` | Crear con huella o cara · datos | «Nombre visible», «Email (para recuperar la cuenta)», casilla de condiciones, «Activar huella o cara» |
