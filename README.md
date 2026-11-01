@@ -30,7 +30,7 @@ Requisitos: Node.js 26 (versión de `.nvmrc`; mínimo 22.18) y Git. Las claves v
 - Mobile-First absoluto, Core Web Vitals (LCP, INP, CLS) y HTTPS estricto.
 - Control automatizado de indexabilidad con Quality Gate (`is_indexable`).
 - Idiomas oficiales: español (`es`), inglés (`en`) y francés (`fr`), con URLs `/es/`, `/en/`, `/fr/`. El árabe y el RTL están retirados. Cada idioma se indexa solo cuando su traducción está realmente preparada.
-- Menú digital en el MVP. Sin reservas.
+- Menú digital en el MVP. Reservas recuperadas el 01-11-2026 (gestionadas: solicita el usuario y confirma el propietario; ver `docs/01-documento-maestro-operacion.md` §18 bis).
 - PWA y mobile-first para redes inestables, fallback de mapas con carga diferida y precios exclusivamente en MAD.
 
 ## Stack y servicios

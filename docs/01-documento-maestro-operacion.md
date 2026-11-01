@@ -468,6 +468,27 @@ Reglas comunes:
 - Pendiente del titular: passkey (quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara»).
 ---
 
+## 18 bis. Reservas (recuperadas)
+
+Decisión del titular (01-11-2026): **se recuperan las reservas**, que se habían retirado el 30-10-2026, con la **opción gestionada**:
+
+1. El usuario, con su cuenta, elige fecha, hora, número de personas y una petición especial opcional, y pulsa «Solicitar reserva». Sin pago.
+2. La reserva queda **pendiente de confirmar**.
+3. **El propietario la confirma o la marca como «No disponible»** desde la zona del propietario.
+4. El usuario recibe el aviso **por email** (sin SMS) y ve el estado en «Mi cuenta → Mis reservas». Puede cancelarla.
+
+Estados: `pendiente -> confirmada | no disponible`; `confirmada -> cancelada`. Las reservas no se borran (historial).
+Ajustes del propietario: acepta reservas sí/no, franjas horarias, máximo de personas y días cerrados.
+
+Pendiente del titular:
+- si las reservas son para **todos los locales** o solo para los que marquen «Acepto reservas»;
+- la reserva gestionada necesita la **zona del propietario**, prevista para la Fase 2: adelantarla al MVP o lanzar las reservas en la Fase 2;
+- quién confirma mientras un local no tenga propietario registrado.
+
+La tabla de reservas se recreará en la base de datos en la fase de desarrollo (se retiró con `0150_retirar_reservas.sql`).
+
+---
+
 ## 19. Diseño de la interfaz
 
 - **El diseño antiguo queda descartado** (decisión del titular, 01-11-2026): el sistema visual de la «fase 1» de Claude Design
@@ -494,9 +515,9 @@ Reglas comunes:
 Vegetariano (especialidad), pago con tarjeta, terraza, idiomas del personal (es/en/fr), aviso de horario de Ramadán,
 foto de la entrada del local y bloque «Cerca de aquí». Sin alcohol (§1). Cualquier otro dato necesita aprobación del titular.
 
-Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
+Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la plantilla de reserva y la zona del propietario (reservas) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
 
-### Web: 11 plantillas
+### Web: 12 plantillas
 
 | # | Plantilla | Uso |
 |---|---|---|
@@ -508,9 +529,10 @@ Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos 
 | 6 | Guía | Artículos editoriales |
 | 7 | Acceso | Entrar (con botón «Crear cuenta»), Continuar con email (código), Continuar con Google, Continuar con passkey, Crear cuenta, crear con Google (elegir cuenta + último paso) y crear con passkey (datos + confirmación con huella o cara) |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
-| 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
+| 9 | Mi cuenta | Mis reseñas, mis reservas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
 | 11 | Error y estados | 404, 500, sin conexión, mantenimiento |
+| 12 | Reserva | Formulario de reserva, solicitud enviada y reserva confirmada (§18 bis) |
 
 ### Esqueleto de la web: 3 piezas
 
@@ -529,6 +551,10 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 8. Auditoría.
 9. Importar / exportar CSV.
 10. Ajustes.
+
+### Zona del propietario: 1 plantilla (por ahora)
+
+Reservas: pendientes, confirmadas e historial, con confirmar / no disponible y ajustes de reservas (§18 bis).
 
 ### Esqueleto del panel: 2 piezas
 
@@ -561,6 +587,7 @@ Barra lateral y cabecera del panel.
 - Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
+- Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
@@ -572,6 +599,7 @@ Barra lateral y cabecera del panel.
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
 - Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
+- Reservas: todos los locales o solo los que acepten; zona del propietario en el MVP o reservas en Fase 2; quién confirma sin propietario (§18 bis).
 
 ### 29-10-2026
 
