@@ -462,7 +462,8 @@ las protegen la moderación previa y los límites). Todas las cuentas entran sin
 |---|---|
 | Usuarios (reseñas) | Google, email con código y **huella o cara**. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
 | Propietarios (MVP) | Google, email con código y **«Continuar con huella o cara»**, en la misma pantalla de acceso del panel. Sin segundo factor obligatorio. La titularidad del local se verifica por vías sin coste. |
-| Administración | **Solo «Continuar con Google»** (cuentas de Google autorizadas) y **siempre segundo factor** con app de autenticación (decisión del titular, 01-11-2026). |
+| Administración | **«Continuar con Google»** (cuentas autorizadas) seguido del código de la app de autenticación, **o «Continuar con huella o cara»** (la passkey ya es un factor fuerte). Decisión del titular, 01-11-2026. |
+| Empleados de restaurante (MVP) | Google, email con código o huella o cara. **Solo pueden ver, confirmar y marcar «No disponible» las reservas de su local; nada más.** Los invita el propietario por email desde «Empleados»; el propietario puede quitarles el acceso. |
 
 Reglas comunes:
 
@@ -524,7 +525,7 @@ La tabla de reservas se recreará en la base de datos en la fase de desarrollo (
 Vegetariano (especialidad), pago con tarjeta, terraza, idiomas del personal (es/en/fr), aviso de horario de Ramadán,
 foto de la entrada del local y bloque «Cerca de aquí». Sin alcohol (§1). Cualquier otro dato necesita aprobación del titular.
 
-Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la plantilla de reserva y la sección de reservas del panel + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
+Total: **29 piezas de diseño** (58 pantallas: móvil y ordenador), contando la plantilla de reserva y la sección de reservas del panel + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
 
 ### Web: 12 plantillas
 
@@ -547,7 +548,7 @@ Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la 
 
 Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 
-### Panel: 11 plantillas
+### Panel: 12 plantillas
 
 1. Acceso: solo «Continuar con Google» y después el segundo factor.
 2. **Escritorio, con la moderación de reseñas y fotos dentro** (no hay sección de moderación aparte).
@@ -598,11 +599,15 @@ Barra lateral y cabecera del panel.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
 - Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); todos los locales tienen propietario registrado, que confirma las reservas; el titular se encarga del tema de las reservas (§2, §18 bis).
 - Passkey: botón «Continuar con huella o cara» (§18).
+- Huella o cara también para propietarios y administración (§18).
+- Rol Empleado en el panel: solo reservas de su local (ver, confirmar, «No disponible»); los invita el propietario (§18, §20).
 - Moderación automática 3 veces al día (§6).
 - Idioma: base español; al entrar, el del navegador si es es/en/fr, y si no, español (§13).
 - Favoritos en el MVP, disponibles sin conexión; nueva pestaña «Favoritos» en «Mi cuenta» y botón ♡ en la info del local (§12).
 - Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
+    - rol **Empleado**: el mismo panel con una sola sección, **Reservas**, de su local: ver, confirmar y «No disponible». Nada más.
+12. **Empleados** (solo propietario): invitar empleados por email, reenviar o anular la invitación y quitar el acceso.
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).

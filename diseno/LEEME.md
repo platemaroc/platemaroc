@@ -25,7 +25,8 @@ Móvil: 900 × 2000 px. Ordenador: 1280 × 760 px. Cada carpeta tiene `movil/` y
 | `panel-03-listado` | Listado genérico |
 | `panel-04-formulario-local` | Nuevo local: Información, ES, EN, FR, Fotos, Menú, Redirecciones, Historial |
 | `panel-05-fotos` a `panel-10-ajustes` | Fotos, redirecciones, usuarios, auditoría, importar/exportar, ajustes |
-| `panel-11-reservas` | Reservas en el panel: vista de administración (todos los locales) y vista del propietario (solo su local) |
+| `panel-11-reservas` | Reservas en el panel: vista de administración (todos los locales), del propietario (su local) y del empleado (solo reservas) |
+| `panel-12-empleados` | El propietario invita empleados y les quita el acceso |
 | `panel-esqueleto` | Barra lateral y cabecera del panel |
 
 El acceso al panel está en `web-07-pantallas-login`. Cuando cambie una decisión, se regeneran los bocetos afectados.
