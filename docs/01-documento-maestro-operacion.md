@@ -478,6 +478,11 @@ Reglas comunes:
 
 ## 20. Inventario de plantillas y piezas de diseño
 
+### Datos aprobados de la info del local (01-11-2026)
+
+Vegetariano (especialidad), pago con tarjeta, terraza, idiomas del personal (es/en/fr), aviso de horario de Ramadán,
+foto de la entrada del local y bloque «Cerca de aquí». Sin alcohol (§1). Cualquier otro dato necesita aprobación del titular.
+
 Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
 
 ### Web: 11 plantillas
@@ -530,6 +535,7 @@ Barra lateral y cabecera del panel.
 - Diseño: una sola pantalla por plantilla en móvil y ordenador, con pestañas y secciones plegables (§19).
 - Sin alcohol en ningún lugar del producto; no se añaden funciones no aprobadas.
 - Reseñas: campo «tipo de viaje» aprobado (pareja, familia, amigos, solo).
+- Datos aprobados de la info del local: vegetariano, tarjeta, terraza, idiomas del personal, aviso de Ramadán, foto de la entrada y «Cerca de aquí» (§20).
 - Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
