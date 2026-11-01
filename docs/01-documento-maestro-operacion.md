@@ -4,6 +4,9 @@
 **Última actualización:** 01-11-2026 (ver «Registro de cambios» al final).  
 **Autoridad:** máxima autoridad operativa documental.
 
+**Vocabulario:** la página de cada local (restaurante, café, puesto o mercado) se llama **«info del local»**, no «ficha»,
+en la documentación y en la interfaz de la web y del panel. Donde un documento anterior diga «ficha», se entiende «info del local».
+
 Si otra orden o documento contradice este documento, Claude Code no ejecuta la parte contradictoria:
 la señala, registra el conflicto y espera decisión del titular. Las decisiones del 01-11-2026 prevalecen
 sobre cualquier documento anterior (incluidos `10`, `11`, `12`, `14` y `decisiones.md`) en lo que se contradigan.
@@ -89,9 +92,9 @@ Estado de apertura de un lugar publicado (no lo despublica): `abierto | cerrado 
 
 | Caso | Solución |
 |---|---|
-| Local cerrado temporalmente | La ficha sigue publicada con el aviso «Cerrado temporalmente» |
-| Local cerrado definitivamente | Ficha publicada con «Cerrado definitivamente» y alternativas cercanas |
-| Ficha duplicada | Fusión en una sola ficha; la URL sobrante redirige (301) a la buena |
+| Local cerrado temporalmente | La info del local sigue publicada con el aviso «Cerrado temporalmente» |
+| Local cerrado definitivamente | Info del local publicada con «Cerrado definitivamente» y alternativas cercanas |
+| Info del local duplicada | Fusión en una sola info del local; la URL sobrante redirige (301) a la buena |
 | Cambio de nombre o de URL | Redirección 301 de la URL antigua a la nueva |
 | Contenido pobre o desactualizado | Se mejora; mientras tanto, no indexable (Quality Gate) |
 | Dato erróneo | Se corrige y queda auditado |
@@ -102,7 +105,7 @@ Estado de apertura de un lugar publicado (no lo despublica): `abierto | cerrado 
 - Contenido ilegal o difamatorio, u orden judicial.
 - Datos personales publicados por error.
 
-La ficha del local nunca se borra por estas causas; solo el contenido afectado.
+La info del local nunca se borra por estas causas; solo el contenido afectado.
 
 ### Traducciones
 `borrador -> revisada -> publicada`
@@ -300,7 +303,7 @@ Revisar:
 ## 11. Métricas
 
 - búsquedas;
-- fichas vistas;
+- páginas de info del local vistas;
 - clics en «Cómo llegar»;
 - teléfono/web;
 - filtros;
@@ -395,8 +398,8 @@ Si no resuelve el conflicto:
 
 - Mobile-first para turistas con datos en roaming o eSIM limitada y cobertura variable en Marruecos.
 - Service Worker con Cache-First para iconos, CSS críticos, fuentes y la página principal de guías gastronómicas.
-- Network-First para fichas de restaurantes y menús digitales.
-- Fallback a los últimos datos almacenados en `IndexedDB` cuando no haya red, con un máximo de 20 fichas/páginas y política LRU.
+- Network-First para la info del local y los menús digitales.
+- Fallback a los últimos datos almacenados en `IndexedDB` cuando no haya red, con un máximo de 20 páginas (info del local u otras) y política LRU.
 - Cachés del Service Worker versionadas, con actualización y limpieza de versiones antiguas.
 - Fotografías en WebP/AVIF con `lazy-loading`.
 
@@ -416,7 +419,7 @@ Sin API de Google Maps ni de ningún mapa de pago.
 | Indicaciones en texto y foto de la entrada | Siempre visibles bajo el mapa. |
 | Sin conexión | Dirección e indicaciones en texto disponibles; indicador de conectividad. |
 
-Coordenadas `lat`/`lng` obligatorias en las fichas de lugares. Este apartado prevalece sobre `11-protocolo-fallback-mapas.md`
+Coordenadas `lat`/`lng` obligatorias en la info de cada local. Este apartado prevalece sobre `11-protocolo-fallback-mapas.md`
 en lo que se contradigan (proveedor del mapa); el resto del protocolo de fallback sigue vigente.
 
 ---
@@ -480,6 +483,7 @@ Reglas comunes:
 - Este documento se actualiza con cada decisión del titular.
 - Diseño antiguo descartado (fase 1 de Claude Design, plantillas, cabecera, pie y enlaces); nuevo diseño con Claude Design (§19).
 - Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
+- Vocabulario: «info del local» sustituye a «ficha» en documentación e interfaz.
 
 ### Pendiente de decisión del titular
 
