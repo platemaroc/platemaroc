@@ -468,6 +468,41 @@ Reglas comunes:
 
 ---
 
+## 20. Inventario de plantillas y piezas de diseño
+
+Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador) + 3 archivos técnicos sin diseño (`sitemap.xml`, `robots.txt`, manifiesto PWA).
+
+### Web: 11 plantillas
+
+| # | Plantilla | Uso |
+|---|---|---|
+| 1 | Home | Portada en es/en/fr |
+| 2 | **Listado único** | Todo lo que es una lista: ciudades, ciudad + tipo de lugar, tipos de lugar, guías, platos y resultados de búsqueda. Se adapta el título, la introducción, el tipo de tarjeta y los filtros |
+| 3 | Info del local | Restaurantes, cafés y teterías, comida callejera y mercados; los bloques que no aplican se ocultan |
+| 4 | Menú | Carta del local, precios solo en MAD |
+| 5 | Plato típico | Un plato y dónde comerlo |
+| 6 | Guía | Artículos editoriales |
+| 7 | Acceso | Entrar, crear cuenta, recuperar contraseña, verificar email |
+| 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje, fotos |
+| 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
+| 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
+| 11 | Error y estados | 404, 500, sin conexión, mantenimiento |
+
+### Esqueleto de la web: 3 piezas
+
+Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
+
+### Panel: 12 plantillas
+
+Acceso (login + segundo factor), escritorio, listado genérico, formulario de edición genérico, editor de menú,
+moderación de reseñas y fotos, biblioteca de fotos, redirecciones 301, usuarios (RGPD), auditoría, importar/exportar CSV y ajustes.
+
+### Esqueleto del panel: 2 piezas
+
+Barra lateral y cabecera del panel.
+
+---
+
 ## Registro de cambios
 
 ### 01-11-2026 (decisiones del titular)
@@ -484,6 +519,7 @@ Reglas comunes:
 - Diseño antiguo descartado (fase 1 de Claude Design, plantillas, cabecera, pie y enlaces); nuevo diseño con Claude Design (§19).
 - Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
 - Vocabulario: «info del local» sustituye a «ficha» en documentación e interfaz.
+- Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
 ### Pendiente de decisión del titular
 
