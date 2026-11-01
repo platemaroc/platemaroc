@@ -30,6 +30,8 @@ sobre cualquier documento anterior (incluidos `10`, `11`, `12`, `14` y `decision
 9. Los secretos no se guardan en Git ni en backups normales.
 10. Idiomas oficiales del producto: `es`, `en`, `fr`.
 11. Árabe retirado del producto: sin RTL y sin `hreflang ar`.
+12. **Sin alcohol:** no existe ningún dato, filtro, icono ni texto sobre alcohol en la web, el panel ni los bocetos (decisión del titular, 01-11-2026).
+13. No se añaden funciones, campos ni filtros que el titular no haya aprobado; las propuestas se presentan como propuestas.
 
 ---
 
@@ -489,7 +491,7 @@ Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador) + 3 archivos 
 | 5 | Plato típico | Un plato y dónde comerlo |
 | 6 | Guía | Artículos editoriales |
 | 7 | Acceso | Entrar, crear cuenta, recuperar contraseña, verificar email |
-| 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje, fotos |
+| 8 | Escribir reseña | Estrellas, texto, fecha de visita, fotos (campo «tipo de viaje»: propuesta pendiente del titular) |
 | 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
 | 11 | Error y estados | 404, 500, sin conexión, mantenimiento |
@@ -526,6 +528,7 @@ Barra lateral y cabecera del panel.
 - Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
 - Vocabulario: «info del local» sustituye a «ficha» en documentación e interfaz.
 - Diseño: una sola pantalla por plantilla en móvil y ordenador, con pestañas y secciones plegables (§19).
+- Sin alcohol en ningún lugar del producto; no se añaden funciones no aprobadas.
 - Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
