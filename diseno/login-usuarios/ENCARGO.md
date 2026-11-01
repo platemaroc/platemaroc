@@ -1,4 +1,4 @@
-# Encargo para Claude Design · Carpeta 1 de 14: Login (acceso)
+# Encargo para Claude Design · Login de usuarios (carpeta 1 de 3 del login)
 
 **Proyecto:** Platemaroc, guía de restaurantes de Marruecos para turistas europeos (es · en · fr; el español es el idioma base).
 **Autoridad:** `docs/01-documento-maestro-operacion.md` (§18) y `docs/16-encargo-claude-design.md` (reglas generales).
@@ -9,14 +9,15 @@ datos ficticios: diseña el aspecto final respetando la estructura, los textos y
 
 ## 1. Qué hay que diseñar
 
-El acceso a la web (usuarios) y al panel (propietarios, empleados y administración). **Sin contraseñas, sin SMS y sin Apple.**
+El acceso a la web de los **usuarios** (turistas). El acceso de la administración y el de propietarios y empleados están en
+`login-administrador` y `login-propietario`. **Sin contraseñas, sin SMS y sin Apple.**
 Tres formas de entrar, del mismo nivel visual:
 
 1. **Continuar con Google**
 2. **✉️ Continuar con email** (se recibe un código de 6 cifras)
 3. **🔑 Continuar con huella o cara** (passkey del dispositivo)
 
-## 2. Pantallas (10, en móvil y ordenador)
+## 2. Pantallas (9, en móvil y ordenador)
 
 | # | Archivo | Pantalla | Contenido |
 |---|---|---|---|
@@ -29,7 +30,6 @@ Tres formas de entrar, del mismo nivel visual:
 | 07 | `07-crear-con-google-2` | Crear con Google · último paso | «Has entrado con Google como …», campo «Nombre visible», casilla de condiciones, botón «Crear cuenta» |
 | 08 | `08-crear-con-huella-o-cara-1` | Crear con huella o cara · datos | Campos «Nombre visible» y «Email (para recuperar la cuenta)», casilla de condiciones, botón «Activar huella o cara», aviso de que la huella o la cara se quedan en el dispositivo |
 | 09 | `09-crear-con-huella-o-cara-2` | Crear con huella o cara · confirmación | Ventana del sistema del dispositivo (fondo atenuado): «¿Usar tu huella o tu cara para platemaroc.com?», botones «Cancelar» y «Continuar». Es una ventana del sistema operativo: solo hay que representarla, no rediseñarla |
-| 10 | `10-panel-acceso` | Acceso al panel | Título «Platemaroc · Panel», los 3 botones y la explicación: propietarios y empleados entran con Google, email o huella/cara; administración entra con Google + código de la app de autenticación, o con huella/cara |
 
 ## 3. Reglas de esta carpeta
 
@@ -37,7 +37,6 @@ Tres formas de entrar, del mismo nivel visual:
   y en los formularios lo es la acción final («Entrar», «Crear cuenta», «Enviarme un código»).
 - **Una sola pantalla**, sin scroll, en móvil y en ordenador. En ordenador, el formulario va centrado y con ancho limitado.
 - Siempre visibles la cabecera de la web (logo, buscar, idioma, cuenta) y, en móvil, la barra inferior con «Cuenta» activa.
-  El acceso al panel no lleva la cabecera ni la barra de la web.
 - Campos preparados para que el navegador y el gestor del móvil autocompleten el email y el código.
 - Mensajes de error necesarios (diseñar su aspecto): código incorrecto, código caducado, demasiados intentos, email no válido,
   huella o cara cancelada.
@@ -50,5 +49,5 @@ Contraseñas, «recuperar contraseña», SMS, teléfono y login con Apple **no e
 
 ## 5. Entregables
 
-Las 10 pantallas en móvil y ordenador con el diseño final, los estados de error y los componentes que usan
+Las 9 pantallas en móvil y ordenador con el diseño final, los estados de error y los componentes que usan
 (botón principal, botón secundario, campo de texto, campo de código, casilla, enlace, aviso).

@@ -50,7 +50,7 @@ Idiomas: **español (base), inglés y francés**. Sin publicidad, sin afiliados 
 | 4 | Menú | Secciones plegables, precio en MAD, «Precio pendiente», fecha de verificación | `diseno/web-04-menu` |
 | 5 | Plato típico | Pestañas «Dónde comerlo» y «Qué es» | `diseno/web-05-plato-tipico` |
 | 6 | Guía | Entradilla y locales plegables | `diseno/web-06-guia` |
-| 7 | Acceso | Entrar (con botón «Crear cuenta»), continuar con email / Google / huella o cara, crear cuenta, acceso al panel | `diseno/web-07-pantallas-login` |
+| 7 | Acceso | Entrar (con botón «Crear cuenta»), continuar con email / Google / huella o cara, crear cuenta, acceso al panel | `diseno/login-usuarios` |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), hasta 3 fotos; reseña enviada | `diseno/web-08-escribir-resena` |
 | 9 | Mi cuenta | Pestañas Reseñas · Reservas · Favoritos · Datos | `diseno/web-09-mi-cuenta` |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto | `diseno/web-10-pagina-de-texto` |
@@ -73,7 +73,7 @@ Un único panel con tres roles: **Administración**, **Propietario** (solo su lo
 
 | # | Plantilla | Notas | Bocetos |
 |---|---|---|---|
-| 1 | Acceso | Google, email o huella o cara. Administración: Google + código de la app, o huella o cara | `diseno/web-07-pantallas-login` (10) |
+| 1 | Acceso | Google, email o huella o cara. Administración: Google + código de la app, o huella o cara | `diseno/login-administrador` y `diseno/login-propietario` |
 | 2 | Escritorio | Con la moderación de reseñas y fotos dentro | `diseno/panel-02-escritorio` |
 | 3 | Listado genérico | Locales, ciudades, platos, guías | `diseno/panel-03-listado` |
 | 4 | Nuevo / editar local | Pestañas: Información · ES · EN · FR · Fotos · Menú (archivar / reactivar platos) · Redirecciones · Historial | `diseno/panel-04-formulario-local` |
