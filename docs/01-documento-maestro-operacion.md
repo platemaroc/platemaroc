@@ -467,6 +467,8 @@ Reglas comunes:
   En ordenador se aprovecha el ancho (columnas) para que quepa en una pantalla.
   Lo demás va en pestañas o secciones plegables (el contenido sigue en la página y Google lo lee). Las listas largas se cortan con
   «Ver más» o paginación.
+- **Formato de los bocetos** (decisión del titular, 01-11-2026): una imagen por pantalla o por pestaña, a pantalla completa y sin marco.
+  Móvil: 900 × 2000 px (vertical). Ordenador: 1280 × 760 px. Esquema en grises con datos de ejemplo ficticios; el aspecto final lo da Claude Design.
 - El código del diseño antiguo se sustituye en la fase de desarrollo, cuando el nuevo diseño esté aprobado; mientras tanto no se
   modifica (fase de planificación sin código). La web no está publicada, así que retirarlo no afecta al SEO; queda en el historial de Git.
 
@@ -524,6 +526,7 @@ Barra lateral y cabecera del panel.
 - Panel de administración propio y reutilizable en otros proyectos; se descarta Directus (§2).
 - Vocabulario: «info del local» sustituye a «ficha» en documentación e interfaz.
 - Diseño: una sola pantalla por plantilla en móvil y ordenador, con pestañas y secciones plegables (§19).
+- Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
 ### Pendiente de decisión del titular
