@@ -25,7 +25,7 @@ sobre cualquier documento anterior (incluidos `10`, `11`, `12`, `14` y `decision
    o de fuentes verificables con fecha/referencia. Lo no verificado se muestra como pendiente.
 6. **Sin ningún tipo de ingreso:** sin afiliados, sin anuncios, sin destacados de pago y sin suscripciones.
    Nada altera puntuaciones, moderación ni orden orgánico.
-7. **Minimizar gastos:** se elige siempre la opción sin coste por uso cuando existe (sin SMS, sin APIs de mapas de pago).
+7. **Minimizar gastos:** se elige siempre la opción sin coste por uso cuando existe (sin APIs de mapas de pago). Excepción aprobada: SMS para el login (§18).
 8. Se aplica privacidad por defecto conforme al marco legal aplicable (RGPD; Ley 09-08 cuando corresponda).
 9. Los secretos no se guardan en Git ni en backups normales.
 10. Idiomas oficiales del producto: `es`, `en`, `fr`.
@@ -271,7 +271,7 @@ Claude Code informa al titular de:
 Y gestiona por sí mismo (con informe periódico): reseñas problemáticas, fotos con derechos dudosos, menús pendientes,
 verificaciones antiguas y problemas de indexación.
 
-Sin SMS ni push.
+Sin SMS ni push para notificaciones (el SMS solo se usa para entrar, §18).
 
 ---
 
@@ -356,7 +356,7 @@ Revisar:
 - árabe, RTL y `hreflang ar`;
 - barrios y zonas (sin páginas, sin campo y sin filtro);
 - afiliados, anuncios, destacados de pago y cualquier monetización;
-- login por teléfono o SMS;
+- contraseñas (el login es sin contraseña, §18);
 - login con Apple;
 - Google Maps como mapa embebido.
 
@@ -440,24 +440,32 @@ La especificación completa está en `12-especificacion-precios-mad.md`.
 
 ---
 
-## 18. Cuentas y login (sin SMS)
+## 18. Cuentas y login (sin contraseñas)
 
-| Tipo de cuenta | Métodos de acceso | Notas |
-|---|---|---|
-| Usuarios (reseñas) | Email + contraseña; login con Google; passkeys | Email verificado por enlace. |
-| Propietarios (Fase 2) | Solo email + contraseña; passkeys | Sin teléfono. La titularidad del local se verifica por vías sin coste. |
-| Administración | Email + contraseña, Google o passkey, siempre con segundo factor | Segundo factor sin SMS (app de autenticación o passkey). |
+Decisión del titular (01-11-2026): **se elimina el login con email y contraseña** y **se activa el servicio de SMS**.
+Todas las cuentas entran sin contraseña, con estas cuatro opciones del mismo nivel:
+
+| Opción | Cómo funciona |
+|---|---|
+| Continuar con Google | Cuenta de Google. |
+| Continuar con email | Se envía un código de 6 cifras al email. |
+| Continuar con teléfono (SMS) | Se envía un código de 6 cifras por SMS. Tiene coste por mensaje: el proveedor lo contrata el titular. |
+| Continuar con passkey | Huella o cara del dispositivo. |
+
+| Tipo de cuenta | Notas |
+|---|---|
+| Usuarios (reseñas) | Las cuatro opciones. Si es la primera vez, la cuenta se crea automáticamente. |
+| Propietarios (Fase 2) | Las cuatro opciones. La titularidad del local se verifica por vías sin coste. |
+| Administración | Las cuatro opciones y **siempre segundo factor** con app de autenticación o passkey. |
 
 Reglas comunes:
 
-- sin SMS ni login por teléfono;
+- sin contraseñas: no hay pantalla de «recuperar contraseña»;
 - sin login con Apple;
-- formularios preparados para que el navegador o el gestor de contraseñas del móvil ofrezca guardar la contraseña;
-- contraseñas almacenadas con hash seguro; rechazo de contraseñas filtradas; límite de intentos;
-- recuperación de contraseña por email;
-- el email nunca se muestra públicamente; nombre visible elegido por el usuario;
+- códigos de un solo uso, con caducidad corta y límite de intentos y de envíos (protege del gasto en SMS);
+- el email y el teléfono nunca se muestran públicamente; nombre visible elegido por el usuario;
 - el usuario puede descargar sus datos y borrar su cuenta (§3.2).
-
+- Pendiente del titular: proveedor de SMS y países a los que se permite enviar SMS.
 ---
 
 ## 19. Diseño de la interfaz
@@ -465,7 +473,7 @@ Reglas comunes:
 - **El diseño antiguo queda descartado** (decisión del titular, 01-11-2026): el sistema visual de la «fase 1» de Claude Design
   (paleta arena y terracota, Fraunces y Manrope, logo de estrella), las plantillas actuales, la cabecera, el pie de página y sus enlaces.
 - El nuevo diseño se encarga a Claude Design y debe cumplir este documento: público europeo, es/en/fr, solo MAD, sin barrios,
-  sin ingresos, login con email + contraseña, Google y passkeys, mapa sin coste y botón «Cómo llegar».
+  sin ingresos, login sin contraseña (Google, email con código, SMS y passkey), mapa sin coste y botón «Cómo llegar».
 - El pie de página y los enlaces se rediseñan como navegación secundaria útil para el SEO (§4.4): ciudades y tipos de lugar,
   enlaces legales, sin «Política de cookies» si no se usan cookies no imprescindibles.
 - **Una sola pantalla por plantilla, en móvil y en ordenador** (decisión del titular, 01-11-2026): cada plantilla muestra lo esencial sin scroll largo.
@@ -498,7 +506,7 @@ Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos 
 | 4 | Menú | Carta del local, precios solo en MAD |
 | 5 | Plato típico | Un plato y dónde comerlo |
 | 6 | Guía | Artículos editoriales |
-| 7 | Acceso | Entrar, crear cuenta, recuperar contraseña, verificar email |
+| 7 | Acceso | Entrar o crear cuenta (Google, email, SMS, passkey), código por email, código por SMS |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
 | 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
@@ -510,7 +518,7 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 
 ### Panel: 10 plantillas
 
-1. Acceso: Google, email + contraseña o passkey, y después el segundo factor.
+1. Acceso: Google, email, SMS o passkey (sin contraseña), y después el segundo factor.
 2. **Escritorio, con la moderación de reseñas y fotos dentro** (no hay sección de moderación aparte).
 3. Listado genérico (locales, ciudades, platos, guías).
 4. **Formulario de nuevo local / editar local, con todo en pestañas:** Información, ES, EN, FR, Fotos, Menú, Redirecciones e Historial.
@@ -550,7 +558,8 @@ Barra lateral y cabecera del panel.
 - Datos aprobados de la info del local: vegetariano, tarjeta, terraza, idiomas del personal, aviso de Ramadán, foto de la entrada y «Cerca de aquí» (§20).
 - Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
 - Platos agotados: se archivan, no aparecen en la web y no se borran (§3).
-- Login del panel: Google, email + contraseña o passkey, siempre con segundo factor (§18).
+- Login del panel: Google, email, SMS o passkey, siempre con segundo factor (§18).
+- Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
@@ -560,6 +569,7 @@ Barra lateral y cabecera del panel.
 - Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, panel propio y Nginx, con Cloudflare gratuito delante).
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
+- Proveedor de SMS y países a los que se permite enviar SMS.
 
 ### 29-10-2026
 
