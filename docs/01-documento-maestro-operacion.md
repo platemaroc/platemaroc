@@ -217,7 +217,7 @@ Las operaciones técnicas relevantes deben quedar auditadas.
 
 ### Frecuencias
 
-- Varias veces al día: moderación de reseñas y fotos por tarea programada de Claude Code (**número de veces al día: pendiente del titular**).
+- **3 veces al día**: moderación de reseñas y fotos por tarea programada de Claude Code (decisión del titular, 01-11-2026).
 - Diario: backup de base de datos.
 - Semanal: Search Console, rendimiento y backups de fotos/configuración no secreta.
 - Mensual: seguridad, duplicidad, SEO, estado y crecimiento.
@@ -325,6 +325,7 @@ Revisar:
 
 ### MVP
 
+- favoritos, disponibles sin conexión en el móvil (adelantado de la Fase 2, 01-11-2026);
 - acceso de propietarios al panel (rol «Propietario») y reclamación de su local con verificación de titularidad sin coste (adelantado de la Fase 2, 01-11-2026);
 - reservas gestionadas (§18 bis);
 
@@ -349,7 +350,6 @@ Revisar:
 
 - respuestas a reseñas publicadas;
 - recetas si se aprueban;
-- favoritos;
 - más idiomas si se decide;
 - seguimiento avanzado.
 
@@ -383,8 +383,13 @@ No existen:
 - traducciones árabes;
 - RTL.
 
-Puede existir una sugerencia de idioma basada en `Accept-Language` como ayuda UX. La implementación concreta debe
-revisarse con la documentación técnica/SEO vigente antes de desarrollarse.
+**Idioma** (decisión del titular, 01-11-2026):
+- **Idioma base de la web: español.** Es el idioma de referencia del contenido y el de reserva.
+- Al entrar sin idioma elegido (por ejemplo en `platemaroc.com/`), se usa el **idioma del navegador** si es es, en o fr;
+  si no es ninguno de los tres, se usa el **español**.
+- El usuario puede cambiar de idioma en cualquier momento y su elección se recuerda.
+- `hreflang x-default` apunta a la versión en español.
+La implementación concreta debe revisarse con la documentación técnica/SEO vigente antes de desarrollarse.
 
 ---
 
@@ -451,7 +456,7 @@ las protegen la moderación previa y los límites). Todas las cuentas entran sin
 |---|---|
 | Continuar con Google | Cuenta de Google. |
 | Continuar con email | Se envía un código de 6 cifras al email. |
-| Continuar con passkey | Huella o cara del dispositivo. |
+| Continuar con huella o cara | Passkey del dispositivo (huella o reconocimiento facial). En la interfaz se llama siempre «huella o cara». |
 
 | Tipo de cuenta | Notas |
 |---|---|
@@ -467,7 +472,7 @@ Reglas comunes:
 - códigos de un solo uso, con caducidad corta y límite de intentos y de envíos;
 - el email y el teléfono nunca se muestran públicamente; nombre visible elegido por el usuario;
 - el usuario puede descargar sus datos y borrar su cuenta (§3.2).
-- Pendiente del titular: passkey (quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara»).
+- El botón de passkey se llama **«Continuar con huella o cara»** (decisión del titular, 01-11-2026).
 ---
 
 ## 18 bis. Reservas (recuperadas)
@@ -533,7 +538,7 @@ Total: **28 piezas de diseño** (56 pantallas: móvil y ordenador), contando la 
 | 6 | Guía | Artículos editoriales |
 | 7 | Acceso | Entrar (con botón «Crear cuenta»), Continuar con email (código), Continuar con Google, Continuar con passkey, Crear cuenta, crear con Google (elegir cuenta + último paso) y crear con passkey (datos + confirmación con huella o cara) |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
-| 9 | Mi cuenta | Mis reseñas, mis reservas, mis datos, descargar o borrar la cuenta |
+| 9 | Mi cuenta | Reseñas, reservas, favoritos y datos (descargar o borrar la cuenta) |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
 | 11 | Error y estados | 404, 500, sin conexión, mantenimiento |
 | 12 | Reserva | Formulario de reserva, solicitud enviada y reserva confirmada (§18 bis) |
@@ -592,6 +597,10 @@ Barra lateral y cabecera del panel.
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
 - SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
 - Reservas: solo locales con «Acepto reservas»; acceso de propietarios al panel en el MVP (Google, email con código o passkey); todos los locales tienen propietario registrado, que confirma las reservas; el titular se encarga del tema de las reservas (§2, §18 bis).
+- Passkey: botón «Continuar con huella o cara» (§18).
+- Moderación automática 3 veces al día (§6).
+- Idioma: base español; al entrar, el del navegador si es es/en/fr, y si no, español (§13).
+- Favoritos en el MVP, disponibles sin conexión; nueva pestaña «Favoritos» en «Mi cuenta» y botón ♡ en la info del local (§12).
 - Panel único con roles: el propietario usa la misma plantilla del panel, limitada a su local; la sección Reservas está en el panel (§20).
 - Reservas recuperadas con la opción gestionada: solicita el usuario, confirma el propietario, aviso por email (§18 bis).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
@@ -600,11 +609,7 @@ Barra lateral y cabecera del panel.
 
 ### Pendiente de decisión del titular
 
-- Número de ejecuciones diarias de la moderación.
 - Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, panel propio y Nginx, con Cloudflare gratuito delante).
-- Favoritos en el MVP o en Fase 2.
-- Idioma por defecto al entrar sin idioma elegido.
-- Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
 
 ### 29-10-2026
 
