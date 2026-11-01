@@ -14,9 +14,7 @@ Móvil: 900 × 2000 px. Ordenador: 1280 × 760 px. Cada carpeta tiene `movil/` y
 | `web-04-menu` | Menú completo (sin platos archivados) |
 | `web-05-plato-tipico` | Pestañas «Dónde comerlo» y «Qué es» |
 | `web-06-guia` | Guía editorial |
-| `login-usuarios` | Usuarios de la web: entrar, continuar con email / Google / huella o cara, crear cuenta |
-| `login-administrador` | Administración: Google + código de la app, o huella o cara; cuenta no autorizada |
-| `login-propietario` | Propietarios y empleados: Google, email o huella o cara; activar el acceso desde el email |
+| `login` | Encargo único (`ENCARGO.md`) y tres carpetas: `usuarios` (web), `administrador` y `propietario` (propietarios y empleados) |
 | `web-08-escribir-resena` | Escribir reseña y reseña enviada |
 | `web-09-mi-cuenta` | Reseñas, reservas, favoritos y datos |
 | `web-10-pagina-de-texto` | Legales, sobre nosotros, contacto |
@@ -31,4 +29,4 @@ Móvil: 900 × 2000 px. Ordenador: 1280 × 760 px. Cada carpeta tiene `movil/` y
 | `panel-12-empleados` | El propietario añade empleados y les quita el acceso |
 | `panel-esqueleto` | Barra lateral y cabecera del panel |
 
-Las tres carpetas de login se agruparán en `login/` cuando estén listas. Cuando cambie una decisión, se regeneran los bocetos afectados.
+ Cuando cambie una decisión, se regeneran los bocetos afectados.
