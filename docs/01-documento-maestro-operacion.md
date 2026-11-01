@@ -25,7 +25,7 @@ sobre cualquier documento anterior (incluidos `10`, `11`, `12`, `14` y `decision
    o de fuentes verificables con fecha/referencia. Lo no verificado se muestra como pendiente.
 6. **Sin ningún tipo de ingreso:** sin afiliados, sin anuncios, sin destacados de pago y sin suscripciones.
    Nada altera puntuaciones, moderación ni orden orgánico.
-7. **Minimizar gastos:** se elige siempre la opción sin coste por uso cuando existe (sin APIs de mapas de pago). Excepción aprobada: SMS para el login (§18).
+7. **Minimizar gastos:** se elige siempre la opción sin coste por uso cuando existe (sin SMS, sin APIs de mapas de pago).
 8. Se aplica privacidad por defecto conforme al marco legal aplicable (RGPD; Ley 09-08 cuando corresponda).
 9. Los secretos no se guardan en Git ni en backups normales.
 10. Idiomas oficiales del producto: `es`, `en`, `fr`.
@@ -271,7 +271,7 @@ Claude Code informa al titular de:
 Y gestiona por sí mismo (con informe periódico): reseñas problemáticas, fotos con derechos dudosos, menús pendientes,
 verificaciones antiguas y problemas de indexación.
 
-Sin SMS ni push para notificaciones (el SMS solo se usa para entrar, §18).
+Sin SMS ni push.
 
 ---
 
@@ -442,30 +442,30 @@ La especificación completa está en `12-especificacion-precios-mad.md`.
 
 ## 18. Cuentas y login (sin contraseñas)
 
-Decisión del titular (01-11-2026): **se elimina el login con email y contraseña** y **se activa el servicio de SMS**.
-Todas las cuentas entran sin contraseña, con estas cuatro opciones del mismo nivel:
+Decisiones del titular (01-11-2026): **se elimina el login con email y contraseña** y **no se usa SMS** (no es necesario para las reseñas:
+las protegen la moderación previa y los límites). Todas las cuentas entran sin contraseña y sin coste:
 
 | Opción | Cómo funciona |
 |---|---|
 | Continuar con Google | Cuenta de Google. |
 | Continuar con email | Se envía un código de 6 cifras al email. |
-| Continuar con teléfono (SMS) | Se envía un código de 6 cifras por SMS. Tiene coste por mensaje: el proveedor lo contrata el titular. |
 | Continuar con passkey | Huella o cara del dispositivo. |
 
 | Tipo de cuenta | Notas |
 |---|---|
-| Usuarios (reseñas) | Las cuatro opciones. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
-| Propietarios (Fase 2) | Las cuatro opciones. La titularidad del local se verifica por vías sin coste. |
+| Usuarios (reseñas) | Google, email con código y passkey. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
+| Propietarios (Fase 2) | Google, email con código y passkey. La titularidad del local se verifica por vías sin coste. |
 | Administración | **Solo «Continuar con Google»** (cuentas de Google autorizadas) y **siempre segundo factor** con app de autenticación (decisión del titular, 01-11-2026). |
 
 Reglas comunes:
 
 - sin contraseñas: no hay pantalla de «recuperar contraseña»;
 - sin login con Apple;
-- códigos de un solo uso, con caducidad corta y límite de intentos y de envíos (protege del gasto en SMS);
+- sin SMS ni login por teléfono;
+- códigos de un solo uso, con caducidad corta y límite de intentos y de envíos;
 - el email y el teléfono nunca se muestran públicamente; nombre visible elegido por el usuario;
 - el usuario puede descargar sus datos y borrar su cuenta (§3.2).
-- Pendiente del titular: proveedor de SMS y países a los que se permite enviar SMS.
+- Pendiente del titular: passkey (quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara»).
 ---
 
 ## 19. Diseño de la interfaz
@@ -473,7 +473,7 @@ Reglas comunes:
 - **El diseño antiguo queda descartado** (decisión del titular, 01-11-2026): el sistema visual de la «fase 1» de Claude Design
   (paleta arena y terracota, Fraunces y Manrope, logo de estrella), las plantillas actuales, la cabecera, el pie de página y sus enlaces.
 - El nuevo diseño se encarga a Claude Design y debe cumplir este documento: público europeo, es/en/fr, solo MAD, sin barrios,
-  sin ingresos, login sin contraseña (Google, email con código, SMS y passkey), mapa sin coste y botón «Cómo llegar».
+  sin ingresos, login sin contraseña (Google, email con código y passkey), mapa sin coste y botón «Cómo llegar».
 - El pie de página y los enlaces se rediseñan como navegación secundaria útil para el SEO (§4.4): ciudades y tipos de lugar,
   enlaces legales, sin «Política de cookies» si no se usan cookies no imprescindibles.
 - **Una sola pantalla por plantilla, en móvil y en ordenador** (decisión del titular, 01-11-2026): cada plantilla muestra lo esencial sin scroll largo.
@@ -506,7 +506,7 @@ Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos 
 | 4 | Menú | Carta del local, precios solo en MAD |
 | 5 | Plato típico | Un plato y dónde comerlo |
 | 6 | Guía | Artículos editoriales |
-| 7 | Acceso | Entrar (con botón «Crear cuenta»), Crear cuenta, código por email y código por SMS |
+| 7 | Acceso | Entrar (con botón «Crear cuenta»), Crear cuenta y código por email |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
 | 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
@@ -560,6 +560,7 @@ Barra lateral y cabecera del panel.
 - Platos agotados: se archivan, no aparecen en la web y no se borran (§3).
 - Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
+- SMS retirado: no es necesario para las reseñas; cuentas con Google, email con código y passkey (§18).
 - Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
@@ -570,7 +571,7 @@ Barra lateral y cabecera del panel.
 - Stack definitivo de la web (propuesta: todo en el VPS de Hostinger con Astro, PostgreSQL, panel propio y Nginx, con Cloudflare gratuito delante).
 - Favoritos en el MVP o en Fase 2.
 - Idioma por defecto al entrar sin idioma elegido.
-- Proveedor de SMS y países a los que se permite enviar SMS.
+- Passkey: quitarla, dividirla en «huella» y «cara» o renombrarla «huella o cara».
 
 ### 29-10-2026
 
