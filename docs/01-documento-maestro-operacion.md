@@ -454,9 +454,9 @@ Todas las cuentas entran sin contraseña, con estas cuatro opciones del mismo ni
 
 | Tipo de cuenta | Notas |
 |---|---|
-| Usuarios (reseñas) | Las cuatro opciones. Si es la primera vez, la cuenta se crea automáticamente. |
+| Usuarios (reseñas) | Las cuatro opciones. Pantalla «Entrar» con botón **«Crear cuenta»**, que lleva a su propia pantalla (nombre visible, opción de alta y aceptación de condiciones). |
 | Propietarios (Fase 2) | Las cuatro opciones. La titularidad del local se verifica por vías sin coste. |
-| Administración | Las cuatro opciones y **siempre segundo factor** con app de autenticación o passkey. |
+| Administración | **Solo «Continuar con Google»** (cuentas de Google autorizadas) y **siempre segundo factor** con app de autenticación (decisión del titular, 01-11-2026). |
 
 Reglas comunes:
 
@@ -506,7 +506,7 @@ Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos 
 | 4 | Menú | Carta del local, precios solo en MAD |
 | 5 | Plato típico | Un plato y dónde comerlo |
 | 6 | Guía | Artículos editoriales |
-| 7 | Acceso | Entrar o crear cuenta (Google, email, SMS, passkey), código por email, código por SMS |
+| 7 | Acceso | Entrar (con botón «Crear cuenta»), Crear cuenta, código por email y código por SMS |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
 | 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
@@ -518,7 +518,7 @@ Cabecera, pie de página (navegación secundaria) y barra inferior del móvil.
 
 ### Panel: 10 plantillas
 
-1. Acceso: Google, email, SMS o passkey (sin contraseña), y después el segundo factor.
+1. Acceso: solo «Continuar con Google» y después el segundo factor.
 2. **Escritorio, con la moderación de reseñas y fotos dentro** (no hay sección de moderación aparte).
 3. Listado genérico (locales, ciudades, platos, guías).
 4. **Formulario de nuevo local / editar local, con todo en pestañas:** Información, ES, EN, FR, Fotos, Menú, Redirecciones e Historial.
@@ -558,8 +558,9 @@ Barra lateral y cabecera del panel.
 - Datos aprobados de la info del local: vegetariano, tarjeta, terraza, idiomas del personal, aviso de Ramadán, foto de la entrada y «Cerca de aquí» (§20).
 - Bocetos: una imagen por pantalla o pestaña, a pantalla completa (§19).
 - Platos agotados: se archivan, no aparecen en la web y no se borran (§3).
-- Login del panel: Google, email, SMS o passkey, siempre con segundo factor (§18).
+- Login del panel: solo «Continuar con Google», siempre con segundo factor (§18).
 - Login sin contraseñas en toda la plataforma y SMS activado: Google, email con código, SMS con código y passkey (§18). Proveedor de SMS pendiente del titular.
+- Web: botón «Crear cuenta» en la pantalla Entrar, con pantalla propia (§18). Panel: solo Google (§18).
 - Panel: moderación dentro del escritorio; nuevo local con información, fotos, menú y redirecciones en pestañas (§20). Inventario: 26 piezas, 52 pantallas.
 - Inventario de diseño: 28 piezas, con un único listado para todas las listas, incluidas ciudades y búsqueda (§20).
 
