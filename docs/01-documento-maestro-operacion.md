@@ -506,7 +506,7 @@ Total: **26 piezas de diseño** (52 pantallas: móvil y ordenador) + 3 archivos 
 | 4 | Menú | Carta del local, precios solo en MAD |
 | 5 | Plato típico | Un plato y dónde comerlo |
 | 6 | Guía | Artículos editoriales |
-| 7 | Acceso | Entrar (con botón «Crear cuenta»), Crear cuenta, código por email, crear con Google (elegir cuenta + último paso) y crear con passkey (datos + confirmación con huella o cara) |
+| 7 | Acceso | Entrar (con botón «Crear cuenta»), Continuar con email (código), Continuar con Google, Continuar con passkey, Crear cuenta, crear con Google (elegir cuenta + último paso) y crear con passkey (datos + confirmación con huella o cara) |
 | 8 | Escribir reseña | Estrellas, texto, fecha de visita, tipo de viaje (pareja, familia, amigos, solo), fotos |
 | 9 | Mi cuenta | Mis reseñas, mis datos, descargar o borrar la cuenta |
 | 10 | Página de texto | Legales, sobre nosotros, cómo funcionan las reseñas, contacto |
